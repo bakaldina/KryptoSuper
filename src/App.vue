@@ -19,7 +19,8 @@
         @click.stop="sideNav = !sideNav"
         class="hidden-sm-and-up "></v-toolbar-side-icon>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">Crypto</router-link>
+        <img src="./assets/logo_mini.png" height='50' alt="логотип" style="vertical-align: middle; margin-right: 10px;">
+        <router-link to="/" tag="span" style="cursor: pointer">CRYPTO MANAGEMENT</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- <v-toolbar-items class="hidden-xs-only">
@@ -60,9 +61,9 @@
 </script>
 
 <style lang="stylus">
-
-  body .application--light{
-    background: url("https://yandex.ru/images/today?size=1920x1200")
-  }
+body .application--light{
+  background-color: #fff;
+  background-size cover
+}
   @import './stylus/main'
 </style>

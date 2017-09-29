@@ -1,14 +1,14 @@
 <template>
     <section id="TRANS">
-        <v-btn large v-on:click="logout" class="button info">выйти</v-btn>
-         <v-btn
-          flat
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.link">
-          <v-icon left dark>{{ item.icon }}</v-icon>
-          {{ item.title }}
-        </v-btn>
+        <v-btn large v-on:click="logout" class="button cyan">выйти</v-btn>
+         <div class="main_menu"><v-btn
+            flat
+            v-for="item in menuItems"
+            :key="item.title"
+            :to="item.link">
+            <v-icon left dark>{{ item.icon }}</v-icon>
+            {{ item.title }}
+            </v-btn></div>
         
    <br>
       <button class="new-client">Транзакции</button> 
@@ -301,8 +301,11 @@ button {
 }
 .button {
     position: absolute;
-    top: 10px;
+    top: 8px;
     right: 12px;
+    padding: 0 1px;
+    height: 36px;
+    margin: 6px 8px;
 }
 .button:active {
     outline: none;

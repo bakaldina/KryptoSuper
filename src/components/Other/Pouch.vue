@@ -29,7 +29,7 @@
             </p>
             <p>{{pouch}}</p>
         </div> -->
-    </section>
+    </section> 
 </template>
 
 <script>
@@ -70,7 +70,7 @@ export default {
     color: #FFFFFF;
 }
 .btn {
-    padding: 6px 12px;
+    padding: 6px 10px;
     font-weight: 600;
     text-align: center;
     cursor: pointer;
