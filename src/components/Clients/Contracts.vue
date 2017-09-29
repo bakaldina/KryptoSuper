@@ -48,56 +48,56 @@
                         <path fill="#444444" d="M8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zM12.2 10.8l-1.4 1.4-2.8-2.8-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8z"></path>
                     </svg>
                 </button>
-            <v-form v-model="valid" ref="form">
-                <v-text-field
-                label="Фамилия"
-                :rules="nameRules"
-                required
-                v-model="customer.surname"
-                ></v-text-field>
+                <v-form v-model="valid" ref="form">
+                    <v-text-field
+                    label="Фамилия"
+                    :rules="nameRules"
+                    required
+                    v-model="customer.surname"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Имя"
-                :rules="nameRules"
-                required
-                v-model="customer.firstName"
-                ></v-text-field>
+                    <v-text-field
+                    label="Имя"
+                    :rules="nameRules"
+                    required
+                    v-model="customer.firstName"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Отчество"
-                :rules="nameRules"
-                required
-                v-model="customer.middleName"
-                ></v-text-field>
+                    <v-text-field
+                    label="Отчество"
+                    :rules="nameRules"
+                    required
+                    v-model="customer.middleName"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Дата открытия"
-                required
-                v-model="customer.dateOfAccountOpening"
-                ></v-text-field>
+                    <v-text-field
+                    label="Дата открытия"
+                    required
+                    v-model="customer.dateOfAccountOpening"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Почта"
-                :rules="emailRules"
-                required
-                v-model="customer.email"
-                ></v-text-field>
+                    <v-text-field
+                    label="Почта"
+                    :rules="emailRules"
+                    required
+                    v-model="customer.email"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Телефон"
-                required
-                v-model="customer.phone"
-                ></v-text-field>
+                    <v-text-field
+                    label="Телефон"
+                    required
+                    v-model="customer.phone"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Размер комиссии"
-                required
-                v-model="customer.amountOfCommission"
-                ></v-text-field>
+                    <v-text-field
+                    label="Размер комиссии"
+                    required
+                    v-model="customer.amountOfCommission"
+                    ></v-text-field>
 
-                <v-btn :class="{ green: valid, red: !valid }" v-on:click.prevent="post">Подтвердить</v-btn>
-                <v-btn @click="clear">Очистка</v-btn>
-            </v-form>
+                    <v-btn :class="{ green: valid, red: !valid }" v-on:click.prevent="post">Подтвердить</v-btn>
+                    <v-btn @click="clear">Очистка</v-btn>
+                </v-form>
                 </div>
             </div>
         </div>
