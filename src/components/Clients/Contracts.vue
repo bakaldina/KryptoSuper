@@ -119,9 +119,8 @@ export default {
       ],
       firebase: firebase,
       isOpen: false,
-      isOpenTransactions: false,
-      isOpenMining: false,
       showModal: false,
+      active: null,
       customer: {
         accountNnumber: '',
         dateOfAccountOpening: '',
@@ -160,7 +159,8 @@ export default {
     },
     removeClient: function (key) {
       let db = this.firebase.database()
-      db.ref('customer_registry').child(key).remove()
+      db.ref('customer_registry').child(key).remove();
+      console.log(this.items)
     },
     editClient: function (event, base, index, param) {
       let db = this.firebase.database()
