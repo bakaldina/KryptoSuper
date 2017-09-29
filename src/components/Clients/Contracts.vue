@@ -1,14 +1,14 @@
 <template>
     <section id="contracts">
-        <v-btn large v-on:click="logout" class="info button">выйти</v-btn>
-            <v-btn
+        <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
+            <div class="main_menu"><v-btn
             flat
             v-for="item in menuItems"
             :key="item.title"
             :to="item.link">
             <v-icon left dark>{{ item.icon }}</v-icon>
             {{ item.title }}
-            </v-btn>
+            </v-btn></div>
         <br>
         <button class="new-client">Новый Клиент</button> 
         <v-btn v-on:click='showModal = !showModal' fab dark class="indigo">
@@ -111,9 +111,9 @@ export default {
   data () {
     return {
       menuItems: [
-        {icon: 'lock_open', title: 'Клиенты', link: '/contracts'},
+        {icon: 'person', title: 'Клиенты', link: '/contracts'},
         {icon: 'person', title: 'Транзакции', link: '/trans'},
-        {icon: 'room', title: 'Майнинг', link: '/mining'}
+        {icon: 'person', title: 'Майнинг', link: '/mining'}
       ],
       firebase: firebase,
       isOpen: false,
@@ -229,6 +229,7 @@ export default {
 <style>
 .cyan {
     background-color: #3299BB !important;
+    color: #fff;
 }
 
 .tabs__li a {
@@ -246,6 +247,7 @@ export default {
 
 .cyan {
     background-color: #3299BB !important;
+    color: #fff;
 }
 
 .tabs__li a {
@@ -284,7 +286,7 @@ td:last-child {
 }
 button {
     font-size: 26px;
-    font-weight: 700;
+    font-weight: 700; 
     vertical-align: sub;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -369,5 +371,20 @@ button {
 }
 .button:active {
     outline: none;
+}
+.main_menu {
+    display: flex;
+    justify-content: space-between;
+    background-color: #3299BB;
+    margin-top: 40px;
+}
+..btn__content {
+  color: #fff;
+}
+.btn__content:before {
+  display: none;
+}
+.btn {
+  margin: 0;
 }
 </style>

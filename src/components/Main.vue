@@ -35,7 +35,7 @@
     </v-toolbar> -->
     <v-layout row wrap>
       <v-flex xs12 sm6 class="text-xs-center text-sm-right"> 
-        <v-btn large v-on:click="logout" class="info">выйти</v-btn>
+        <v-btn large v-on:click="logout" class="cyan">выйти</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -68,4 +68,5 @@
 </script>
 
 <style scoped>
+
 </style>

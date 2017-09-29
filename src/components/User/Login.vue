@@ -4,7 +4,7 @@
     <input type="text" v-model="email" placeholder="Email"><br>
     <input type="password" v-model="password" @keyup.enter="signIn" placeholder="Password"><br>
  
-    <v-btn large v-on:click="signIn" class="info">Connection</v-btn>
+    <v-btn large v-on:click="signIn" class="cyan">Connection</v-btn>
   </div>
 </template>
 

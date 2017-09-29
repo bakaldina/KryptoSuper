@@ -1,15 +1,15 @@
 <template>
     <section id="MINING">
-        <v-btn
-          flat
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.link">
-          <v-icon left dark>{{ item.icon }}</v-icon>
-          {{ item.title }}
-        </v-btn>
+        <div class="main_menu"><v-btn
+            flat
+            v-for="item in menuItems"
+            :key="item.title"
+            :to="item.link">
+            <v-icon left dark>{{ item.icon }}</v-icon>
+            {{ item.title }}
+            </v-btn></div>
         <br>
-          <v-btn large v-on:click="logout" class="info button">выйти</v-btn>
+          <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
             <button class="new-client">Данные по майнингу</button> 
 
             <v-btn v-on:click='showModal = !showModal' fab dark class="indigo">
@@ -192,6 +192,7 @@ export default {
 <style>
 .cyan {
     background-color: #3299BB !important;
+    color: #fff;
 }
 
 .tabs__li a {
@@ -209,6 +210,7 @@ export default {
 
 .cyan {
     background-color: #3299BB !important;
+    color: #fff;
 }
 
 .tabs__li a {
