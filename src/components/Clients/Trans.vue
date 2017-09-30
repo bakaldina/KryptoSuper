@@ -59,8 +59,8 @@
         </div>
 
           <v-data-table
-            v-bind:headers="headers2"
-            :items="items2"
+            v-bind:headers="headers"
+            :items="items"
             hide-actions
             class="elevation-1"
           >
@@ -92,60 +92,22 @@ export default {
         {icon: 'room', title: 'Майнинг', link: '/mining'}
       ],
       firebase: firebase,
-      isOpen: false,
       isOpenTransactions: false,
-      isOpenMining: false,
-      tabs: ['tab-1', 'tab-2', 'tab-3'],
-      active: null,
+
       showModal: false,
-      customer: {
-        accountNnumber: '',
-        dateOfAccountOpening: '',
-        email: '',
-        firstName: '',
-        middleName: '',
-        surname: '',
-        amountOfCommission: ''
-      },
-      headers: [
-        { text: 'Номер', value: 'accountNnumber' },
-        { text: 'Фамилия', value: 'surname' },
-        { text: 'Имя', value: 'firstName' },
-        { text: 'Отчество', value: 'middleName' },
-        { text: 'Почта', value: 'email' },
-        { text: 'Дата открытия', value: 'dateOfAccountOpening' },
-        { text: 'Комиссия', value: 'amountOfCommission' }
-      ],
-      items: [],
+
       transactions: {
         date2: '',
         typeOfTransaction: '',
         accountNnumber: ''
       },
-      headers2: [
+      headers: [
         { text: 'Дата', value: 'date2' },
         { text: 'Тип транзакции', value: 'typeOfTransaction' },
         { text: 'Номер портфеля', value: 'accountNnumber' }
       ],
-      items2: [],
-      mining: {
-        date: '',
-        payOut: '',
-        maintence: '',
-        feeDay: '',
-        сoursesBTC: '',
-        сoursesUSD: ''
-      },
-      headers1: [
-        { text: 'Дата', value: 'date' },
-        { text: 'Pay out', value: 'payOut' },
-        { text: 'Maintence', value: 'maintence' },
-        { text: 'Fee day', value: 'feeDay' },
-        { text: 'Курс BTC', value: 'сoursesBTC' },
-        { text: 'Курс USD', value: 'сoursesUSD' }
-      ],
-      clientsKey: [],
-      items1: [],
+      items: [],
+      transKey: [],
       valid: false,
       nameRules: [
         (v) => !!v || 'Требуется ввести имя'
@@ -162,7 +124,7 @@ export default {
         this.$router.replace('login')
       })
     },
-    editClient: function (event, base, index, param) {
+    editTrans: function (event, index, param) {
     //   console.log(event.target.value)
     //   console.log(this.firebase.database().ref(base))
     //   console.log(this.clientsKey)
@@ -170,7 +132,7 @@ export default {
     //   console.log(param)
 
       let db = this.firebase.database()
-      db.ref(base).child(this.clientsKey[index]).child(param).set(event.target.value)
+      db.ref('customer_transaction').child(this.clientsKey[index]).child(param).set(event.target.value)
       // let clientsRef = db.ref("customer_registry");
       // clientsRef.child(entryId).set("30%");
       // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
@@ -194,7 +156,7 @@ export default {
       return data.json()
     }).then(function (data) {
       for (var key in data) {
-        this.items2.push(data[key])
+        this.items.push(data[key])
       }
     })
   }

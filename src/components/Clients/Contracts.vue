@@ -21,16 +21,18 @@
         hide-actions
         class="elevation-1"
         >
-        <template slot="items" scope="props">
-            <td class="text-xs-left"><input :value="props.item.accountNnumber" @keyup.enter="editClient($event, 'customer_registry', props.index, 'accountNnumber')"></td>
-            <td class="text-xs-right"><input :value="props.item.surname" @keyup.enter="editClient($event, 'customer_registry', props.index, 'surname')"></td>
-            <td class="text-xs-right"><input :value="props.item.firstName" @keyup.enter="editClient($event, 'customer_registry', props.index, 'firstName')"></td>
-            <td class="text-xs-right"><input :value="props.item.middleName" @keyup.enter="editClient($event, 'customer_registry', props.index, 'middleName')"></td>
-            <td class="text-xs-right"><input :value="props.item.email" @keyup.enter="editClient($event, 'customer_registry', props.index, 'email')"></td>
-            <td class="text-xs-right"><input :value="props.item.dateOfAccountOpening" @keyup.enter="editClient($event, 'customer_registry', props.index, 'dateOfAccountOpening')"></td>
-            <td class="text-xs-right"><input :value="props.item.amountOfCommission" @keyup.enter="editClient($event, 'customer_registry', props.index, 'amountOfCommission')"></td>
-            <td class="text-xs-right"><input :value="props.item.amountOfCommission" @keyup.enter="editClient($event, 'customer_registry', props.index, 'amountOfCommission')">
-                <button>Удалить</button>
+        <template slot="items" scope="props" >
+            <td ><input :value="props.item.accountNnumber" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'accountNnumber')"></td>
+            <td class="text-xs-right"><input :value="props.item.surname" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'surname')"></td>
+            <td class="text-xs-right"><input :value="props.item.firstName" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'firstName')"></td>
+            <td class="text-xs-right"><input :value="props.item.middleName" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'middleName')"></td>
+            <td class="text-xs-right"><input :value="props.item.email" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'email')"></td>
+            <td class="text-xs-right"><input :value="props.item.dateOfAccountOpening" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'dateOfAccountOpening')"></td>
+            <td class="text-xs-right"><input :value="props.item.amountOfCommission" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'amountOfCommission')"></td>
+            <td class="text-xs-right">
+              <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
+                <v-icon dark>remove</v-icon>
+              </v-btn>
             </td>
         </template>
         </v-data-table>
@@ -46,56 +48,56 @@
                         <path fill="#444444" d="M8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zM12.2 10.8l-1.4 1.4-2.8-2.8-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8z"></path>
                     </svg>
                 </button>
-            <v-form v-model="valid" ref="form">
-                <v-text-field
-                label="Фамилия"
-                :rules="nameRules"
-                required
-                v-model="customer.surname"
-                ></v-text-field>
+                <v-form v-model="valid" ref="form">
+                    <v-text-field
+                    label="Фамилия"
+                    :rules="nameRules"
+                    required
+                    v-model="customer.surname"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Имя"
-                :rules="nameRules"
-                required
-                v-model="customer.firstName"
-                ></v-text-field>
+                    <v-text-field
+                    label="Имя"
+                    :rules="nameRules"
+                    required
+                    v-model="customer.firstName"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Отчество"
-                :rules="nameRules"
-                required
-                v-model="customer.middleName"
-                ></v-text-field>
+                    <v-text-field
+                    label="Отчество"
+                    :rules="nameRules"
+                    required
+                    v-model="customer.middleName"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Дата открытия"
-                required
-                v-model="customer.dateOfAccountOpening"
-                ></v-text-field>
+                    <v-text-field
+                    label="Дата открытия"
+                    required
+                    v-model="customer.dateOfAccountOpening"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Почта"
-                :rules="emailRules"
-                required
-                v-model="customer.email"
-                ></v-text-field>
+                    <v-text-field
+                    label="Почта"
+                    :rules="emailRules"
+                    required
+                    v-model="customer.email"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Телефон"
-                required
-                v-model="customer.phone"
-                ></v-text-field>
+                    <v-text-field
+                    label="Телефон"
+                    required
+                    v-model="customer.phone"
+                    ></v-text-field>
 
-                <v-text-field
-                label="Размер комиссии"
-                required
-                v-model="customer.amountOfCommission"
-                ></v-text-field>
+                    <v-text-field
+                    label="Размер комиссии"
+                    required
+                    v-model="customer.amountOfCommission"
+                    ></v-text-field>
 
-                <v-btn :class="{ green: valid, red: !valid }" v-on:click.prevent="post">Подтвердить</v-btn>
-                <v-btn @click="clear">Очистка</v-btn>
-            </v-form>
+                    <v-btn :class="{ green: valid, red: !valid }" v-on:click.prevent="post">Подтвердить</v-btn>
+                    <v-btn @click="clear">Очистка</v-btn>
+                </v-form>
                 </div>
             </div>
         </div>
@@ -117,11 +119,8 @@ export default {
       ],
       firebase: firebase,
       isOpen: false,
-      isOpenTransactions: false,
-      isOpenMining: false,
-      tabs: ['tab-1', 'tab-2', 'tab-3'],
-      active: null,
       showModal: false,
+      active: null,
       customer: {
         accountNnumber: '',
         dateOfAccountOpening: '',
@@ -138,38 +137,10 @@ export default {
         { text: 'Отчество', value: 'middleName' },
         { text: 'Почта', value: 'email' },
         { text: 'Дата открытия', value: 'dateOfAccountOpening' },
-        { text: 'Комиссия', value: 'amountOfCommission' }
+        { text: 'Комиссия', value: 'amountOfCommission' },
+        { text: 'Удалить', value: 'Remove' }
       ],
       items: [],
-      transactions: {
-        date2: '',
-        typeOfTransaction: '',
-        accountNnumber: ''
-      },
-      headers2: [
-        { text: 'Дата', value: 'date2' },
-        { text: 'Тип транзакции', value: 'typeOfTransaction' },
-        { text: 'Номер портфеля', value: 'accountNnumber' }
-      ],
-      items2: [],
-      mining: {
-        date: '',
-        payOut: '',
-        maintence: '',
-        feeDay: '',
-        сoursesBTC: '',
-        сoursesUSD: ''
-      },
-      headers1: [
-        { text: 'Дата', value: 'date' },
-        { text: 'Pay out', value: 'payOut' },
-        { text: 'Maintence', value: 'maintence' },
-        { text: 'Fee day', value: 'feeDay' },
-        { text: 'Курс BTC', value: 'сoursesBTC' },
-        { text: 'Курс USD', value: 'сoursesUSD' }
-      ],
-      clientsKey: [],
-      items1: [],
       valid: false,
       nameRules: [
         (v) => !!v || 'Требуется ввести имя'
@@ -186,15 +157,14 @@ export default {
         this.$router.replace('login')
       })
     },
-    editClient: function (event, base, index, param) {
-    //   console.log(event.target.value)
-    //   console.log(this.firebase.database().ref(base))
-    //   console.log(this.clientsKey)
-    //   console.log(this.clientsKey[index])
-    //   console.log(param)
-
+    removeClient: function (key) {
       let db = this.firebase.database()
-      db.ref(base).child(this.clientsKey[index]).child(param).set(event.target.value)
+      db.ref('customer_registry').child(key).remove();
+      console.log(this.items)
+    },
+    editClient: function (event, base, index, param) {
+      let db = this.firebase.database()
+      db.ref(base).child(index).child(param).set(event.target.value)
       // let clientsRef = db.ref("customer_registry");
       // clientsRef.child(entryId).set("30%");
       // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
@@ -217,9 +187,10 @@ export default {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      for (var key in data) {
-        this.items.push(data[key])
-        this.clientsKey.push(key)
+      for (let key in data) {
+        let elem = data[key]
+        elem['superkey'] = key
+        this.items.push(elem)
       }
     })
   }
