@@ -47,7 +47,7 @@
                         <path fill="#444444" d="M8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zM12.2 10.8l-1.4 1.4-2.8-2.8-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8z"></path>
                     </svg>
                 </button>
-                <v-form v-model="valid" ref="form">
+                <v-form v-model="valid" ref="formachka">
                   <v-text-field
                     label="Номер"
                     v-model="customer.accountNnumber"
@@ -75,14 +75,13 @@
                       full-width
                     >
                     <v-text-field
-
                       slot="activator"
                       label="Дата открытия"
                       v-model="customer.dateOfAccountOpening"
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker v-model="customer.dateOfAccountOpening" scrollable >
+                    <v-date-picker  locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable >
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -91,10 +90,6 @@
                       </template>
                     </v-date-picker>
                   </v-dialog>
-
-
-
-
                     <v-text-field
                     label="Почта"
                     v-model="customer.email"
@@ -112,7 +107,7 @@
                     v-model="customer.amountOfCommission"
                     ></v-text-field>
 
-                    <v-btn class="form-button" :class="{ green: valid, red: !valid }" v-on:click.prevent="post">Подтвердить</v-btn>
+                    <v-btn class="form-button" @click="submit" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
                     <v-btn class="form-button" @click="clear">Очистка</v-btn>
                 </v-form>
                 </div>
@@ -155,14 +150,11 @@ export default {
         { text: 'Отчество', value: 'middleName' },
         { text: 'Почта', value: 'email' },
         { text: 'Дата открытия', value: 'dateOfAccountOpening' },
-        { text: 'Комиссия', value: 'amountOfCommission' },
+        { text: 'Комиссия, %', value: 'amountOfCommission' },
         { text: 'Удалить', value: 'Remove' }
       ],
       items: [],
-      valid: false,
-      nameRules: [
-        (v) => !!v || 'Требуется ввести имя'
-      ]
+      valid: false
     }
   },
   methods: {
@@ -175,10 +167,30 @@ export default {
       let db = this.firebase.database()
       db.ref('customer_registry').child(key).remove()
       console.log(this.items)
+      this.items = []
+      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
+        return data.json()
+      }).then(function (data) {
+        for (let key in data) {
+          let elem = data[key]
+          elem['superkey'] = key
+          this.items.push(elem)
+        }
+      })
     },
     editClient: function (event, base, index, param) {
       let db = this.firebase.database()
       db.ref(base).child(index).child(param).set(event.target.value)
+      this.items = []
+      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
+        return data.json()
+      }).then(function (data) {
+        for (let key in data) {
+          let elem = data[key]
+          elem['superkey'] = key
+          this.items.push(elem)
+        }
+      })
       // let clientsRef = db.ref("customer_registry");
       // clientsRef.child(entryId).set("30%");
       // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
@@ -189,12 +201,14 @@ export default {
       })
     },
     submit () {
-      if (this.$refs.form.validate()) {
-        this.$refs.form.$el.submit()
+      if (this.$refs.formachka.validate()) {
+        this.$refs.formachka.$el.submit()
       }
     },
     clear () {
-      this.$refs.form.reset()
+      console.log(this.$refs)
+      console.log(this.$refs.formachka)
+      this.$refs.formachka.reset()
     }
   },
   created () {
@@ -214,6 +228,7 @@ export default {
 <style>
 button.new-client {
     margin: 0 15px 25px 70px;
+    font-size: 28px;
 }
 .cyan {
     background-color: #3299BB !important;
