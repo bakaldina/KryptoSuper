@@ -19,7 +19,7 @@
         v-bind:headers="headers"
         :items="items"
         hide-actions
-        class="elevation-1"
+        class="elevation-1 clients-table"
         >
         <template slot="items" scope="props" >
             <td ><input :value="props.item.accountNnumber" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'accountNnumber')"></td>
@@ -70,11 +70,31 @@
                     v-model="customer.middleName"
                     ></v-text-field>
 
+                    <v-dialog
+                      persistent
+                      v-model="modal"
+                      lazy
+                      full-width
+                    >
                     <v-text-field
-                    label="Дата открытия"
-                    required
-                    v-model="customer.dateOfAccountOpening"
+                      slot="activator"
+                      label="Дата открытия"
+                      v-model="customer.dateOfAccountOpening"
+                      prepend-icon="event"
+                      readonly
                     ></v-text-field>
+                    <v-date-picker v-model="customer.dateOfAccountOpening" scrollable >
+                      <template scope="{ save, cancel }">
+                        <v-card-actions>
+                          <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
+                          <v-btn flat primary @click.native="save()">Сохранить</v-btn>
+                        </v-card-actions>
+                      </template>
+                    </v-date-picker>
+                  </v-dialog>
+
+
+
 
                     <v-text-field
                     label="Почта"
@@ -86,6 +106,7 @@
                     <v-text-field
                     label="Телефон"
                     required
+                    mask="\+\1 (111) 1111-11"
                     v-model="customer.phone"
                     ></v-text-field>
 
@@ -116,6 +137,8 @@ export default {
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
         {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
       ],
+      menu: false,
+      modal: false,
       firebase: firebase,
       isOpen: false,
       showModal: false,
@@ -169,7 +192,7 @@ export default {
       // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
     },
     post: function () {
-      this.$http.post('https://crypto-managment.firebaseio.com/customer_registry.json', this.customer).then(function (data) {
+      this.$http.post('https://vueti-5ed25.firebaseio.com/customer_registry.json', this.customer).then(function (data) {
         console.log(data)
       })
     },
@@ -241,29 +264,26 @@ button.new-client {
     border-color: #3299BB!important;
 }
 
-table {
+table.clients-table {
     width: 100%;
     border-collapse: collapse;
 }
-th, td {
+.clients-table th, .clients-table td {
     border: 1px solid black;
-}
-
-th,
-td {
     padding: 15px;
 }
-td:last-child {
+.clients-table td:last-child {
     border: none;
     width: 50px;
 }
+/* 
 button {
     font-size: 26px;
     font-weight: 700; 
     vertical-align: sub;
     margin-top: 30px;
     margin-bottom: 30px;
-}
+} */
 .card__text {
     overflow: scroll;
 }
@@ -283,7 +303,7 @@ button {
 }
 .modal-mask {
   position: fixed;
-  z-index: 9998;
+  z-index: 4;
   top: 0;
   left: 0;
   width: 100%;
@@ -349,9 +369,6 @@ button {
     background-color: #3299BB;
     margin-top: 40px;
     padding: 10px 0;
-}
-.btn__content {
-  color: #fff;
 }
 .btn__content:before {
   display: none;
