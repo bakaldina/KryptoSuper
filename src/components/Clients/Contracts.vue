@@ -1,5 +1,5 @@
 <template>
-    <section id="contracts">
+    <v-container id="contracts">
         <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
             <div class="main_menu"><v-btn
             flat
@@ -101,7 +101,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </v-container>
 </template>
 
 
@@ -349,7 +349,7 @@ button {
     background-color: #3299BB;
     margin-top: 40px;
 }
-..btn__content {
+.btn__content {
   color: #fff;
 }
 .btn__content:before {
