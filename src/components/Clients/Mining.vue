@@ -9,7 +9,6 @@
             {{ item.title }}
             </v-btn></div>
         <br>
-          <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
             <button class="new-client">Данные по майнингу</button> 
 
             <v-btn v-on:click='showModal = !showModal' fab dark class="indigo">

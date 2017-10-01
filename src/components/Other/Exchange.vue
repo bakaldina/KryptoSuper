@@ -32,7 +32,7 @@ export default {
     }
   },
   created () {
-    this.$http.get('https://crypto-managment.firebaseio.com/currency.json').then(function (data) {
+    this.$http.get('https://vueti-5ed25.firebaseio.com/currency.json').then(function (data) {
       return data.json()
     }).then(function (data) {
       this.items[0].DATE = data.DATE
