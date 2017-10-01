@@ -34,9 +34,7 @@
       </v-toolbar-items>
     </v-toolbar> -->
     <v-layout row wrap>
-      <v-flex xs12 sm6 class="text-xs-center text-sm-right"> 
-        <v-btn large v-on:click="logout" class="cyan">выйти</v-btn>
-      </v-flex>
+      <h1 class="welcome_text">Добро пожаловать!</h1>
     </v-layout>
   </v-container>
 </template>
@@ -68,5 +66,8 @@
 </script>
 
 <style scoped>
-
+.welcome_text {
+  margin: auto;
+  margin-top: 40px;
+}
 </style>

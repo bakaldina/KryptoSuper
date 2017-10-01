@@ -1,6 +1,6 @@
-# yt-devmeetup-vue
+# crypto vue
 
-A dev meetup application built with Vue + Vuetify + Firebase.
+crypto for mahu
 
 ## Build Setup
 
