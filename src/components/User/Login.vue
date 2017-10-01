@@ -1,10 +1,10 @@
 <template>
   <div class="login">
-    <h3>Sign In</h3>
+    <h3>Вход</h3>
     <input type="text" v-model="email" placeholder="Email"><br>
-    <input type="password" v-model="password" @keyup.enter="signIn" placeholder="Password"><br>
+    <input type="password" v-model="password" @keyup.enter="signIn" placeholder="Пароль"><br>
  
-    <v-btn large v-on:click="signIn" class="cyan">Connection</v-btn>
+    <v-btn large v-on:click="signIn" class="cyan">Войти</v-btn>
   </div>
 </template>
 

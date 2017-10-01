@@ -14,7 +14,7 @@
             </v-tabs-bar>
             <v-tabs-items>
             <v-tabs-content
-                v-for="i in 5"
+                v-for="i in 2"
                 :key="i"
                 :id="'tab-' + i"
             >
@@ -30,6 +30,7 @@
 <script>
 
 export default {
+  name: 'hash',
   data () {
     return {
       // hashrates: {},

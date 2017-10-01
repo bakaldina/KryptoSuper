@@ -1,14 +1,14 @@
 <template>
     <section id="contracts">
         <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
-            <div class="main_menu"><v-btn
-            flat
-            v-for="item in menuItems"
-            :key="item.title"
-            :to="item.link">
-            <v-icon left dark>{{ item.icon }}</v-icon>
-            {{ item.title }}
-            </v-btn></div>
+        <div class="main_menu"><v-btn
+        flat
+        v-for="item in menuItems"
+        :key="item.title"
+        :to="item.link">
+        <v-icon left dark>{{ item.icon }}</v-icon>
+        {{ item.title }}
+        </v-btn></div>
         <br>
         <button class="new-client">Новый Клиент</button> 
         <v-btn v-on:click='showModal = !showModal' fab dark class="indigo">
@@ -109,13 +109,13 @@
 // Imports
 import firebase from 'firebase'
 export default {
-  name: 'Contracts',
+  name: 'Сontracts',
   data () {
     return {
       menuItems: [
-        {icon: 'person', title: 'Клиенты', link: '/contracts'},
-        {icon: 'person', title: 'Транзакции', link: '/trans'},
-        {icon: 'person', title: 'Майнинг', link: '/mining'}
+        {icon: 'group', title: 'Клиенты', link: '/contracts'},
+        {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
       ],
       firebase: firebase,
       isOpen: false,
@@ -159,7 +159,7 @@ export default {
     },
     removeClient: function (key) {
       let db = this.firebase.database()
-      db.ref('customer_registry').child(key).remove();
+      db.ref('customer_registry').child(key).remove()
       console.log(this.items)
     },
     editClient: function (event, base, index, param) {
@@ -198,6 +198,9 @@ export default {
 </script>
 
 <style>
+button.new-client {
+    margin: 0 15px 25px 70px;
+}
 .cyan {
     background-color: #3299BB !important;
     color: #fff;
@@ -262,7 +265,6 @@ button {
     margin-top: 30px;
     margin-bottom: 30px;
 }
-
 .card__text {
     overflow: scroll;
 }
@@ -278,9 +280,8 @@ button {
     font-size: 14px;
     height: 10px;
     width: 10px;
-        color: #000;
+    color: #000;
 }
-
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -337,7 +338,7 @@ button {
 }
 .button {
     position: absolute;
-    top: 10px;
+    top: 13px;
     right: 12px;
 }
 .button:active {
@@ -345,11 +346,12 @@ button {
 }
 .main_menu {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #3299BB;
     margin-top: 40px;
+    padding: 10px 0;
 }
-..btn__content {
+.btn__content {
   color: #fff;
 }
 .btn__content:before {

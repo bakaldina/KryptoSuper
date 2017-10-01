@@ -83,13 +83,13 @@
 // Imports
 import firebase from 'firebase'
 export default {
-  name: 'Contracts',
+  name: 'trans',
   data () {
     return {
       menuItems: [
-        {icon: 'lock_open', title: 'Клиенты', link: '/contracts'},
-        {icon: 'person', title: 'Транзакции', link: '/trans'},
-        {icon: 'room', title: 'Майнинг', link: '/mining'}
+        {icon: 'group', title: 'Клиенты', link: '/contracts'},
+        {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
       ],
       firebase: firebase,
       isOpenTransactions: false,
