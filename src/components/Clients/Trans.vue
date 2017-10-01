@@ -32,28 +32,7 @@
                             <path fill="#444444" d="M8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zM12.2 10.8l-1.4 1.4-2.8-2.8-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8z"></path>
                         </svg>
                     </button>
-                    <v-form v-model="valid" ref="form">
-                        <v-text-field
-                        label="Дата"
-                        required
-                        v-model="transactions.date2"
-                        ></v-text-field>
-
-                        <v-text-field
-                        label="Тип транзакции"
-                        required
-                        v-model="transactions.typeOfTransaction"
-                        ></v-text-field>
-
-                        <v-text-field
-                        label="Номер портфеля"
-                        required
-                        v-model="transactions.accountNnumber"
-                        ></v-text-field>
-
-                        <v-btn :class="{ green: valid, red: !valid }" v-on:click.prevent="postTransactions">Подтвердить</v-btn>
-                        <v-btn @click="clear">Очистка</v-btn>
-                    </v-form>
+                  
                 </div>
             </div>
         </div>
@@ -163,7 +142,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .cyan {
     background-color: #3299BB !important;
 }

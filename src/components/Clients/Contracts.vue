@@ -1,5 +1,5 @@
 <template>
-    <v-container id="contracts">
+    <section id="contracts">
         <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
         <div class="main_menu"><v-btn
         flat
@@ -101,7 +101,7 @@
                 </div>
             </div>
         </div>
-    </v-container>
+    </section>
 </template>
 
 
@@ -109,7 +109,6 @@
 // Imports
 import firebase from 'firebase'
 export default {
-  name: 'Сontracts',
   data () {
     return {
       menuItems: [
