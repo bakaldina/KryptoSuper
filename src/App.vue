@@ -23,7 +23,6 @@
         <v-list-tile
           v-for="item in menuItems"
           :key="item.title"
-          @click=""
           router
           :to="item.link">
           <v-list-tile-action>
@@ -51,9 +50,8 @@
   </v-app>
 </template>
 
-
-
 <script>
+  import firebase from 'firebase'
   export default {
     name: 'app',
     data () {
@@ -68,6 +66,13 @@
         ],
         mini: false,
         right: null
+      }
+    },
+    methods: {
+      logout: function () {
+        firebase.auth().signOut().then(() => {
+          this.$router.replace('login')
+        })
       }
     }
   }
