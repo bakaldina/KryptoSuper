@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
-import Profile from '@/components/User/Profile'
 import Exchange from '@/components/Other/Exchange'
 import Hash from '@/components/Other/Hash'
 import Pouch from '@/components/Other/Pouch'
@@ -80,14 +79,6 @@ let router = new Router({
       path: '/pouch',
       name: 'Pouch',
       component: Pouch,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/profile',
-      name: 'Profile',
-      component: Profile,
       meta: {
         requiresAuth: true
       }

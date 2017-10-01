@@ -16,7 +16,6 @@
           {icon: 'lock_open', title: 'Sign in', link: '/signin'},
           {icon: 'supervisor_account', title: 'Клиенты', link: '/contracts'},
           {icon: 'room', title: 'Organize Meetup', link: '/meetup/new'},
-          {icon: 'person', title: 'Profile', link: '/profile'},
           {icon: 'face', title: 'Sign up', link: '/signup'}
         ]
       }
