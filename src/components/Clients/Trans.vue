@@ -83,7 +83,7 @@
 // Imports
 import firebase from 'firebase'
 export default {
-  name: 'Contracts',
+  name: 'TRANS',
   data () {
     return {
       menuItems: [

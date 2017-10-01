@@ -159,7 +159,7 @@ export default {
     },
     removeClient: function (key) {
       let db = this.firebase.database()
-      db.ref('customer_registry').child(key).remove();
+      db.ref('customer_registry').child(key).remove()
       console.log(this.items)
     },
     editClient: function (event, base, index, param) {
