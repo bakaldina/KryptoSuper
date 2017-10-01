@@ -40,7 +40,6 @@
 // Imports
 import firebase from 'firebase'
 export default {
-  name: 'MINING',
   data () {
     return {
       menuItems: [

@@ -56,7 +56,6 @@
 // Imports
 import firebase from 'firebase'
 export default {
-  name: 'trans',
   data () {
     return {
       menuItems: [
