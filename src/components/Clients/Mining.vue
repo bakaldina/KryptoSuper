@@ -80,7 +80,7 @@
 // Imports
 import firebase from 'firebase'
 export default {
-  name: 'Contracts',
+  name: 'MINING',
   data () {
     return {
       menuItems: [
