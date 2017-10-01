@@ -1,6 +1,5 @@
 <template>
     <section id="contracts">
-        <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
         <div class="main_menu"><v-btn
         flat
         v-for="item in menuItems"
@@ -49,54 +48,48 @@
                     </svg>
                 </button>
                 <v-form v-model="valid" ref="form">
+                  <v-text-field
+                    label="Номер"
+                    v-model="customer.accountNnumber"
+                    ></v-text-field>
+
                     <v-text-field
                     label="Фамилия"
-                    :rules="nameRules"
-                    required
                     v-model="customer.surname"
                     ></v-text-field>
 
                     <v-text-field
                     label="Имя"
-                    :rules="nameRules"
-                    required
                     v-model="customer.firstName"
                     ></v-text-field>
 
                     <v-text-field
                     label="Отчество"
-                    :rules="nameRules"
-                    required
                     v-model="customer.middleName"
                     ></v-text-field>
 
                     <v-text-field
                     label="Дата открытия"
-                    required
                     v-model="customer.dateOfAccountOpening"
                     ></v-text-field>
 
                     <v-text-field
                     label="Почта"
-                    :rules="emailRules"
-                    required
                     v-model="customer.email"
                     ></v-text-field>
 
                     <v-text-field
                     label="Телефон"
-                    required
                     v-model="customer.phone"
                     ></v-text-field>
 
                     <v-text-field
                     label="Размер комиссии"
-                    required
                     v-model="customer.amountOfCommission"
                     ></v-text-field>
 
-                    <v-btn :class="{ green: valid, red: !valid }" v-on:click.prevent="post">Подтвердить</v-btn>
-                    <v-btn @click="clear">Очистка</v-btn>
+                    <v-btn class="form-button" :class="{ green: valid, red: !valid }" v-on:click.prevent="post">Подтвердить</v-btn>
+                    <v-btn class="form-button" @click="clear">Очистка</v-btn>
                 </v-form>
                 </div>
             </div>
@@ -143,10 +136,6 @@ export default {
       valid: false,
       nameRules: [
         (v) => !!v || 'Требуется ввести имя'
-      ],
-      emailRules: [
-        (v) => !!v || 'Требуется ввести электронную почту',
-        (v) => /^\w+([-]?\w+)*@\w+([-]?\w+)*(\w{2,3})+$/.test(v) || 'E-mail должен быть действительным'
       ]
     }
   },
@@ -169,7 +158,7 @@ export default {
       // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
     },
     post: function () {
-      this.$http.post('https://crypto-managment.firebaseio.com/customer_registry.json', this.customer).then(function (data) {
+      this.$http.post('https://vueti-5ed25.firebaseio.com/customer_registry.json', this.customer).then(function (data) {
         console.log(data)
       })
     },
@@ -204,58 +193,41 @@ button.new-client {
     background-color: #3299BB !important;
     color: #fff;
 }
-
 .tabs__li a {
     color: #fff;
     font-weight: 600;
 }
-
 .border {
     border: 1px solid #FF9900 !important;
 }
-
 .tabs--centered .tabs__bar .tabs__container {
     justify-content: space-around;
 }
-
 .cyan {
     background-color: #3299BB !important;
     color: #fff;
 }
-
 .tabs__li a {
     color: #fff;
     font-weight: 600;
 }
-
 .border {
     border: 1px solid #FF9900 !important;
 }
-
 .tabs__container {
     justify-content: space-around;
 }
-
 .indigo {
     background-color: #3299BB!important;
     border-color: #3299BB!important;
 }
-
 table {
     width: 100%;
     border-collapse: collapse;
 }
 th, td {
     border: 1px solid black;
-}
-
-th,
-td {
-    padding: 15px;
-}
-td:last-child {
-    border: none;
-    width: 50px;
+    padding: 0 5px;
 }
 button {
     font-size: 26px;
@@ -268,6 +240,10 @@ button {
     overflow: scroll;
 }
 .btn--floating.btn--large {
+    height: 30px;
+    width: 30px;
+}
+.btn--floating.btn--small {
     height: 30px;
     width: 30px;
 }
@@ -292,44 +268,44 @@ button {
   display: table;
   transition: opacity .7s ease;
 }
-
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
 }
 .modal-container {
   position: relative;
-  width: 50%;
+  width: 40%;
+  height: 600px;
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 20px 50px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .7s ease;
-  font-family: Helvetica, Arial, sans-serif;
 }
-
 .modal-header h3 {
   margin-top: 0;
   color: #42b983;
 }
-
 .modal-body {
   margin: 20px 0;
 }
-
 .modal-default-button {
   float: right;
 }
-
+.right {
+    margin-top: 0;
+    margin-bottom: 0;
+    position: absolute;
+    top: -11px;
+    right: -11px;
+}
 .modal-enter {
   opacity: 0;
 }
-
 .modal-leave-active {
   opacity: 0;
 }
-
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
@@ -358,5 +334,20 @@ button {
 }
 .btn {
   margin: 0;
+}
+.input-group {
+  padding: 15px 0 0 0;
+}
+.input-group--text-field input {
+  height: 30px;
+}
+.input-group__details {
+  min-height: 15px;
+}
+.form-button {
+  margin-top: 30px;
+}
+.form-button .btn__content {
+ color: #000 !important;
 }
 </style>

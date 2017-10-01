@@ -1,6 +1,5 @@
 <template>
     <section id="TRANS">
-        <v-btn large v-on:click="logout" class="button cyan">выйти</v-btn>
          <div class="main_menu"><v-btn
             flat
             v-for="item in menuItems"
@@ -12,7 +11,6 @@
         
    <br>
       <button class="new-client">Транзакции</button> 
-
       <!-- <v-btn v-on:click='isOpenTransactions = !isOpenTransactions' fab dark class="indigo">
           <v-icon  dark>add</v-icon>
       </v-btn>
