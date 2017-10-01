@@ -11,7 +11,7 @@
         <br>
         <button class="new-client">Новый Клиент</button> 
         <v-btn v-on:click='showModal = !showModal' fab dark class="indigo">
-            <v-icon  dark>add</v-icon>
+            <v-icon dark>add</v-icon>
         </v-btn>
 
         <v-data-table
@@ -98,7 +98,7 @@
                     <v-text-field
                     label="Телефон"
                     required
-                    mask="\+\1 (111) 1111-11"
+                    :mask="'(##) ####-####'"
                     v-model="customer.phone"
                     ></v-text-field>
 
@@ -121,6 +121,7 @@
 // Imports
 import firebase from 'firebase'
 export default {
+
   data () {
     return {
       menuItems: [
@@ -262,7 +263,6 @@ button.new-client {
     background-color: #3299BB!important;
     border-color: #3299BB!important;
 }
-
 table.clients-table {
     width: 100%;
     border-collapse: collapse;
@@ -272,7 +272,6 @@ table.clients-table {
     padding: 15px;
 }
 .clients-table td:last-child {
-    border: none;
     width: 50px;
 }
 /* 
@@ -322,7 +321,7 @@ button {
 .modal-container {
   position: relative;
   width: 40%;
-  height: 600px;
+  height: 75%;
   margin: 0px auto;
   padding: 20px 50px;
   background-color: #fff;
