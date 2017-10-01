@@ -62,7 +62,7 @@
           {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'business', title: 'Хэшрейт', link: '/hash'},
           {icon: 'call_to_action', title: 'Кошелек', link: '/pouch'},
-          {icon: 'lock_outline', title: 'Войти', link: '/signin'}
+          {icon: 'lock_outline', title: 'Войти', link: '/login'}
         ],
         mini: false,
         right: null

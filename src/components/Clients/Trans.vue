@@ -11,12 +11,8 @@
         
    <br>
       <button class="new-client">Транзакции</button> 
-      <!-- <v-btn v-on:click='isOpenTransactions = !isOpenTransactions' fab dark class="indigo">
-          <v-icon  dark>add</v-icon>
-      </v-btn>
-    <div v-show='isOpenTransactions'> -->
         <v-btn v-on:click='showModal = !showModal' fab dark class="indigo">
-            <v-icon  dark>add</v-icon>
+            <v-icon dark>add</v-icon>
         </v-btn>
       
             <div class="modal-mask" v-if="showModal==true">

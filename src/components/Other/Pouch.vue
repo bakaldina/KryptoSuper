@@ -74,6 +74,5 @@ export default {
     font-weight: 600;
     text-align: center;
     cursor: pointer;
-    border: 1px solid transparent;
 }
 </style>
