@@ -107,7 +107,7 @@
                     v-model="customer.amountOfCommission"
                     ></v-text-field>
 
-                    <v-btn class="form-button" @click="submit" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
+                    <v-btn class="form-button" @click="post" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
                     <v-btn class="form-button" @click="clear">Очистка</v-btn>
                 </v-form>
                 </div>
@@ -199,6 +199,7 @@ export default {
     post: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_registry.json', this.customer).then(function (data) {
         console.log(data)
+        this.showModal = false
       })
     },
     submit () {
@@ -386,6 +387,9 @@ button {
 }
 .input-group__details {
   min-height: 15px;
+}
+input {
+  width: 300px;
 }
 .form-button {
   margin-top: 30px;

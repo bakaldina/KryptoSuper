@@ -96,7 +96,7 @@
                     v-model="mining.сoursesUSD"
                     ></v-text-field>
 
-                    <v-btn class="form-button" @click="submit" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
+                    <v-btn class="form-button" @click="postMining" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
                     <v-btn class="form-button" @click="clear">Очистка</v-btn>
                 </v-form>
                 </div>
@@ -154,7 +154,7 @@ export default {
     },
     removeClient: function (key) {
       let db = this.firebase.database()
-      db.ref('customer_registry').child(key).remove()
+      db.ref('customer_mining').child(key).remove()
       console.log(this.items)
       this.items = []
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
@@ -187,6 +187,7 @@ export default {
     postMining: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_mining.json', this.mining).then(function (data) {
         console.log(data)
+        this.showModal = false
       })
     },
     submit () {
@@ -368,6 +369,9 @@ button {
 }
 .input-group__details {
   min-height: 15px;
+}
+input {
+  width: 300px;
 }
 .form-button {
   margin-top: 30px;

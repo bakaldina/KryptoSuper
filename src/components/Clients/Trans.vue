@@ -44,10 +44,6 @@
                     </svg>
                 </button>
                 <v-form v-model="valid" ref="formachka">
-                  <v-text-field
-                    label="Номер"
-                    v-model="transactions.accountNnumber"
-                    ></v-text-field>
 
                     <v-dialog
                       persistent
@@ -74,11 +70,15 @@
 
                   <v-select
                     label="Тип транзакции"
-                    v-model="select"
+                    v-model="transactions.typeOfTransaction"
                     :items="items1"
                   ></v-select>
-                    
-                    <v-btn class="form-button" @click="submit" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
+
+                    <v-text-field
+                    label="Номер"
+                    v-model="transactions.accountNnumber"
+                    ></v-text-field>
+                    <v-btn class="form-button" @click="postTransactions" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
                     <v-btn class="form-button" @click="clear">Очистка</v-btn>
                 </v-form>
               </div>
@@ -106,8 +106,6 @@ export default {
       showModal: false,
       active: null,
       checkbox: false,
-      valid: false,
-      items: [],
       transactions: {
         date2: '',
         typeOfTransaction: '',
@@ -119,11 +117,22 @@ export default {
         { text: 'Номер портфеля', value: 'accountNnumber' },
         { text: 'Удалить', value: 'Remove' }
       ],
+      items: [],
+      valid: false,
       select: null,
       items1: [
-        'Покупка',
-        'Продажа',
-        'Аренда'
+        'Ввод денежных средств',
+        'Вывод денежных средств',
+        'Покупка BTC',
+        'Продажа BTC',
+        'Ввод BTC',
+        'Вывод BTC',
+        'Покупка контракта',
+        'Продажа контракта',
+        'Списание комиссии',
+        'Предоставление займа',
+        'Погашение займа',
+        'Выплата процентов по займу'
       ]
     }
   },
@@ -135,7 +144,7 @@ export default {
     },
     removeClient: function (key) {
       let db = this.firebase.database()
-      db.ref('customer_registry').child(key).remove()
+      db.ref('customer_transaction').child(key).remove()
       console.log(this.items)
       this.items = []
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
@@ -177,6 +186,7 @@ export default {
     postTransactions: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_transaction.json', this.transactions).then(function (data) {
         console.log(data)
+        this.showModal = false
       })
     },
     submit () {
@@ -364,6 +374,9 @@ button {
 }
 .input-group__details {
   min-height: 15px;
+}
+input {
+  width: 300px;
 }
 .form-button {
   margin-top: 30px;
