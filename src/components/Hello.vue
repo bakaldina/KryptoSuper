@@ -1,47 +1,38 @@
 <template>
-  <v-container>
-    <v-layout row wrap >
-      <v-flex xs12 sm6 class="mt-2"  class="text-xs-center text-sm-center">
-        <v-carousel>
-          <v-carousel-item
-            v-for="meetup in meetups"
-            :src="meetup.imageUrl"
-            :key="meetup.id">
-            <div class="title">
-              {{ meetup.title }}
-            </div>
-          </v-carousel-item>
-        </v-carousel>
-      </v-flex>
-    </v-layout>
-    <v-layout row wrap  class="mt-2">
-      <v-flex xs12 class="text-xs-center">
-       <p>Join our awesome meetups!</p>
-      </v-flex>
+  <v-container id="Main">
+    <v-layout row wrap>
+      <h1 class="welcome_text">Добро пожаловать!</h1>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+  import firebase from 'firebase'
   export default {
     data () {
       return {
-        meetups: [
-          { imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/4/47/New_york_times_square-terabass.jpg', id: 'afajfjadfaadfa323', title: 'Meetup in New York' },
-          { imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Paris_-_Blick_vom_gro%C3%9Fen_Triumphbogen.jpg', id: 'aadsfhbkhlk1241', title: 'Meetup in Paris' }
+        sideNav: false,
+        menuItems: [
+          {icon: 'lock_open', title: 'Sign in', link: '/signin'},
+          {icon: 'supervisor_account', title: 'Клиенты', link: '/contracts'},
+          {icon: 'room', title: 'Organize Meetup', link: '/meetup/new'},
+          {icon: 'face', title: 'Sign up', link: '/signup'}
         ]
+      }
+    },
+    methods: {
+      logout: function () {
+        firebase.auth().signOut().then(() => {
+          this.$router.replace('login')
+        })
       }
     }
   }
 </script>
 
 <style scoped>
-  .title {
-    position: absolute;
-    bottom: 50px;
-    background-color: rgba(0,0,0,0.5);
-    color: white;
-    font-size: 2em;
-    padding: 20px;
-  }
+.welcome_text {
+  margin: auto;
+  margin-top: 40px;
+}
 </style>

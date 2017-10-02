@@ -12,7 +12,6 @@
   import firebase from 'firebase'
 
   export default {
-    name: 'login',
     data: function () {
       return {
         email: '',

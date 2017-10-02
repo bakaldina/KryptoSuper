@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Main'
-import Profile from '@/components/User/Profile'
+import Hello from '@/components/Hello'
 import Exchange from '@/components/Other/Exchange'
 import Hash from '@/components/Other/Hash'
 import Pouch from '@/components/Other/Pouch'
 import Mining from '@/components/Clients/Mining'
 import Trans from '@/components/Clients/Trans'
-// import CreateMeetup from '@/components/Meetup/CreateMeetup'
 import Сontracts from '@/components/Clients/Contracts'
 import Login from '@/components/User/Login'
 import firebase from 'firebase'
@@ -81,19 +79,6 @@ let router = new Router({
       path: '/pouch',
       name: 'Pouch',
       component: Pouch,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    // {
-    //   path: '/meetup/new',
-    //   name: 'CreateMeetup',
-    //   component: CreateMeetup
-    // },
-    {
-      path: '/profile',
-      name: 'Profile',
-      component: Profile,
       meta: {
         requiresAuth: true
       }

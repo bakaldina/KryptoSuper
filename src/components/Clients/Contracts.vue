@@ -198,7 +198,16 @@ export default {
     },
     post: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_registry.json', this.customer).then(function (data) {
-        console.log(data)
+        this.items = []
+        this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
+          return data.json()
+        }).then(function (data) {
+          for (let key in data) {
+            let elem = data[key]
+            elem['superkey'] = key
+            this.items.push(elem)
+          }
+        })
         this.showModal = false
       })
     },
