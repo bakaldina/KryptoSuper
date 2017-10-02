@@ -397,6 +397,9 @@ button {
 .input-group__details {
   min-height: 15px;
 }
+input {
+  width: 300px;
+}
 .form-button {
   margin-top: 30px;
 }

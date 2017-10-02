@@ -8,11 +8,11 @@
               <img src="https://randomuser.me/api/portraits/men/85.jpg" />
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>John Leider</v-list-tile-title>
+              <v-list-tile-title>Маху Сергей Васильевич</v-list-tile-title>
             </v-list-tile-content>
             <v-list-tile-action>
               <v-btn icon @click.native.stop="mini = !mini">
-                <v-icon>chevron_left</v-icon>
+                <v-icon>left</v-icon>
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>
