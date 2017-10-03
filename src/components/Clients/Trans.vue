@@ -24,6 +24,10 @@
               <td class="text-xs-right"><input :value="props.item.date2" @keyup.enter="editClient($event, 'customer_transaction', props.item.superkey, 'date2')"></td>
               <td class="text-xs-right"><input :value="props.item.typeOfTransaction" @keyup.enter="editClient($event, 'customer_transaction', props.item.superkey, 'typeOfTransaction')"></td>
               <td class="text-xs-right"><input :value="props.item.accountNnumber" @keyup.enter="editClient($event, 'customer_transaction', props.item.superkey, 'accountNnumber')"></td>
+              <td class="text-xs-right"><input :value="props.item.summa" @keyup.enter="editClient($event, 'customer_transaction', props.item.superkey, 'summa')"></td>
+              <td class="text-xs-right"><input :value="props.item.currency" @keyup.enter="editClient($event, 'customer_transaction', props.item.superkey, 'currency')"></td>
+              <td class="text-xs-right"><input :value="props.item.price" @keyup.enter="editClient($event, 'customer_transaction', props.item.superkey, 'price')"></td>
+              <td class="text-xs-right"><input :value="props.item.quantity" @keyup.enter="editClient($event, 'customer_transaction', props.item.superkey, 'quantity')"></td>
               <td class="text-xs-right">
               <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
                 <v-icon dark>remove</v-icon>
@@ -53,7 +57,7 @@
                     >
                     <v-text-field
                       slot="activator"
-                      label="Дата открытия"
+                      label="Дата"
                       v-model="transactions.date2"
                       prepend-icon="event"
                       readonly
@@ -71,13 +75,57 @@
                   <v-select
                     label="Тип транзакции"
                     v-model="transactions.typeOfTransaction"
-                    :items="items1"
+                    :items="items_typeOfTransaction"
                   ></v-select>
 
-                    <v-text-field
-                    label="Номер"
-                    v-model="transactions.accountNnumber"
+                    <v-text-field v-if="transactions.typeOfTransaction=='Ввод денежных средств'"
+                    label="Сумма"
+                    v-model="transactions.summa"
                     ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Ввод денежных средств'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Вывод денежных средств'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Вывод денежных средств'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Покупка BTC'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-text-field v-if="transactions.typeOfTransaction=='Покупка BTC'"
+                    label="Цена"
+                    v-model="transactions.price"
+                    ></v-text-field>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Продажа BTC'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-text-field v-if="transactions.typeOfTransaction=='Продажа BTC'"
+                    label="Цена"
+                    v-model="transactions.price"
+                    ></v-text-field>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
+                    label="Количество"
+                    v-model="transactions.quantity"
+                    ></v-text-field>
+                    
+                    <v-select
+                    label="Номер портфеля"
+                    v-model="transactions.accountNnumber"
+                    :items="number_clientsText"
+                    ></v-select>
                     <v-btn class="form-button" @click="postTransactions" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
                     <v-btn class="form-button" @click="clear">Очистка</v-btn>
                 </v-form>
@@ -109,18 +157,26 @@ export default {
       transactions: {
         date2: '',
         typeOfTransaction: '',
-        accountNnumber: ''
+        accountNnumber: '',
+        summa: '',
+        currency: '',
+        quantity: '',
+        price: ''
       },
       headers: [
         { text: 'Дата', value: 'date2' },
         { text: 'Тип транзакции', value: 'typeOfTransaction' },
         { text: 'Номер портфеля', value: 'accountNnumber' },
+        { text: 'Сумма', value: 'summa' },
+        { text: 'Валюта', value: 'currency' },
+        { text: 'Цена', value: 'price' },
+        { text: 'Количество', value: 'quantity' },
         { text: 'Удалить', value: 'Remove' }
       ],
       items: [],
       valid: false,
       select: null,
-      items1: [
+      items_typeOfTransaction: [
         'Ввод денежных средств',
         'Вывод денежных средств',
         'Покупка BTC',
@@ -129,10 +185,18 @@ export default {
         'Вывод BTC',
         'Покупка контракта',
         'Продажа контракта',
+        'Покупка мощности',
+        'Продажа мощности',
         'Списание комиссии',
         'Предоставление займа',
         'Погашение займа',
         'Выплата процентов по займу'
+      ],
+      number_clients: [],
+      number_clientsText: [],
+      items_currency: [
+        'USD',
+        'RUR'
       ]
     }
   },
@@ -183,9 +247,10 @@ export default {
       // let clientsRef = db.ref("customer_registry");
       // clientsRef.child(entryId).set("30%");
       // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
+
     postTransactions: function () {
+      this.transactions['accountNnumber'] = this.transactions['accountNnumber'].split(' ')[0]
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_transaction.json', this.transactions).then(function (data) {
-        console.log(data)
         this.showModal = false
       })
     },
@@ -195,8 +260,6 @@ export default {
       }
     },
     clear () {
-      console.log(this.$refs)
-      console.log(this.$refs.formachka)
       this.$refs.formachka.reset()
     }
   },
@@ -208,6 +271,14 @@ export default {
         let elem = data[key]
         elem['superkey'] = key
         this.items.push(elem)
+      }
+    })
+    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
+      return data.json()
+    }).then(function (data) {
+      for (var key in data) {
+        this.number_clients.push(data[key]['accountNnumber'])
+        this.number_clientsText.push(data[key]['accountNnumber'] + ' ' + data[key]['firstName'] + ' ' + data[key]['surname'])
       }
     })
   }

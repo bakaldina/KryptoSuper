@@ -97,7 +97,6 @@
 
                     <v-text-field
                     label="Телефон"
-                    required
                     :mask="'(##) ####-####'"
                     v-model="customer.phone"
                     ></v-text-field>
