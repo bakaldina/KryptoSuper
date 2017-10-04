@@ -61,8 +61,10 @@
                       v-model="transactions.date2"
                       prepend-icon="event"
                       readonly
+
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="transactions.date2" scrollable >
+                      
+                    <v-date-picker  locale="ru-RU" v-model="transactions.date2" scrollable>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -179,6 +181,8 @@
 <script>
 // Imports
 import firebase from 'firebase'
+import moment from 'moment'
+
 export default {
   data () {
     return {
@@ -322,6 +326,7 @@ export default {
         this.number_clientsText.push(data[key]['accountNnumber'] + ' ' + data[key]['firstName'] + ' ' + data[key]['surname'])
       }
     })
+    this.transactions.date2 = moment().format()
   }
 }
 </script>
