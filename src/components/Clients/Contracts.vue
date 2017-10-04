@@ -83,7 +83,8 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable >
+                    <v-date-picker  
+                      locale="ru-RU" scrollable>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
