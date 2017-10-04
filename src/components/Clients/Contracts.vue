@@ -10,7 +10,7 @@
         </v-btn></div>
         <br>
         <button class="new-client">Новый Клиент</button> 
-        <v-btn v-on:click='showModal = !showModal' fab dark class="indigo">
+        <v-btn v-on:click='addNew()' fab dark class="indigo">
             <v-icon dark>add</v-icon>
         </v-btn>
 
@@ -48,10 +48,12 @@
                     </svg>
                 </button>
                 <v-form v-model="valid" ref="formachka">
-                  <v-text-field
+                 <!-- <v-text-field
                     label="Номер"
                     v-model="customer.accountNnumber"
-                    ></v-text-field>
+                    ></v-text-field>-->
+                    
+                    <div>{{ customer.accountNnumber }} </div>
 
                     <v-text-field
                     label="Фамилия"
@@ -97,7 +99,6 @@
 
                     <v-text-field
                     label="Телефон"
-                    required
                     :mask="'(##) ####-####'"
                     v-model="customer.phone"
                     ></v-text-field>
@@ -159,6 +160,11 @@ export default {
     }
   },
   methods: {
+    addNew: function () {
+      this.showModal = !this.showModal
+      console.log(this.items.length())
+      // this.customer.newNumber = this.items.length()
+    },
     logout: function () {
       firebase.auth().signOut().then(() => {
         this.$router.replace('login')
@@ -231,6 +237,7 @@ export default {
         elem['superkey'] = key
         this.items.push(elem)
       }
+      this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
     })
   }
 }
