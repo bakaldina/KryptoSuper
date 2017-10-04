@@ -120,6 +120,46 @@
                     label="Количество"
                     v-model="transactions.quantity"
                     ></v-text-field>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Списание комиссии'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Списание комиссии'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Предоставление займа'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Предоставление займа'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Погашение займа'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Погашение займа'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                     <v-text-field v-if="transactions.typeOfTransaction=='Выплата процентов по займу'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Выплата процентов по займу'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
                     
                     <v-select
                     label="Номер портфеля"
@@ -127,7 +167,7 @@
                     :items="number_clientsText"
                     ></v-select>
                     <v-btn class="form-button" @click="postTransactions" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
-                    <v-btn class="form-button" @click="clear">Очистка</v-btn>
+                    <!-- <v-btn class="form-button" @click="clear">Очистка</v-btn> -->
                 </v-form>
               </div>
             </div>
@@ -196,7 +236,8 @@ export default {
       number_clientsText: [],
       items_currency: [
         'USD',
-        'RUR'
+        'RUR',
+        'BTC'
       ]
     }
   },

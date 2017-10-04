@@ -101,7 +101,7 @@
                     ></v-text-field>
 
                     <v-btn class="form-button" @click="postMining" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
-                    <v-btn class="form-button" @click="clear">Очистка</v-btn>
+                    <!-- <v-btn class="form-button" @click="clear">Очистка</v-btn> -->
                 </v-form>
                 </div>
             </div>
