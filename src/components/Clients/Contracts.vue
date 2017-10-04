@@ -66,7 +66,7 @@
                     ></v-text-field>
 
                     <v-text-field
-                    label="Отчество"
+                    label="Отчествоо"
                     v-model="customer.middleName"
                     ></v-text-field>
 
@@ -83,8 +83,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  
-                      locale="ru-RU" scrollable>
+                    <v-date-picker  locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable autosave actions>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
