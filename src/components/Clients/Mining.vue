@@ -373,13 +373,13 @@ button {
 .input-group__details {
   min-height: 15px;
 }
-input {
-  width: 300px;
-}
 .form-button {
   margin-top: 30px;
 }
 .form-button .btn__content {
  color: #000 !important;
+}
+input {
+  width: 100%;
 }
 </style>

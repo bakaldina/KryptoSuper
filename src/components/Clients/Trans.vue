@@ -61,9 +61,7 @@
                       v-model="transactions.date2"
                       prepend-icon="event"
                       readonly
-
                     ></v-text-field>
-                      
                     <v-date-picker  locale="ru-RU" v-model="transactions.date2" scrollable>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
@@ -118,6 +116,16 @@
                     v-model="transactions.price"
                     ></v-text-field>
 
+                    <v-text-field v-if="transactions.typeOfTransaction=='Ввод BTC'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Вывод BTC'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+
                     <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
                     label="Количество"
                     v-model="transactions.quantity"
@@ -163,11 +171,22 @@
                     :items="items_currency"
                     ></v-select>
                     
+                    <v-text-field
+                      slot="activator"
+                      label="Номер портфеля"
+                      v-model="transactions.accountNnumber"
+                      prepend-icon="event"
+                    ></v-text-field>
                     <v-select
                     label="Номер портфеля"
                     v-model="transactions.accountNnumber"
                     :items="number_clientsText"
                     ></v-select>
+                    <!-- <v-select
+                    label="Номер портфеля"
+                    v-model="transactions.accountNnumber"
+                    :items="number_clientsText"
+                    ></v-select> -->
                     <v-btn class="form-button" @click="postTransactions" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
                     <!-- <v-btn class="form-button" @click="clear">Очистка</v-btn> -->
                 </v-form>
@@ -492,13 +511,16 @@ button {
 .input-group__details {
   min-height: 15px;
 }
-input {
-  width: 300px;
-}
 .form-button {
   margin-top: 30px;
 }
 .form-button .btn__content {
  color: #000 !important;
+}
+input {
+  width: 100%;
+}
+.application--light .picker .picker__title {
+    background: #37474f;
 }
 </style>

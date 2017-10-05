@@ -66,7 +66,7 @@
                     ></v-text-field>
 
                     <v-text-field
-                    label="Отчествоо"
+                    label="Отчество"
                     v-model="customer.middleName"
                     ></v-text-field>
 
@@ -403,9 +403,6 @@ button {
 .input-group__details {
   min-height: 15px;
 }
-input {
-  width: 300px;
-}
 .form-button {
   margin-top: 30px;
 }
@@ -421,5 +418,11 @@ input {
     border-bottom: 1px solid rgba(0,0,0,0.54);
     padding: 15px 0 0 0;
     margin-bottom: 7px;
+}
+input {
+  width: 100%;
+}
+section {
+  width: 100%;
 }
 </style>
