@@ -171,22 +171,12 @@
                     :items="items_currency"
                     ></v-select>
                     
-                    <v-text-field
-                      slot="activator"
-                      label="Номер портфеля"
-                      v-model="transactions.accountNnumber"
-                      prepend-icon="event"
-                    ></v-text-field>
                     <v-select
                     label="Номер портфеля"
                     v-model="transactions.accountNnumber"
                     :items="number_clientsText"
                     ></v-select>
-                    <!-- <v-select
-                    label="Номер портфеля"
-                    v-model="transactions.accountNnumber"
-                    :items="number_clientsText"
-                    ></v-select> -->
+
                     <v-btn class="form-button" @click="postTransactions" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
                     <!-- <v-btn class="form-button" @click="clear">Очистка</v-btn> -->
                 </v-form>

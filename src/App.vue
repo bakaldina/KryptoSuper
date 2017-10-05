@@ -3,9 +3,51 @@
     <v-navigation-drawer absolute persistent light :mini-variant.sync="mini" v-model="drawer" overflow>
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
-          <v-list-tile avatar>
+          <v-list-tile avatar v-if="this.userEmail=='bakaldina.e@gmail.com'">
             <v-list-tile-avatar>
-              <img src="https://randomuser.me/api/portraits/men/85.jpg" />
+              <img src="https://randomuser.me/api/portraits/women/4.jpg"/>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>Бакалдина Eкатерина</v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon @click.native.stop="mini = !mini">
+                <v-icon>left</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+           <v-list-tile avatar v-if="this.userEmail=='lubinetskn@gmail.com'">
+            <v-list-tile-avatar>
+              <img src="https://randomuser.me/api/portraits/men/4.jpg"/>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>Лубинец Константин</v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon @click.native.stop="mini = !mini">
+                <v-icon>left</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile avatar v-if="this.userEmail=='mahusv@gmail.com'">
+            <v-list-tile-avatar>
+              <img src="https://randomuser.me/api/portraits/men/12.jpg"/>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>Маху Сергей Васильевич</v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon @click.native.stop="mini = !mini">
+                <v-icon>left</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile avatar v-if="this.userEmail=='mahus@mac.com'">
+            <v-list-tile-avatar>
+              <img src="https://randomuser.me/api/portraits/men/11.jpg"/>
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title>Маху Сергей Васильевич</v-list-tile-title>
@@ -18,9 +60,26 @@
           </v-list-tile>
         </v-list>
       </v-toolbar>
-      <v-list class="pt-0" dense>
+      
+      <v-list class="pt-0" dense v-if="this.userEmail=='mahus@mac.com'">
       <v-divider></v-divider>
-        <v-list-tile
+      <v-list-tile  
+          v-for="item in menuItems1"
+          :key="item.title"
+          router
+          :to="item.link">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+
+       <v-list class="pt-0" dense v-if="this.userEmail!=='mahus@mac.com'">
+      <v-divider></v-divider>
+      <v-list-tile  
           v-for="item in menuItems"
           :key="item.title"
           router
@@ -33,6 +92,7 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+
       </v-toolbar>
     </v-navigation-drawer>
      <v-toolbar dark class="primary">
@@ -57,6 +117,12 @@
     data () {
       return {
         drawer: true,
+        menuItems1: [
+          {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
+          {icon: 'business', title: 'Хэшрейт', link: '/hash'},
+          {icon: 'call_to_action', title: 'Кошелек', link: '/pouch'},
+          {icon: 'lock_outline', title: 'Войти', link: '/login'}
+        ],
         menuItems: [
           {icon: 'supervisor_account', title: 'Контракты', link: '/contracts'},
           {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
@@ -74,6 +140,13 @@
           this.$router.replace('login')
         })
       }
+    },
+    created () {
+      var user = firebase.auth().currentUser
+      // this.userName = user.email
+      console.log(user.email)
+      this.userEmail = user.email
+    //  вобщем передаешь почту в this.user.email и v-if'ом выбираешь что нужно
     }
   }
 </script>

@@ -425,4 +425,7 @@ input {
 section {
   width: 100%;
 }
+.application--light .picker .picker__title {
+    background: #37474f;
+}
 </style>

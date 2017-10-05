@@ -114,6 +114,7 @@
 <script>
 // Imports
 import firebase from 'firebase'
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -212,6 +213,7 @@ export default {
         this.items.push(elem)
       }
     })
+    this.mining.date = moment().format()
   }
 }
 </script>
@@ -381,5 +383,8 @@ button {
 }
 input {
   width: 100%;
+}
+.application--light .picker .picker__title {
+    background: #37474f;
 }
 </style>
