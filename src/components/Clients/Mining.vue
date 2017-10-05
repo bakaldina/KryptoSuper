@@ -101,7 +101,7 @@
                     ></v-text-field>
 
                     <v-btn class="form-button" @click="postMining" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
-                    <v-btn class="form-button" @click="clear">Очистка</v-btn>
+                    <!-- <v-btn class="form-button" @click="clear">Очистка</v-btn> -->
                 </v-form>
                 </div>
             </div>
@@ -114,6 +114,7 @@
 <script>
 // Imports
 import firebase from 'firebase'
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -212,6 +213,7 @@ export default {
         this.items.push(elem)
       }
     })
+    this.mining.date = moment().format()
   }
 }
 </script>
@@ -373,13 +375,16 @@ button {
 .input-group__details {
   min-height: 15px;
 }
-input {
-  width: 300px;
-}
 .form-button {
   margin-top: 30px;
 }
 .form-button .btn__content {
  color: #000 !important;
+}
+input {
+  width: 100%;
+}
+.application--light .picker .picker__title {
+    background: #37474f;
 }
 </style>

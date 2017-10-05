@@ -53,7 +53,7 @@
                     v-model="customer.accountNnumber"
                     ></v-text-field>-->
                     
-                    <div>{{ customer.accountNnumber }} </div>
+                    <div class="account-number">{{ customer.accountNnumber }} </div>
 
                     <v-text-field
                     label="Фамилия"
@@ -83,7 +83,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable >
+                    <v-date-picker  locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable autosave actions>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -100,7 +100,6 @@
                     <v-text-field
                     label="Телефон"
                     :mask="'(##) ####-####'"
-                    v-model="customer.phone"
                     ></v-text-field>
 
                     <v-text-field
@@ -109,7 +108,7 @@
                     ></v-text-field>
 
                     <v-btn class="form-button" @click="post" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
-                    <v-btn class="form-button" @click="clear">Очистка</v-btn>
+                    <!-- <v-btn class="form-button" @click="clear">Очистка</v-btn> -->
                 </v-form>
                 </div>
             </div>
@@ -404,13 +403,29 @@ button {
 .input-group__details {
   min-height: 15px;
 }
-input {
-  width: 300px;
-}
 .form-button {
   margin-top: 30px;
 }
 .form-button .btn__content {
  color: #000 !important;
+}
+.application--light .btn {
+    color: #fff;
+}
+.account-number {
+    color: rgba(0,0,0,0.54);
+    font-size: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.54);
+    padding: 15px 0 0 0;
+    margin-bottom: 7px;
+}
+input {
+  width: 100%;
+}
+section {
+  width: 100%;
+}
+.application--light .picker .picker__title {
+    background: #37474f;
 }
 </style>

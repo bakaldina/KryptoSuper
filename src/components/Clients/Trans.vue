@@ -62,7 +62,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="transactions.date2" scrollable >
+                    <v-date-picker  locale="ru-RU" v-model="transactions.date2" scrollable>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -116,18 +116,69 @@
                     v-model="transactions.price"
                     ></v-text-field>
 
+                    <v-text-field v-if="transactions.typeOfTransaction=='Ввод BTC'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Вывод BTC'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+
                     <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
                     label="Количество"
                     v-model="transactions.quantity"
                     ></v-text-field>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Списание комиссии'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Списание комиссии'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Предоставление займа'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Предоставление займа'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Погашение займа'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Погашение займа'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
+
+                     <v-text-field v-if="transactions.typeOfTransaction=='Выплата процентов по займу'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+                    <v-select v-if="transactions.typeOfTransaction=='Выплата процентов по займу'"
+                    label="Валюта"
+                    v-model="transactions.currency"
+                    :items="items_currency"
+                    ></v-select>
                     
                     <v-select
                     label="Номер портфеля"
                     v-model="transactions.accountNnumber"
                     :items="number_clientsText"
                     ></v-select>
+
                     <v-btn class="form-button" @click="postTransactions" :class="{ green: valid, red: !valid }">Подтвердить</v-btn>
-                    <v-btn class="form-button" @click="clear">Очистка</v-btn>
+                    <!-- <v-btn class="form-button" @click="clear">Очистка</v-btn> -->
                 </v-form>
               </div>
             </div>
@@ -139,6 +190,8 @@
 <script>
 // Imports
 import firebase from 'firebase'
+import moment from 'moment'
+
 export default {
   data () {
     return {
@@ -196,7 +249,8 @@ export default {
       number_clientsText: [],
       items_currency: [
         'USD',
-        'RUR'
+        'RUR',
+        'BTC'
       ]
     }
   },
@@ -281,6 +335,7 @@ export default {
         this.number_clientsText.push(data[key]['accountNnumber'] + ' ' + data[key]['firstName'] + ' ' + data[key]['surname'])
       }
     })
+    this.transactions.date2 = moment().format()
   }
 }
 </script>
@@ -446,13 +501,16 @@ button {
 .input-group__details {
   min-height: 15px;
 }
-input {
-  width: 300px;
-}
 .form-button {
   margin-top: 30px;
 }
 .form-button .btn__content {
  color: #000 !important;
+}
+input {
+  width: 100%;
+}
+.application--light .picker .picker__title {
+    background: #37474f;
 }
 </style>

@@ -40,8 +40,8 @@
   }
   input {
     margin: 10px 0;
-    width: 20%;
     padding: 15px;
+    width: 100%;
   }
   button {
     margin-top: 20px;
