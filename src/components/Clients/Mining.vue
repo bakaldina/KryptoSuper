@@ -73,19 +73,16 @@
 
                     <v-text-field
                     label="Payout"
-                    required
                     v-model="mining.payOut"
                     ></v-text-field>
 
                     <v-text-field
                     label="Maintence"
-                    required
                     v-model="mining.maintence"
                     ></v-text-field>
 
                     <v-text-field
                     label="Fee day"
-                    required
                     v-model="mining.feeDay"
                     ></v-text-field>
 

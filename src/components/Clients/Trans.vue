@@ -130,6 +130,27 @@
                     label="Количество"
                     v-model="transactions.quantity"
                     ></v-text-field>
+                    <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
+                    label="Цена"
+                    v-model="transactions.price"
+                    ></v-text-field>
+                    <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
+
+                    <v-text-field v-if="transactions.typeOfTransaction=='Продажа мощности'"
+                    label="Количество"
+                    v-model="transactions.quantity"
+                    ></v-text-field>
+                    <v-text-field v-if="transactions.typeOfTransaction=='Продажа мощности'"
+                    label="Цена"
+                    v-model="transactions.price"
+                    ></v-text-field>
+                    <v-text-field v-if="transactions.typeOfTransaction=='Продажа мощности'"
+                    label="Сумма"
+                    v-model="transactions.summa"
+                    ></v-text-field>
 
                     <v-text-field v-if="transactions.typeOfTransaction=='Списание комиссии'"
                     label="Сумма"
@@ -324,6 +345,10 @@ export default {
       for (var key in data) {
         let elem = data[key]
         elem['superkey'] = key
+        if (data[key]['typeOfTransaction'] === 'Покупка мощности' || 'Продажа мощности') {
+          data[key]['currency'] = 'BTC'
+          data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
+        }
         this.items.push(elem)
       }
     })
@@ -337,6 +362,10 @@ export default {
     })
     this.transactions.date2 = moment().format()
   }
+  // computed: {
+  //     this.transactions.summa = this.transactions.quantity*this.transactions.summa
+  //   }
+  // }
 }
 </script>
 
