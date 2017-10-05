@@ -104,6 +104,7 @@
                     ></v-text-field>
                     <v-text-field v-if="transactions.typeOfTransaction=='Покупка BTC'"
                     label="Цена"
+                    :counter="10"
                     v-model="transactions.price"
                     ></v-text-field>
 
@@ -113,6 +114,7 @@
                     ></v-text-field>
                     <v-text-field v-if="transactions.typeOfTransaction=='Продажа BTC'"
                     label="Цена"
+                    :counter="10"
                     v-model="transactions.price"
                     ></v-text-field>
 
@@ -132,6 +134,8 @@
                     ></v-text-field>
                     <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
                     label="Цена"
+                    :rules="nameRules"
+                    :counter="10"
                     v-model="transactions.price"
                     ></v-text-field>
                     <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
@@ -145,6 +149,7 @@
                     ></v-text-field>
                     <v-text-field v-if="transactions.typeOfTransaction=='Продажа мощности'"
                     label="Цена"
+                    :counter="10"
                     v-model="transactions.price"
                     ></v-text-field>
                     <v-text-field v-if="transactions.typeOfTransaction=='Продажа мощности'"
@@ -348,6 +353,7 @@ export default {
         if (data[key]['typeOfTransaction'] === 'Покупка мощности' || 'Продажа мощности') {
           data[key]['currency'] = 'BTC'
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
+          data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
         }
         this.items.push(elem)
       }
