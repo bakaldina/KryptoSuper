@@ -26,6 +26,7 @@
             <td class="text-xs-right"><input :value="props.item.email" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'email')"></td>
             <td class="text-xs-right"><input :value="props.item.dateOfAccountOpening" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'dateOfAccountOpening')"></td>
             <td class="text-xs-right"><input :value="props.item.amountOfCommission" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'amountOfCommission')"></td>
+            <td class="text-xs-right"><input :value="props.item.power"></td>
             <td class="text-xs-right">
               <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
                 <v-icon dark>remove</v-icon>
@@ -81,7 +82,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  date-format="dd, mm, yyyy" locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable autosave actions>
+                    <v-date-picker  date-format="dd, MMM, yyyy" locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable autosave actions>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -149,8 +150,10 @@ export default {
         { text: 'Почта', value: 'email' },
         { text: 'Дата открытия', value: 'dateOfAccountOpening' },
         { text: 'Комиссия, %', value: 'amountOfCommission' },
+        { text: 'Общее кол-во мощности', value: 'power' },
         { text: 'Удалить', value: 'Remove' }
       ],
+      power: [],
       fullName: [],
       items: [],
       valid: false
@@ -227,6 +230,9 @@ export default {
         let elem = data[key]
         elem['superkey'] = key
         data[key]['fullName'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
+        if (data[key]['customer_transaction.accountNnumber'] === '9999-001') {
+          data[key]['power'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
+        }
         this.items.push(elem)
       }
       this.customer.accountNnumber = '9999-0' + (this.items.length + 1)

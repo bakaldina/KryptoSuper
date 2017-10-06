@@ -266,6 +266,7 @@ export default {
       ],
       number_clients: [],
       number_clientsText: [],
+      power: [],
       items_currency: [
         'USD',
         'RUR',
@@ -349,9 +350,13 @@ export default {
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
         }
+        if (data[key]['accountNnumber'] === '9999-001') {
+          data[key]['power'] += +data[key]['quantity']
+        }
         katy += +data[key]['quantity']
         this.items.push(elem)
         console.log(data[key]['quantity'])
+        console.log(data[key]['power'])
       }
       console.log(katy)
     })
