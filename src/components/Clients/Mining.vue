@@ -125,7 +125,8 @@ export default {
       menuItems: [
         {icon: 'group', title: 'Клиенты', link: '/contracts'},
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
-        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
+        {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
       ],
       menu: false,
       modal: false,
@@ -392,5 +393,8 @@ input {
 }
 .application--light .picker .picker__title {
     background: #37474f;
+}
+table.table tbody td, table.table tbody th {
+    height: 35px;
 }
 </style>
