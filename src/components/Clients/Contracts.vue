@@ -127,6 +127,7 @@ export default {
       menuItems: [
         {icon: 'group', title: 'Клиенты', link: '/contracts'},
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
         {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
       ],
       menu: false,
