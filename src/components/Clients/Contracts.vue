@@ -230,7 +230,7 @@ export default {
         let elem = data[key]
         elem['superkey'] = key
         data[key]['fullName'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
-        if (data[key]['customer_transaction.accountNnumber'] === '9999-001') {
+        if (data[key]['accountNnumber'] === '9999-001') {
           data[key]['power'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
         }
         this.items.push(elem)
