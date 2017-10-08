@@ -118,17 +118,17 @@
       return {
         drawer: true,
         menuItems1: [
-          {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'business', title: 'Хэшрейт', link: '/hash'},
+          {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'call_to_action', title: 'Кошелек', link: '/pouch'},
-          {icon: 'lock_outline', title: 'Войти', link: '/login'}
+          {icon: 'lock_outline', title: 'Выйти', link: '/login'}
         ],
         menuItems: [
           {icon: 'supervisor_account', title: 'Контракты', link: '/contracts'},
-          {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'business', title: 'Хэшрейт', link: '/hash'},
+          {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'call_to_action', title: 'Кошелек', link: '/pouch'},
-          {icon: 'lock_outline', title: 'Войти', link: '/login'}
+          {icon: 'lock_outline', title: 'Выйти', link: '/login'}
         ],
         mini: false,
         right: null

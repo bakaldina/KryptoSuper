@@ -22,8 +22,10 @@
         >
         <template slot="items" scope="props" >
             <td class="text-xs-right"><input :value="props.item.date" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'date')"></td>
+            <td class="text-xs-right"><input :value="props.item.miningItem" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'miningItem')"></td>
             <td class="text-xs-right"><input :value="props.item.payOut" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'payOut')"></td>
             <td class="text-xs-right"><input :value="props.item.maintence" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'maintence')"></td>
+            <td class="text-xs-right"><input :value="props.item.feeDayItem" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'feeDayItem')"></td>
             <td class="text-xs-right"><input :value="props.item.feeDay" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'feeDay')"></td>
             <td class="text-xs-right"><input :value="props.item.сoursesBTC" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'сoursesBTC')"></td>
             <td class="text-xs-right"><input :value="props.item.сoursesUSD" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'сoursesUSD')"></td>
@@ -72,6 +74,11 @@
                   </v-dialog>
 
                     <v-text-field
+                    label="Майнинг"
+                    v-model="mining.miningItem"
+                    ></v-text-field>
+
+                    <v-text-field
                     label="Payout"
                     v-model="mining.payOut"
                     ></v-text-field>
@@ -82,8 +89,8 @@
                     ></v-text-field>
 
                     <v-text-field
-                    label="Fee day"
-                    v-model="mining.feeDay"
+                    label="Размер Fee day, %"
+                    v-model="mining.feeDayItem"
                     ></v-text-field>
 
                     <v-text-field
@@ -118,7 +125,8 @@ export default {
       menuItems: [
         {icon: 'group', title: 'Клиенты', link: '/contracts'},
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
-        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
+        {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
       ],
       menu: false,
       modal: false,
@@ -136,8 +144,10 @@ export default {
       },
       headers: [
         { text: 'Дата', value: 'date' },
+        { text: 'Майнинг', value: 'miningItem' },
         { text: 'Pay out', value: 'payOut' },
         { text: 'Maintence', value: 'maintence' },
+        { text: 'Размер Fee day, %', value: 'feeDayItem' },
         { text: 'Fee day', value: 'feeDay' },
         { text: 'Курс BTC', value: 'сoursesBTC' },
         { text: 'Курс USD', value: 'сoursesUSD' },
@@ -181,9 +191,6 @@ export default {
           this.items.push(elem)
         }
       })
-      // let clientsRef = db.ref("customer_registry");
-      // clientsRef.child(entryId).set("30%");
-      // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
     },
     postMining: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_mining.json', this.mining).then(function (data) {
@@ -207,6 +214,9 @@ export default {
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
+        data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
+        data[key]['feeDay'] = Math.ceil(data[key]['feeDay'] * 1000000) / 1000000
+        data[key]['miningItem'] = +data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']
         this.items.push(elem)
       }
     })
@@ -383,5 +393,8 @@ input {
 }
 .application--light .picker .picker__title {
     background: #37474f;
+}
+table.table tbody td, table.table tbody th {
+    height: 35px;
 }
 </style>

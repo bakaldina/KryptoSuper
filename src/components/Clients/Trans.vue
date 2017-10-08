@@ -134,13 +134,9 @@
                     ></v-text-field>
                     <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
                     label="Цена"
-                    :rules="nameRules"
-                    :counter="10"
+                    :rules="[(v) => v.length <= 25 || 'Max 25 characters']"
+                    :counter="25"
                     v-model="transactions.price"
-                    ></v-text-field>
-                    <v-text-field v-if="transactions.typeOfTransaction=='Покупка мощности'"
-                    label="Сумма"
-                    v-model="transactions.summa"
                     ></v-text-field>
 
                     <v-text-field v-if="transactions.typeOfTransaction=='Продажа мощности'"
@@ -151,10 +147,6 @@
                     label="Цена"
                     :counter="10"
                     v-model="transactions.price"
-                    ></v-text-field>
-                    <v-text-field v-if="transactions.typeOfTransaction=='Продажа мощности'"
-                    label="Сумма"
-                    v-model="transactions.summa"
                     ></v-text-field>
 
                     <v-text-field v-if="transactions.typeOfTransaction=='Списание комиссии'"
@@ -224,7 +216,8 @@ export default {
       menuItems: [
         {icon: 'group', title: 'Клиенты', link: '/contracts'},
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
-        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
+        {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
       ],
       menu: false,
       modal: false,
@@ -273,6 +266,7 @@ export default {
       ],
       number_clients: [],
       number_clientsText: [],
+      power: [],
       items_currency: [
         'USD',
         'RUR',
@@ -347,6 +341,7 @@ export default {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
+      let katy = 0
       for (var key in data) {
         let elem = data[key]
         elem['superkey'] = key
@@ -355,8 +350,15 @@ export default {
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
         }
+        if (data[key]['accountNnumber'] === '9999-001') {
+          data[key]['power'] += +data[key]['quantity']
+        }
+        katy += +data[key]['quantity']
         this.items.push(elem)
+        console.log(data[key]['quantity'])
+        console.log(data[key]['power'])
       }
+      console.log(katy)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
@@ -368,10 +370,7 @@ export default {
     })
     this.transactions.date2 = moment().format()
   }
-  // computed: {
-  //     this.transactions.summa = this.transactions.quantity*this.transactions.summa
-  //   }
-  // }
+
 }
 </script>
 
@@ -547,5 +546,8 @@ input {
 }
 .application--light .picker .picker__title {
     background: #37474f;
+}
+table.table tbody td, table.table tbody th {
+    height: 35px;
 }
 </style>

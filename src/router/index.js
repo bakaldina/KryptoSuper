@@ -6,6 +6,7 @@ import Hash from '@/components/Other/Hash'
 import Pouch from '@/components/Other/Pouch'
 import Mining from '@/components/Clients/Mining'
 import Trans from '@/components/Clients/Trans'
+import Report from '@/components/Clients/Report'
 import Сontracts from '@/components/Clients/Contracts'
 import Login from '@/components/User/Login'
 import firebase from 'firebase'
@@ -63,6 +64,14 @@ let router = new Router({
       path: '/trans',
       name: 'Trans',
       component: Trans,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/report',
+      name: 'Report',
+      component: Report,
       meta: {
         requiresAuth: true
       }

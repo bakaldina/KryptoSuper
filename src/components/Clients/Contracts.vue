@@ -21,13 +21,12 @@
         class="elevation-1 clients-table"
         >
         <template slot="items" scope="props" >
-            <td ><input :value="props.item.accountNnumber" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'accountNnumber')"></td>
-            <td class="text-xs-right"><input :value="props.item.surname" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'surname')"></td>
-            <td class="text-xs-right"><input :value="props.item.firstName" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'firstName')"></td>
-            <td class="text-xs-right"><input :value="props.item.middleName" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'middleName')"></td>
+            <td class="text-xs-right"><input :value="props.item.accountNnumber" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'accountNnumber')"></td>
+            <td class="text-xs-right"><input :value="props.item.fullName"></td>
             <td class="text-xs-right"><input :value="props.item.email" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'email')"></td>
             <td class="text-xs-right"><input :value="props.item.dateOfAccountOpening" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'dateOfAccountOpening')"></td>
             <td class="text-xs-right"><input :value="props.item.amountOfCommission" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'amountOfCommission')"></td>
+            <td class="text-xs-right"><input :value="props.item.power"></td>
             <td class="text-xs-right">
               <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
                 <v-icon dark>remove</v-icon>
@@ -83,7 +82,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable autosave actions>
+                    <v-date-picker  date-format="dd, MMM, yyyy" locale="ru-RU" v-model="customer.dateOfAccountOpening" scrollable autosave actions>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -127,7 +126,8 @@ export default {
       menuItems: [
         {icon: 'group', title: 'Клиенты', link: '/contracts'},
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
-        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'}
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
+        {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
       ],
       menu: false,
       modal: false,
@@ -146,14 +146,15 @@ export default {
       },
       headers: [
         { text: 'Номер', value: 'accountNnumber' },
-        { text: 'Фамилия', value: 'surname' },
-        { text: 'Имя', value: 'firstName' },
-        { text: 'Отчество', value: 'middleName' },
+        { text: 'ФИО', value: 'fullName' },
         { text: 'Почта', value: 'email' },
         { text: 'Дата открытия', value: 'dateOfAccountOpening' },
         { text: 'Комиссия, %', value: 'amountOfCommission' },
+        { text: 'Общее кол-во мощности', value: 'power' },
         { text: 'Удалить', value: 'Remove' }
       ],
+      power: [],
+      fullName: [],
       items: [],
       valid: false
     }
@@ -162,7 +163,6 @@ export default {
     addNew: function () {
       this.showModal = !this.showModal
       console.log(this.items.length())
-      // this.customer.newNumber = this.items.length()
     },
     logout: function () {
       firebase.auth().signOut().then(() => {
@@ -197,9 +197,6 @@ export default {
           this.items.push(elem)
         }
       })
-      // let clientsRef = db.ref("customer_registry");
-      // clientsRef.child(entryId).set("30%");
-      // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
     },
     post: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_registry.json', this.customer).then(function (data) {
@@ -222,8 +219,6 @@ export default {
       }
     },
     clear () {
-      console.log(this.$refs)
-      console.log(this.$refs.formachka)
       this.$refs.formachka.reset()
     }
   },
@@ -234,6 +229,10 @@ export default {
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
+        data[key]['fullName'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
+        if (data[key]['accountNnumber'] === '9999-001') {
+          data[key]['power'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
+        }
         this.items.push(elem)
       }
       this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
@@ -280,15 +279,15 @@ button.new-client {
     border-color: #3299BB!important;
 }
 table.clients-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 .clients-table th, .clients-table td {
-    border: 1px solid black;
-    padding: 15px;
+  border: 1px solid black;
+  padding: 15px;
 }
 .clients-table td:last-child {
-    width: 50px;
+  width: 50px;
 }
 /* 
 button {
@@ -299,25 +298,25 @@ button {
     margin-bottom: 30px;
 } */
 .card__text {
-    overflow: scroll;
+  overflow: scroll;
 }
 .btn--floating.btn--large {
-    height: 30px;
-    width: 30px;
+  height: 30px;
+  width: 30px;
 }
 .btn--floating.btn--small {
-    height: 30px;
-    width: 30px;
+  height: 30px;
+  width: 30px;
 }
 .edit-color {
-    background-color: #FCFCF8!important;
-    border: none;
+  background-color: #FCFCF8!important;
+  border: none;
 }
 .btn--floating.btn--large .icon {
-    font-size: 14px;
-    height: 10px;
-    width: 10px;
-    color: #000;
+  font-size: 14px;
+  height: 10px;
+  width: 10px;
+  color: #000;
 }
 .modal-mask {
   position: fixed;
@@ -356,11 +355,11 @@ button {
   float: right;
 }
 .right {
-    margin-top: 0;
-    margin-bottom: 0;
-    position: absolute;
-    top: -11px;
-    right: -11px;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: absolute;
+  top: -11px;
+  right: -11px;
 }
 .modal-enter {
   opacity: 0;
@@ -374,19 +373,19 @@ button {
   transform: scale(1.5);
 }
 .button {
-    position: absolute;
-    top: 13px;
-    right: 12px;
+  position: absolute;
+  top: 13px;
+  right: 12px;
 }
 .button:active {
-    outline: none;
+  outline: none;
 }
 .main_menu {
-    display: flex;
-    justify-content: space-around;
-    background-color: #3299BB;
-    margin-top: 40px;
-    padding: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  background-color: #3299BB;
+  margin-top: 40px;
+  padding: 10px 0;
 }
 .btn__content:before {
   display: none;
@@ -410,14 +409,14 @@ button {
  color: #000 !important;
 }
 .application--light .btn {
-    color: #fff;
+  color: #fff;
 }
 .account-number {
-    color: rgba(0,0,0,0.54);
-    font-size: 16px;
-    border-bottom: 1px solid rgba(0,0,0,0.54);
-    padding: 15px 0 0 0;
-    margin-bottom: 7px;
+  color: rgba(0,0,0,0.54);
+  font-size: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.54);
+  padding: 15px 0 0 0;
+  margin-bottom: 7px;
 }
 input {
   width: 100%;
@@ -427,5 +426,20 @@ section {
 }
 .application--light .picker .picker__title {
     background: #37474f;
+}
+table.table tbody td, table.table tbody th {
+    height: 35px;
+}
+table.table thead th {
+      font-size: 16px;
+      font-weight: 700;
+}
+.primary th {
+  text-align: center;
+}
+@media (min-width: 0) {
+.text-xs-right {
+    text-align: center !important;
+}
 }
 </style>
