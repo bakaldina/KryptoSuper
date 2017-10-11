@@ -16,7 +16,7 @@
 
         <v-data-table
         v-bind:headers="headers"
-        :items="items"
+        :items="superClients"
         hide-actions
         class="elevation-1 clients-table"
         >
@@ -26,10 +26,10 @@
             <td class="text-xs-right"><input :value="props.item.email" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'email')"></td>
             <td class="text-xs-right"><input :value="props.item.dateOfAccountOpening" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'dateOfAccountOpening')"></td>
             <td class="text-xs-right"><input :value="props.item.amountOfCommission" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'amountOfCommission')"></td>
-            <td class="text-xs-right"><input :value="summaBTC"></td>
-            <td class="text-xs-right"><input :value="summaRUR"></td>
-            <td class="text-xs-right"><input :value="power"></td>
-            <td class="text-xs-right"><input :value="proportion"></td>
+            <td class="text-xs-right"><input :value="props.item.summaBTC" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'summaBTC')"></td>
+            <td class="text-xs-right"><input :value="props.item.summaRUR" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'summaRUR')"></td>
+            <td class="text-xs-right"><input :value="props.item.power" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'power')"></td>
+            <td class="text-xs-right"><input :value="props.item.proportion" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'proportion')"></td>
             <td class="text-xs-right">
               <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
                 <v-icon dark>remove</v-icon>
@@ -55,7 +55,11 @@
                     v-model="customer.accountNnumber"
                     ></v-text-field>-->
                     
-                    <div class="account-number">{{ customer.accountNnumber }} </div>
+                    <!-- <div class="account-number">{{ customer.accountNnumber }} </div> -->
+                    <v-text-field
+                    label="Номер"
+                    v-model="customer.accountNnumber"
+                    ></v-text-field>
 
                     <v-text-field
                     label="Фамилия"
@@ -139,12 +143,16 @@ export default {
       active: null,
       customer: {
         accountNnumber: '',
-        dateOfAccountOpening: '',
-        email: '',
         firstName: '',
         middleName: '',
         surname: '',
-        amountOfCommission: ''
+        email: '',
+        dateOfAccountOpening: '',
+        amountOfCommission: '',
+        summaBTC: '',
+        summaRUR: '',
+        power: '',
+        proportion: ''
       },
       headers: [
         { text: 'Номер', value: 'accountNnumber' },
@@ -158,12 +166,15 @@ export default {
         { text: 'Доля', value: 'proportion' },
         { text: 'Удалить', value: 'Remove' }
       ],
+      transactions: [],
       power: [],
+      powerSum: 0,
       summaBTC: [],
       summaRUR: [],
       proportion: [],
       fullName: [],
-      items: [],
+      superClients: [],
+      accountNnumbers: [],
       valid: false
     }
   },
@@ -229,44 +240,44 @@ export default {
     }
   },
   created () {
-    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
-      return data.json()
-    }).then(function (data) {
-      for (let key in data) {
-        let elem = data[key]
-        elem['superkey'] = key
-        data[key]['fullName'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
-        // if (data[key]['accountNnumber'] === '9999-001') {
-        //   data[key]['power'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
-        // }
-        this.items.push(elem)
-      }
-      this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
-    })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      console.log(data)
-      var kate = 0
       for (var key in data) {
-        // let elem = data[key]
-        if (data[key]['accountNnumber'] === '9999-001') {
-          kate += +data[key]['quantity']
+        let elem = data[key]
+        elem['superkey'] = key
+        if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {  // проверка на существование номмера клиента в массиве
+          this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
+        } else { // если нет добавляем этот номер в массив
+          this.accountNnumbers.push(data[key].accountNnumber)
+          this.power.push(+data[key].quantity)
         }
+        this.transactions.push(elem)
       }
-      this.power.push(kate)
-      console.log(this.power)
+      for (var i = 0; i < this.power.length; i++) {
+        this.powerSum = this.powerSum + parseInt(this.power[i])
+      }
+      console.log(this.powerSum)
+      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
+        return data.json()
+      }).then(function (data) {
+        console.log(this.accountNnumbers)
+        for (let key in data) {
+          let elem = data[key]
+          elem['superkey'] = key
+          data[key]['fullName'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
+          if (this.accountNnumbers.indexOf(data[key].accountNnumber.toString()) > -1) {
+            let index = this.accountNnumbers.indexOf(data[key].accountNnumber)
+            this.firebase.database().ref('customer_registry').child(key).child('power').set(this.power[index])
+          }
+          if (data[key]['accountNnumber'] === '9999-000') {
+            this.firebase.database().ref('customer_registry').child(key).child('power').set(this.powerSum)
+          }
+          this.superClients.push(elem)
+        }
+      // this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
+      })
     })
-    // this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
-    //   return data.json()
-    // }).then(function (data) {
-    //   for (let key in data) { // тут мы пробегаемся по дат
-    //     if (data[key]['accountNnumber'] === '9999-001') { // тут мы оставляем толь 001 ну это то понятно уж
-    //       console.log(this.power)
-    //       this.power = (+data[key]['summa'] + +data[key]['quantity']) // стоп power из какой базы? я его не добавляю в базу, но можно джобавить куда-нибудь прст,о я его просто создаю ну ты его создаешь на дата
-    //     } // а надо на зис/нверно или я что-то не понимаю
-    //   }
-    // })
   }
 }
 </script>
