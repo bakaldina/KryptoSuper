@@ -26,7 +26,10 @@
             <td class="text-xs-right"><input :value="props.item.email" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'email')"></td>
             <td class="text-xs-right"><input :value="props.item.dateOfAccountOpening" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'dateOfAccountOpening')"></td>
             <td class="text-xs-right"><input :value="props.item.amountOfCommission" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'amountOfCommission')"></td>
-            <td class="text-xs-right"><input :value="props.item.power"></td>
+            <td class="text-xs-right"><input :value="summaBTC"></td>
+            <td class="text-xs-right"><input :value="summaRUR"></td>
+            <td class="text-xs-right"><input :value="power"></td>
+            <td class="text-xs-right"><input :value="proportion"></td>
             <td class="text-xs-right">
               <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
                 <v-icon dark>remove</v-icon>
@@ -120,7 +123,6 @@
 // Imports
 import firebase from 'firebase'
 export default {
-
   data () {
     return {
       menuItems: [
@@ -150,10 +152,16 @@ export default {
         { text: 'Почта', value: 'email' },
         { text: 'Дата открытия', value: 'dateOfAccountOpening' },
         { text: 'Комиссия, %', value: 'amountOfCommission' },
+        { text: 'Сумма BTC', value: 'summaBTC' },
+        { text: 'Сумма RUR', value: 'summaRUR' },
         { text: 'Общее кол-во мощности', value: 'power' },
+        { text: 'Доля', value: 'proportion' },
         { text: 'Удалить', value: 'Remove' }
       ],
       power: [],
+      summaBTC: [],
+      summaRUR: [],
+      proportion: [],
       fullName: [],
       items: [],
       valid: false
@@ -162,7 +170,6 @@ export default {
   methods: {
     addNew: function () {
       this.showModal = !this.showModal
-      console.log(this.items.length())
     },
     logout: function () {
       firebase.auth().signOut().then(() => {
@@ -172,7 +179,6 @@ export default {
     removeClient: function (key) {
       let db = this.firebase.database()
       db.ref('customer_registry').child(key).remove()
-      console.log(this.items)
       this.items = []
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
         return data.json()
@@ -230,13 +236,37 @@ export default {
         let elem = data[key]
         elem['superkey'] = key
         data[key]['fullName'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
-        if (data[key]['accountNnumber'] === '9999-001') {
-          data[key]['power'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
-        }
+        // if (data[key]['accountNnumber'] === '9999-001') {
+        //   data[key]['power'] = (data[key]['surname'] + ' ' + data[key]['firstName'] + ' ' + data[key]['middleName'])
+        // }
         this.items.push(elem)
       }
       this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
     })
+    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
+      return data.json()
+    }).then(function (data) {
+      console.log(data)
+      var kate = 0
+      for (var key in data) {
+        // let elem = data[key]
+        if (data[key]['accountNnumber'] === '9999-001') {
+          kate += +data[key]['quantity']
+        }
+      }
+      this.power.push(kate)
+      console.log(this.power)
+    })
+    // this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
+    //   return data.json()
+    // }).then(function (data) {
+    //   for (let key in data) { // тут мы пробегаемся по дат
+    //     if (data[key]['accountNnumber'] === '9999-001') { // тут мы оставляем толь 001 ну это то понятно уж
+    //       console.log(this.power)
+    //       this.power = (+data[key]['summa'] + +data[key]['quantity']) // стоп power из какой базы? я его не добавляю в базу, но можно джобавить куда-нибудь прст,о я его просто создаю ну ты его создаешь на дата
+    //     } // а надо на зис/нверно или я что-то не понимаю
+    //   }
+    // })
   }
 }
 </script>
@@ -374,8 +404,8 @@ button {
 }
 .button {
   position: absolute;
-  top: 13px;
-  right: 12px;
+  top: 10px;
+  right: 40px;
 }
 .button:active {
   outline: none;

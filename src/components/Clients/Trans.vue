@@ -62,7 +62,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="transactions.date2" scrollable>
+                    <v-date-picker  locale="ru-RU" date-format='DD-MM-YYYY' v-model="transactions.date2" scrollable>
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -267,6 +267,7 @@ export default {
       number_clients: [],
       number_clientsText: [],
       power: [],
+      accountNnumbers: [],
       items_currency: [
         'USD',
         'RUR',
@@ -309,19 +310,6 @@ export default {
         }
       })
     },
-   // editTrans: function (event, index, param) {
-    //   console.log(event.target.value)
-    //   console.log(this.firebase.database().ref(base))
-    //   console.log(this.clientsKey)
-    //   console.log(this.clientsKey[index])
-    //   console.log(param)
-
-     // let db = this.firebase.database()
-     // db.ref('customer_transaction').child(this.clientsKey[index]).child(param).set(event.target.value)
-      // let clientsRef = db.ref("customer_registry");
-      // clientsRef.child(entryId).set("30%");
-      // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
-
     postTransactions: function () {
       this.transactions['accountNnumber'] = this.transactions['accountNnumber'].split(' ')[0]
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_transaction.json', this.transactions).then(function (data) {
@@ -341,24 +329,26 @@ export default {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      let katy = 0
       for (var key in data) {
         let elem = data[key]
         elem['superkey'] = key
-        if (data[key]['typeOfTransaction'] === 'Покупка мощности' || 'Продажа мощности') {
+        if (data[key]['typeOfTнапransaction'] === 'Покупка мощности' || 'Продажа мощности') {
           data[key]['currency'] = 'BTC'
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
         }
-        if (data[key]['accountNnumber'] === '9999-001') {
-          data[key]['power'] += +data[key]['quantity']
+        if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {
+          this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
+          this.firebase.database().ref('customer_transaction').child(key).update('power').set(this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)])
+        } else {
+          this.accountNnumbers.push(data[key].accountNnumber)
+          this.power.push(+data[key].quantity)
+          this.firebase.database().ref('customer_transaction').child(key).push('power')
         }
-        katy += +data[key]['quantity']
         this.items.push(elem)
-        console.log(data[key]['quantity'])
-        console.log(data[key]['power'])
       }
-      console.log(katy)
+      console.log(this.accountNnumbers)
+      console.log(this.power)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
@@ -368,9 +358,8 @@ export default {
         this.number_clientsText.push(data[key]['accountNnumber'] + ' ' + data[key]['firstName'] + ' ' + data[key]['surname'])
       }
     })
-    this.transactions.date2 = moment().format()
+    this.transactions.date2 = moment().format('YYYY-MM-DD')
   }
-
 }
 </script>
 

@@ -215,7 +215,7 @@ export default {
         let elem = data[key]
         elem['superkey'] = key
         data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
-        data[key]['feeDay'] = Math.ceil(data[key]['feeDay'] * 1000000) / 1000000
+        data[key]['feeDay'] = Math.round(data[key]['feeDay'] * 1000000) / 1000000
         data[key]['miningItem'] = +data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']
         this.items.push(elem)
       }
