@@ -339,11 +339,11 @@ export default {
         }
         if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {
           this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
-          // this.firebase.database().ref('customer_transaction').child(key).update('power').set(this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)])
+          // this.firebase.database().ref('customer_transaction').child(key).push('power').set(this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)])
         } else {
           this.accountNnumbers.push(data[key].accountNnumber)
           this.power.push(+data[key].quantity)
-          // this.firebase.database().ref('customer_transaction').child(key).push('power')
+          // this.firebase.database().ref('customer_transaction').child(key).child('power').set('');
         }
         this.items.push(elem)
       }
