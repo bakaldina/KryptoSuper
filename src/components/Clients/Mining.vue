@@ -63,10 +63,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="mining.date" scrollable
-                    :date-format="date => new Date(date).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })"
-                    :formatted-value.sync="formatted"
-                    >
+                    <v-date-picker  locale="ru-RU" v-model="mining.date" scrollable >
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -121,7 +118,7 @@
 <script>
 // Imports
 import firebase from 'firebase'
-// import moment from 'moment'
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -139,7 +136,6 @@ export default {
       active: null,
       mining: {
         date: '',
-        miningItem: '',
         payOut: '',
         maintence: '',
         feeDay: '',
@@ -161,21 +157,6 @@ export default {
       valid: false
     }
   },
-  created () {
-    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
-      return data.json()
-    }).then(function (data) {
-      for (let key in data) {
-        let elem = data[key]
-        elem['superkey'] = key
-        data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
-        data[key]['feeDay'] = Math.round(data[key]['feeDay'] * 100000000) / 100000000
-        data[key]['miningItem'] = (+data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']).toFixed(8)
-        this.items.push(elem)
-      }
-    })
-    // this.mining.date = moment().format()
-  },
   methods: {
     logout: function () {
       firebase.auth().signOut().then(() => {
@@ -185,6 +166,7 @@ export default {
     removeClient: function (key) {
       let db = this.firebase.database()
       db.ref('customer_mining').child(key).remove()
+      console.log(this.items)
       this.items = []
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
         return data.json()
@@ -212,6 +194,7 @@ export default {
     },
     postMining: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_mining.json', this.mining).then(function (data) {
+        console.log(data)
         this.showModal = false
       })
     },
@@ -223,6 +206,21 @@ export default {
     clear () {
       this.$refs.formachka.reset()
     }
+  },
+  created () {
+    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
+      return data.json()
+    }).then(function (data) {
+      for (let key in data) {
+        let elem = data[key]
+        elem['superkey'] = key
+        data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
+        data[key]['feeDay'] = Math.round(data[key]['feeDay'] * 1000000) / 1000000
+        data[key]['miningItem'] = +data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']
+        this.items.push(elem)
+      }
+    })
+    this.mining.date = moment().format()
   }
 }
 </script>

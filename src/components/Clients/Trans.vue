@@ -267,6 +267,7 @@ export default {
       number_clients: [],
       number_clientsText: [],
       power: [],
+      accountNnumbers: [],
       items_currency: [
         'USD',
         'RUR',
@@ -309,19 +310,6 @@ export default {
         }
       })
     },
-   // editTrans: function (event, index, param) {
-    //   console.log(event.target.value)
-    //   console.log(this.firebase.database().ref(base))
-    //   console.log(this.clientsKey)
-    //   console.log(this.clientsKey[index])
-    //   console.log(param)
-
-     // let db = this.firebase.database()
-     // db.ref('customer_transaction').child(this.clientsKey[index]).child(param).set(event.target.value)
-      // let clientsRef = db.ref("customer_registry");
-      // clientsRef.child(entryId).set("30%");
-      // this.$firebaseRefs.clientsRef.child(client['.key']).set(entry);
-
     postTransactions: function () {
       this.transactions['accountNnumber'] = this.transactions['accountNnumber'].split(' ')[0]
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_transaction.json', this.transactions).then(function (data) {
@@ -349,13 +337,18 @@ export default {
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
         }
-        elem['power'] = +data[key]['quantity'] + +data[key]['summa']
-        // if (data[key]['accountNnumber'] === '9999-001') {
-        //   console.log(data[key]['power'])
-        //   data[key]['power'] = +data[key]['quantity'] + +data[key]['summa']
-        // }
+        if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {
+          this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
+          this.firebase.database().ref('customer_transaction').child(key).update('power').set(this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)])
+        } else {
+          this.accountNnumbers.push(data[key].accountNnumber)
+          this.power.push(+data[key].quantity)
+          this.firebase.database().ref('customer_transaction').child(key).push('power')
+        }
         this.items.push(elem)
       }
+      console.log(this.accountNnumbers)
+      console.log(this.power)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
@@ -367,7 +360,6 @@ export default {
     })
     this.transactions.date2 = moment().format('YYYY-MM-DD')
   }
-
 }
 </script>
 
