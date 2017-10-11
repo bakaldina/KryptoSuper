@@ -284,7 +284,6 @@ export default {
     removeClient: function (key) {
       let db = this.firebase.database()
       db.ref('customer_transaction').child(key).remove()
-      console.log(this.items)
       this.items = []
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
         return data.json()
@@ -336,6 +335,7 @@ export default {
           data[key]['currency'] = 'BTC'
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
+          this.firebase.database().ref('customer_transaction').child(key).child('summa').set(data[key]['summa'])
         }
         if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {
           this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
@@ -347,8 +347,6 @@ export default {
         }
         this.items.push(elem)
       }
-      console.log(this.accountNnumbers)
-      console.log(this.power)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()

@@ -63,7 +63,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="mining.date" scrollable >
+                    <v-date-picker  locale="ru-RU" date-format='DD-MM-YYYY' v-model="mining.date" scrollable >
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -214,13 +214,23 @@ export default {
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
-        data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
-        data[key]['feeDay'] = Math.round(data[key]['feeDay'] * 1000000) / 1000000
+        if ((data[key]['date'] === '2017-08-14') || (data[key]['date'] === '2017-08-15') || (data[key]['date'] === '2017-08-16') || (data[key]['date'] === '2017-08-17') || (data[key]['date'] === '2017-08-18') || (data[key]['date'] === '2017-08-19') || (data[key]['date'] === '2017-08-20') || (data[key]['date'] === '2017-08-21') || (data[key]['date'] === '2017-08-22') || (data[key]['date'] === '2017-08-23') || (data[key]['date'] === '2017-08-24') || (data[key]['date'] === '2017-08-25') || (data[key]['date'] === '2017-08-26')) {
+          console.log(1)
+          data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
+          data[key]['feeDay'] = Math.round(data[key]['feeDay'] * 100000000) / 100000000
+          this.firebase.database().ref('customer_mining').child(key).child('feeDay').set(data[key]['feeDay'])
+        } else {
+          console.log(2)
+          data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
+          data[key]['feeDay'] = Math.ceil(data[key]['feeDay'] * 1000000) / 1000000
+          this.firebase.database().ref('customer_mining').child(key).child('feeDay').set(data[key]['feeDay'])
+        }
         data[key]['miningItem'] = +data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']
+        this.firebase.database().ref('customer_mining').child(key).child('miningItem').set(data[key]['miningItem'])
         this.items.push(elem)
       }
     })
-    this.mining.date = moment().format()
+    this.mining.date = moment().format('YYYY-MM-DD')
   }
 }
 </script>
