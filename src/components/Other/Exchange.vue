@@ -13,8 +13,6 @@
                 <td>{{ items[0].USD }}</td>
             </tr>
         </table>
-
-        
     </section>
 </template>
 

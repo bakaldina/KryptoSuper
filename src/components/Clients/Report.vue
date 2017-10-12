@@ -10,52 +10,72 @@
         </v-btn></div>
         <br>
         <br>
-        <h2>Отчет фонда</h2>
-        <!-- <v-data-table
-        hide-actions
-        class=""
-        > -->
-        <v-data-table
-            v-bind:headers="headers"
-            :items="items"
-            hide-actions
-            class="elevation-1 clients-table"
-        >
-        <template>
-            <tr align="center">
-                <td class="text-xs-right"><input :value="props.item.miningItem"></td>
-                <td class="text-xs-right"><input :value="props.item.miningItem">Значение</td>
+        <h1>Отчет фонда</h1>
+        <table cellspacing="0" cellpadding="0" border="1" width="100%">
+            <tr>
+                <th>Клиентский BTC</th>
+                <td>{{ report[0].clientsBTC }}</td>
             </tr>
-            <tr align="center">
-                <td>Ячейка 2</td>
-                <td>Значение</td>
+            <tr>
+                <th>Сумма на бирже</th>
+                <td>{{ report[0].amountExchange }}</td>
             </tr>
-        </template>
-        </v-data-table>
+            <tr>
+                <th>Общая сумма</th>
+                <td>{{ report[0].amountTotal }}</td>
+            </tr>
+            <tr>
+                <th>Разница</th>
+                <td>{{ report[0].difference }}</td>
+            </tr>
+            <tr>
+                <th>Комиссия управления</th>
+                <td>{{ report[0].commissionManagement }}</td>
+            </tr>
+            <tr>
+                <th>Комиссия дня</th>
+                <td>{{ report[0].commissionDay }}</td>
+            </tr>
+            <tr>
+                <th>Округление</th>
+                <td>{{ report[0].rounding }}</td>
+            </tr>
+            <tr>
+                <th>Общая комиссия</th>
+                <td>{{ report[0].commissionTotal }}</td>
+            </tr>
+            <tr>
+                <th>BTC фонда</th>
+                <td>{{ report[0].fundBTC }}</td>
+            </tr>
+            <tr>
+                <th>Общая мощность фонда</th>
+                <td>{{ report[0].powerFund }}</td>
+            </tr>
+            <tr>
+                <th>Количество клиентов</th>
+                <td>{{ report[0].quantityClients }}</td>
+            </tr>
+            <tr>
+                <th>Общая сумма привлеченных средств</th>
+                <td>{{ report[0].amoundTotalFund }}</td>
+            </tr>
+            <tr>
+                <th>Общая сумма выплат</th>
+                <td>{{ report[0].amountPayout }}</td>
+            </tr>
+        </table>
     </section>
 </template>
 
-
-
 <script>
 // Imports
-import firebase from 'firebase'
+// import firebase from 'firebase'
+
 export default {
   data () {
     return {
-      menuItems: [
-        {icon: 'group', title: 'Клиенты', link: '/contracts'},
-        {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
-        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
-        {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
-      ],
-      menu: false,
-    //   modal: false,
-      firebase: firebase,
-    //   isOpen: false,
-    //   showModal: false,
-      active: null,
-      rating: {
+      report: [{
         clientsBTC: '',
         amountExchange: '',
         amountHashnest: '',
@@ -70,82 +90,45 @@ export default {
         quantityClients: '',
         amoundTotalFund: '',
         amountPayout: ''
-      },
-      headers: [
-        // { text: 'Дата', value: 'date' },
-        // { text: 'Майнинг', value: 'miningItem' },
-        // { text: 'Pay out', value: 'payOut' },
-        // { text: 'Maintence', value: 'maintence' },
-        // { text: 'Размер Fee day, %', value: 'feeDayItem' },
-        // { text: 'Fee day', value: 'feeDay' },
-        // { text: 'Курс BTC', value: 'сoursesBTC' },
-        // { text: 'Курс USD', value: 'сoursesUSD' },
-        // { text: 'Удалить', value: 'Remove' }
-      ],
-      items: [],
-      valid: false
+      }],
+      menuItems: [
+        {icon: 'group', title: 'Клиенты', link: '/contracts'},
+        {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
+        {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
+        {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
+      ]
+    //   headers: [
+    //     { text: 'Клиентский BTC', value: 'clientsBTC' },
+    //     { text: 'Сумма на бирже', value: 'amountExchange' },
+    //     { text: 'Сумма на HasnNest', value: 'amountHashnest' },
+    //     { text: 'Общая сумма', value: 'amountTotal' },
+    //     { text: 'Разница', value: 'difference' },
+    //     { text: 'Комиссия управления', value: 'commissionManagement' },
+    //     { text: 'Комиссия дня', value: 'commissionDay' },
+    //     { text: 'Округление', value: 'rounding' },
+    //     { text: 'Общая комиссия', value: 'commissionTotal' },
+    //     { text: 'BTC фонда', value: 'fundBTC' },
+    //     { text: 'Общая мощность фонда', value: 'powerFund' },
+    //     { text: 'Количество клиентов', value: 'quantityClients' },
+    //     { text: 'Общая сумма привлеченных средств', value: 'amoundTotalFund' },
+    //     { text: 'Общая сумма выплат', value: 'amountPayout' }
+
+    //   ],
     }
   },
-  methods: {
-    logout: function () {
-      firebase.auth().signOut().then(() => {
-        this.$router.replace('login')
-      })
-    }
-    // removeClient: function (key) {
-    //   let db = this.firebase.database()
-    //   db.ref('customer_mining').child(key).remove()
-    //   console.log(this.items)
-    //   this.items = []
-    //   this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
-    //     return data.json()
-    //   }).then(function (data) {
-    //     for (let key in data) {
-    //       let elem = data[key]
-    //       elem['superkey'] = key
-    //       this.items.push(elem)
-    //     }
-    //   })
-    // },
-    // editClient: function (event, base, index, param) {
-    //   let db = this.firebase.database()
-    //   db.ref(base).child(index).child(param).set(event.target.value)
-    //   this.items = []
-    //   this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
-    //     return data.json()
-    //   }).then(function (data) {
-    //     for (let key in data) {
-    //       let elem = data[key]
-    //       elem['superkey'] = key
-    //       this.items.push(elem)
-    //     }
-    //   })
-    // },
-    // postMining: function () {
-    //   this.$http.post('https://vueti-5ed25.firebaseio.com/customer_report.json', this.mining).then(function (data) {
-    //     console.log(data)
-    //     this.showModal = false
-    //   })
-    // },
-//     submit () {
-//       if (this.$refs.formachka.validate()) {
-//         this.$refs.formachka.$el.submit()
-//       }
+//   methods: {
+//     logout: function () {
+//       firebase.auth().signOut().then(() => {
+//         this.$router.replace('login')
+//       })
 //     },
-//     clear () {
-//       this.$refs.formachka.reset()
-//     }
-//   },
-//   created () {
-//     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
-//       return data.json()
-//     }).then(function (data) {
-//       for (let key in data) {
-//         let elem = data[key]
-//         elem['superkey'] = key
-//         this.items.push(elem)
-//       }
-//     })
+  created () {
+    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
+      return data.json()
+    }).then(function (data) {
+      console.log(data)
+      this.report[0].clientsBTC = data.clientsBTC
+    })
   }
 }
 </script>
