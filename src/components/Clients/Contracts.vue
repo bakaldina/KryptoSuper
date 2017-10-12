@@ -163,14 +163,14 @@ export default {
         { text: 'Сумма BTC', value: 'summaBTC' },
         { text: 'Сумма RUR', value: 'summaRUR' },
         { text: 'Общее кол-во мощности', value: 'power' },
-        { text: 'Доля', value: 'proportion' },
+        { text: 'Доля, %', value: 'proportion' },
         { text: 'Удалить', value: 'Remove' }
       ],
       transactions: [],
       power: [],
       powerSum: 0,
       summaBTCSum: 0,
-      proportionSum: 0,
+      proportionSum: 100,
       summaBTC: [],
       summaRUR: [],
       proportion: [],
@@ -251,11 +251,13 @@ export default {
         if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {  // проверка на существование номмера клиента в массиве
           if (data[key].typeOfTransaction === 'Покупка мощности') {
             this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
+            this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].summa
           }
           if (data[key].typeOfTransaction === 'Продажа мощности') {
             this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] - +data[key].quantity
+            this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] - +data[key].summa
           }
-          this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].summa
+          // this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].summa
           // this.proportion[this.accountNnumbers.indexOf(data[key].accountNnumber)] = this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] / this.powerSum
         } else { // если нет добавляем этот номер в массив
           this.accountNnumbers.push(data[key].accountNnumber)
@@ -272,12 +274,15 @@ export default {
       }
       for (var i = 0; i < this.power.length; i++) {
         this.powerSum = this.powerSum + parseInt(this.power[i])
+        this.summaBTCSum += this.summaBTC[i]
       }
+      // for (var j = 0; j < this.power.length; j++) {
+      //   this.summaBTCSum = this.summaBTCSum + parseInt(this.summaBTC[j])
+      //   console.log(this.summaBTCSum)
+      // }
       for (var e = 0; e < this.summaBTC.length; e++) {
-        this.summaBTCSum = this.summaBTCSum + parseInt(this.summaBTC[e])
-        this.proportion.push(this.power[e] / this.powerSum)
-        this.proportionSum += this.proportion[e]
-        console.log(this.proportionSum)
+        this.proportion.push(100 * Math.floor(this.power[e] / this.powerSum * 10000) / 10000)
+        console.log(this.proportion)
       }
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
         return data.json()

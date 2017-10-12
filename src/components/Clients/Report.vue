@@ -15,34 +15,26 @@
         hide-actions
         class=""
         > -->
+        <v-data-table
+            v-bind:headers="headers"
+            :items="items"
+            hide-actions
+            class="elevation-1 clients-table"
+        >
         <template>
-            <table cellspacing="0" cellpadding="0" border="1" width="100%">
-                <tr align="center">
-                    <td>Ячейка 1</td>
-                    <td>Значение</td>
-                </tr>
-                <tr align="center">
-                    <td>Ячейка 2</td>
-                    <td>Значение</td>
-                </tr>
-        </table>
-            <!-- <td class="text-xs-right"><input :value="props.item.date" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'date')"></td>
-            <td class="text-xs-right"><input :value="props.item.miningItem" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'miningItem')"></td>
-            <td class="text-xs-right"><input :value="props.item.payOut" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'payOut')"></td>
-            <td class="text-xs-right"><input :value="props.item.maintence" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'maintence')"></td>
-            <td class="text-xs-right"><input :value="props.item.feeDayItem" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'feeDayItem')"></td>
-            <td class="text-xs-right"><input :value="props.item.feeDay" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'feeDay')"></td>
-            <td class="text-xs-right"><input :value="props.item.сoursesBTC" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'сoursesBTC')"></td>
-            <td class="text-xs-right"><input :value="props.item.сoursesUSD" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'сoursesUSD')"></td>
-            <td class="text-xs-right">
-              <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
-                <v-icon dark>remove</v-icon>
-              </v-btn>
-            </td> -->
+            <tr align="center">
+                <td class="text-xs-right"><input :value="props.item.miningItem"></td>
+                <td class="text-xs-right"><input :value="props.item.miningItem">Значение</td>
+            </tr>
+            <tr align="center">
+                <td>Ячейка 2</td>
+                <td>Значение</td>
+            </tr>
         </template>
-        <!-- </v-data-table>            -->
+        </v-data-table>
     </section>
 </template>
+
 
 
 <script>
@@ -63,14 +55,22 @@ export default {
     //   isOpen: false,
     //   showModal: false,
       active: null,
-    //   mining: {
-    //     date: '',
-    //     payOut: '',
-    //     maintence: '',
-    //     feeDay: '',
-    //     сoursesBTC: '',
-    //     сoursesUSD: ''
-    //   },
+      rating: {
+        clientsBTC: '',
+        amountExchange: '',
+        amountHashnest: '',
+        amountTotal: '',
+        difference: '',
+        commissionManagement: '',
+        commissionDay: '',
+        commissionTotal: '',
+        fundBTC: '',
+        rounding: '',
+        powerFund: '',
+        quantityClients: '',
+        amoundTotalFund: '',
+        amountPayout: ''
+      },
       headers: [
         // { text: 'Дата', value: 'date' },
         // { text: 'Майнинг', value: 'miningItem' },

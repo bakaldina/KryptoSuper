@@ -336,14 +336,7 @@ export default {
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
           this.firebase.database().ref('customer_transaction').child(key).child('summa').set(data[key]['summa'])
-        }
-        if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {
-          this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
-          // this.firebase.database().ref('customer_transaction').child(key).push('power').set(this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)])
-        } else {
-          this.accountNnumbers.push(data[key].accountNnumber)
-          this.power.push(+data[key].quantity)
-          // this.firebase.database().ref('customer_transaction').child(key).child('power').set('');
+          console.log(data[key]['summa'])
         }
         this.items.push(elem)
       }
