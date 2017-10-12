@@ -276,13 +276,14 @@ export default {
         this.powerSum = this.powerSum + parseInt(this.power[i])
         this.summaBTCSum += this.summaBTC[i]
       }
+      this.firebase.database().ref('customer_report').child('powerFund').set(this.powerSum)
+      this.firebase.database().ref('customer_report').child('clientsBTC').set(this.summaBTCSum)
       // for (var j = 0; j < this.power.length; j++) {
       //   this.summaBTCSum = this.summaBTCSum + parseInt(this.summaBTC[j])
       //   console.log(this.summaBTCSum)
       // }
       for (var e = 0; e < this.summaBTC.length; e++) {
         this.proportion.push(100 * Math.floor(this.power[e] / this.powerSum * 10000) / 10000)
-        console.log(this.proportion)
       }
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
         return data.json()

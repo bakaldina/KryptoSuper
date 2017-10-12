@@ -1,0 +1,31 @@
+[debug] [2017-10-12T21:38:04.973Z] ----------------------------------------------------------------------
+[debug] [2017-10-12T21:38:04.977Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2017-10-12T21:38:04.977Z] CLI Version:   3.10.1
+[debug] [2017-10-12T21:38:04.977Z] Platform:      darwin
+[debug] [2017-10-12T21:38:04.978Z] Node Version:  v6.11.0
+[debug] [2017-10-12T21:38:04.978Z] Time:          Fri Oct 13 2017 00:38:04 GMT+0300 (MSK)
+[debug] [2017-10-12T21:38:04.978Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-10-12T21:38:05.000Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-10-12T21:38:05.001Z] > authorizing via signed-in user
+[debug] [2017-10-12T21:38:05.005Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-10-12T21:38:05.006Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/VTAaIWkNBoBrOgrzyoVpTnMCvXomXcJXNc5pCgDo978',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Fri Oct 13 2017 00:38:05 GMT+0300 (MSK)
+[debug] [2017-10-12T21:38:05.216Z] <<< HTTP RESPONSE 200
+[debug] [2017-10-12T21:38:05.225Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/vueti-5ed25  
+ Fri Oct 13 2017 00:38:05 GMT+0300 (MSK)
+[debug] [2017-10-12T21:38:06.535Z] <<< HTTP RESPONSE 200
+[debug] [2017-10-12T21:38:06.537Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/vueti-5ed25/tokens  
+ Fri Oct 13 2017 00:38:06 GMT+0300 (MSK)
+[debug] [2017-10-12T21:38:07.401Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'vueti-5ed25'...
+[info] 
+[info] i  deploying hosting
+[info] i  hosting: preparing dist directory for upload...
+[debug] [2017-10-12T21:38:10.818Z] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/vueti-5ed25/uploads/-KwHWTjmIca7tGYMIJ0M?fileCount=12&message=  
+ Fri Oct 13 2017 00:38:10 GMT+0300 (MSK)

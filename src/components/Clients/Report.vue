@@ -11,58 +11,58 @@
         <br>
         <br>
         <h1>Отчет фонда</h1>
-        <table cellspacing="0" cellpadding="0" border="1" width="100%">
+        <table class="report-table" cellspacing="0" cellpadding="0" border="1" width="100%">
             <tr>
                 <th>Клиентский BTC</th>
-                <td>{{ report[0].clientsBTC }}</td>
+                <td>{{ report.clientsBTC }}</td>
             </tr>
             <tr>
                 <th>Сумма на бирже</th>
-                <td>{{ report[0].amountExchange }}</td>
+                <td>{{ report.amountExchange }}</td>
             </tr>
             <tr>
                 <th>Общая сумма</th>
-                <td>{{ report[0].amountTotal }}</td>
+                <td>{{ report.amountTotal }}</td>
             </tr>
             <tr>
                 <th>Разница</th>
-                <td>{{ report[0].difference }}</td>
+                <td>{{ report.difference }}</td>
             </tr>
             <tr>
                 <th>Комиссия управления</th>
-                <td>{{ report[0].commissionManagement }}</td>
+                <td>{{ report.commissionManagement }}</td>
             </tr>
             <tr>
                 <th>Комиссия дня</th>
-                <td>{{ report[0].commissionDay }}</td>
+                <td>{{ report.commissionDay }}</td>
             </tr>
             <tr>
                 <th>Округление</th>
-                <td>{{ report[0].rounding }}</td>
+                <td>{{ report.rounding }}</td>
             </tr>
             <tr>
                 <th>Общая комиссия</th>
-                <td>{{ report[0].commissionTotal }}</td>
+                <td>{{ report.commissionTotal }}</td>
             </tr>
             <tr>
                 <th>BTC фонда</th>
-                <td>{{ report[0].fundBTC }}</td>
+                <td>{{ report.fundBTC }}</td>
             </tr>
             <tr>
                 <th>Общая мощность фонда</th>
-                <td>{{ report[0].powerFund }}</td>
+                <td>{{ report.powerFund }}</td>
             </tr>
             <tr>
                 <th>Количество клиентов</th>
-                <td>{{ report[0].quantityClients }}</td>
+                <td>{{ report.quantityClients }}</td>
             </tr>
             <tr>
                 <th>Общая сумма привлеченных средств</th>
-                <td>{{ report[0].amoundTotalFund }}</td>
+                <td>{{ report.amoundTotalFund }}</td>
             </tr>
             <tr>
                 <th>Общая сумма выплат</th>
-                <td>{{ report[0].amountPayout }}</td>
+                <td>{{ report.amountPayout }}</td>
             </tr>
         </table>
     </section>
@@ -70,12 +70,12 @@
 
 <script>
 // Imports
-// import firebase from 'firebase'
+import firebase from 'firebase'
 
 export default {
   data () {
     return {
-      report: [{
+      report: {
         clientsBTC: '',
         amountExchange: '',
         amountHashnest: '',
@@ -90,7 +90,8 @@ export default {
         quantityClients: '',
         amoundTotalFund: '',
         amountPayout: ''
-      }],
+      },
+      firebase: firebase,
       menuItems: [
         {icon: 'group', title: 'Клиенты', link: '/contracts'},
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
@@ -127,7 +128,8 @@ export default {
       return data.json()
     }).then(function (data) {
       console.log(data)
-      this.report[0].clientsBTC = data.clientsBTC
+      this.report.powerFund = data.powerFund
+      this.report.clientsBTC = data.clientsBTC
     })
   }
 }
@@ -166,8 +168,8 @@ button.new-client {
     background-color: #3299BB!important;
     border-color: #3299BB!important;
 }
-table.clients-table {
-    width: 100%;
+table.report-table {
+    width: 70%;
     border-collapse: collapse;
 }
 .clients-table th, .clients-table td {
@@ -301,5 +303,16 @@ input {
 }
 .application--light .picker .picker__title {
     background: #37474f;
+}
+td {
+    padding: 0 20px;
+    text-align: left;
+    font-size: 20px;
+}
+th {
+    padding: 0 40px;
+    font-size: 20px;
+    text-align: left;
+    width: 70%;
 }
 </style>

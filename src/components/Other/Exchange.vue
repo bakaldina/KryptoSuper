@@ -8,9 +8,9 @@
                 <th>USD</th>
             </tr>
             <tr align="center">
-                <td>{{ items[0].DATE }}</td>
-                <td>{{ items[0].BTC }}</td>
-                <td>{{ items[0].USD }}</td>
+                <td>{{ items.DATE }}</td>
+                <td>{{ items.BTC }}</td>
+                <td>{{ items.USD }}</td>
             </tr>
         </table>
     </section>
@@ -22,20 +22,20 @@
 export default {
   data () {
     return {
-      items: [{
+      items: {
         DATE: '',
         BTC: '',
         USD: ''
-      }]
+      }
     }
   },
   created () {
     this.$http.get('https://vueti-5ed25.firebaseio.com/currency.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      this.items[0].DATE = data.DATE
-      this.items[0].BTC = data.BTC
-      this.items[0].USD = data.USD
+      this.items.DATE = data.DATE
+      this.items.BTC = data.BTC
+      this.items.USD = data.USD
     })
   }
 }
