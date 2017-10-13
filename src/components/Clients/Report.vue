@@ -15,54 +15,72 @@
             <tr>
                 <th>Клиентский BTC</th>
                 <td>{{ report.clientsBTC }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Сумма на бирже</th>
                 <td>{{ report.amountExchange }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Общая сумма</th>
                 <td>{{ report.amountTotal }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Разница</th>
                 <td>{{ report.difference }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Комиссия управления</th>
                 <td>{{ report.commissionManagement }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Комиссия дня</th>
                 <td>{{ report.commissionDay }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Округление</th>
                 <td>{{ report.rounding }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Общая комиссия</th>
                 <td>{{ report.commissionTotal }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>BTC фонда</th>
                 <td>{{ report.fundBTC }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Общая мощность фонда</th>
                 <td>{{ report.powerFund }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Количество клиентов</th>
                 <td>{{ report.quantityClients }}</td>
+                <td></td>
             </tr>
             <tr>
-                <th>Общая сумма привлеченных средств</th>
-                <td>{{ report.amoundTotalFund }}</td>
+                <th>Общая сумма привлеченных средств в BTC</th>
+                <td>{{ report.amoundTotalFundBTC }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Общая сумма привлеченных средств в RUR</th>
+                <td>{{ report.amoundTotalFundRUR }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Общая сумма выплат</th>
                 <td>{{ report.amountPayout }}</td>
+                <td></td>
             </tr>
         </table>
     </section>
@@ -88,7 +106,8 @@ export default {
         rounding: '',
         powerFund: '',
         quantityClients: '',
-        amoundTotalFund: '',
+        amoundTotalFundBTC: '',
+        amoundTotalFundRUR: '',
         amountPayout: ''
       },
       firebase: firebase,
@@ -129,7 +148,9 @@ export default {
     }).then(function (data) {
       console.log(data)
       this.report.powerFund = data.powerFund
-      this.report.clientsBTC = data.clientsBTC
+      this.report.amoundTotalFundBTC = data.amoundTotalFundBTC
+      this.report.amountExchange = data.amountExchange
+      this.report.quantityClients = data.quantityClients
     })
   }
 }

@@ -170,6 +170,7 @@ export default {
       power: [],
       powerSum: 0,
       summaBTCSum: 0,
+      quantityClients: 0,
       proportionSum: 100,
       summaBTC: [],
       summaRUR: [],
@@ -275,13 +276,13 @@ export default {
       for (var i = 0; i < this.power.length; i++) {
         this.powerSum = this.powerSum + parseInt(this.power[i])
         this.summaBTCSum += this.summaBTC[i]
+        // this.summaBTCSum = this.summaBTCSum.substr(0, 4)
       }
+      this.quantityClients = this.accountNnumbers.length
+      console.log(this.summaBTCSum)
       this.firebase.database().ref('customer_report').child('powerFund').set(this.powerSum)
-      this.firebase.database().ref('customer_report').child('clientsBTC').set(this.summaBTCSum)
-      // for (var j = 0; j < this.power.length; j++) {
-      //   this.summaBTCSum = this.summaBTCSum + parseInt(this.summaBTC[j])
-      //   console.log(this.summaBTCSum)
-      // }
+      this.firebase.database().ref('customer_report').child('amoundTotalFundBTC').set(this.summaBTCSum)
+      this.firebase.database().ref('customer_report').child('quantityClients').set(this.quantityClients)
       for (var e = 0; e < this.summaBTC.length; e++) {
         this.proportion.push(100 * Math.floor(this.power[e] / this.powerSum * 10000) / 10000)
       }
