@@ -122,7 +122,6 @@
     </section>
 </template>
 
-
 <script>
 // Imports
 import firebase from 'firebase'
@@ -279,7 +278,6 @@ export default {
         // this.summaBTCSum = this.summaBTCSum.substr(0, 4)
       }
       this.quantityClients = this.accountNnumbers.length
-      console.log(this.summaBTCSum)
       this.firebase.database().ref('customer_report').child('powerFund').set(this.powerSum)
       this.firebase.database().ref('customer_report').child('amoundTotalFundBTC').set(this.summaBTCSum)
       this.firebase.database().ref('customer_report').child('quantityClients').set(this.quantityClients)

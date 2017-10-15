@@ -146,7 +146,6 @@ export default {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      console.log(data)
       this.report.powerFund = data.powerFund
       this.report.amoundTotalFundBTC = data.amoundTotalFundBTC
       this.report.amountExchange = data.amountExchange
@@ -306,6 +305,7 @@ button {
 }
 .input-group {
   padding: 15px 0 0 0;
+
 }
 .input-group--text-field input {
   height: 30px;
