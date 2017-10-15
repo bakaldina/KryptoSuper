@@ -63,7 +63,7 @@
                       prepend-icon="event"
                       readonly
                     ></v-text-field>
-                    <v-date-picker  locale="ru-RU" v-model="mining.date" scrollable >
+                    <v-date-picker  locale="ru-RU" date-format='DD-MM-YYYY' v-model="mining.date" scrollable >
                       <template scope="{ save, cancel }">
                         <v-card-actions>
                           <v-btn flat primary @click.native="cancel()">Отмена</v-btn>
@@ -109,8 +109,7 @@
                 </v-form>
                 </div>
             </div>
-        </div>
-                  
+        </div>      
     </section>
 </template>
 
@@ -166,7 +165,6 @@ export default {
     removeClient: function (key) {
       let db = this.firebase.database()
       db.ref('customer_mining').child(key).remove()
-      console.log(this.items)
       this.items = []
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
         return data.json()
@@ -194,7 +192,6 @@ export default {
     },
     postMining: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_mining.json', this.mining).then(function (data) {
-        console.log(data)
         this.showModal = false
       })
     },
@@ -214,13 +211,27 @@ export default {
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
-        data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
-        data[key]['feeDay'] = Math.round(data[key]['feeDay'] * 1000000) / 1000000
-        data[key]['miningItem'] = +data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']
+        if ((data[key]['date'] === '2017-08-14') || (data[key]['date'] === '2017-08-15') || (data[key]['date'] === '2017-08-16') || (data[key]['date'] === '2017-08-17') || (data[key]['date'] === '2017-08-18') || (data[key]['date'] === '2017-08-19') || (data[key]['date'] === '2017-08-20') || (data[key]['date'] === '2017-08-21') || (data[key]['date'] === '2017-08-22') || (data[key]['date'] === '2017-08-23') || (data[key]['date'] === '2017-08-24') || (data[key]['date'] === '2017-08-25') || (data[key]['date'] === '2017-08-26')) {
+          data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
+          data[key]['feeDay'] = Math.round(data[key]['feeDay'] * 100000000) / 100000000
+          this.firebase.database().ref('customer_mining').child(key).child('feeDay').set(data[key]['feeDay'])
+        } else {
+          data[key]['feeDay'] = +data[key]['feeDayItem'] / 100 * +data[key]['payOut']
+          data[key]['feeDay'] = Math.ceil(data[key]['feeDay'] * 1000000) / 1000000
+          this.firebase.database().ref('customer_mining').child(key).child('feeDay').set(data[key]['feeDay'])
+        }
+        if ((data[key]['date'] === '2017-07-14') || (data[key]['date'] === '2017-07-15') || (data[key]['date'] === '2017-07-16') || (data[key]['date'] === '2017-07-17') || (data[key]['date'] === '2017-07-18') || (data[key]['date'] === '2017-07-19') || (data[key]['date'] === '2017-07-20') || (data[key]['date'] === '2017-07-21') || (data[key]['date'] === '2017-07-22') || (data[key]['date'] === '2017-07-23') || (data[key]['date'] === '2017-07-24') || (data[key]['date'] === '2017-07-25') || (data[key]['date'] === '2017-07-26') || (data[key]['date'] === '2017-07-27') || (data[key]['date'] === '2017-07-28') || (data[key]['date'] === '2017-07-29') || (data[key]['date'] === '2017-07-30') || (data[key]['date'] === '2017-07-31') || (data[key]['date'] === '2017-08-01') || (data[key]['date'] === '2017-08-02') || (data[key]['date'] === '2017-08-03') || (data[key]['date'] === '2017-08-04') || (data[key]['date'] === '2017-08-05') || (data[key]['date'] === '2017-08-06') || (data[key]['date'] === '2017-08-07') || (data[key]['date'] === '2017-08-08') || (data[key]['date'] === '2017-08-09') || (data[key]['date'] === '2017-08-10') || (data[key]['date'] === '2017-08-11') || (data[key]['date'] === '2017-08-12') || (data[key]['date'] === '2017-08-13') || (data[key]['date'] === '2017-08-14') || (data[key]['date'] === '2017-08-15') || (data[key]['date'] === '2017-08-16') || (data[key]['date'] === '2017-08-17') || (data[key]['date'] === '2017-08-18') || (data[key]['date'] === '2017-08-19') || (data[key]['date'] === '2017-08-20') || (data[key]['date'] === '2017-08-21') || (data[key]['date'] === '2017-08-22') || (data[key]['date'] === '2017-08-23') || (data[key]['date'] === '2017-08-24') || (data[key]['date'] === '2017-08-25') || (data[key]['date'] === '2017-08-26') || (data[key]['date'] === '2017-08-27') || (data[key]['date'] === '2017-08-28') || (data[key]['date'] === '2017-08-29') || (data[key]['date'] === '2017-08-30') || (data[key]['date'] === '2017-08-31') || (data[key]['date'] === '2017-09-01') || (data[key]['date'] === '2017-09-02') || (data[key]['date'] === '2017-09-03') || (data[key]['date'] === '2017-09-04') || (data[key]['date'] === '2017-09-05') || (data[key]['date'] === '2017-09-06') || (data[key]['date'] === '2017-09-07') || (data[key]['date'] === '2017-09-08') || (data[key]['date'] === '2017-09-09') || (data[key]['date'] === '2017-09-10') || (data[key]['date'] === '2017-09-11') || (data[key]['date'] === '2017-09-12') || (data[key]['date'] === '2017-09-13') || (data[key]['date'] === '2017-09-14') || (data[key]['date'] === '2017-09-15') || (data[key]['date'] === '2017-09-16') || (data[key]['date'] === '2017-09-17') || (data[key]['date'] === '2017-09-18') || (data[key]['date'] === '2017-09-19') || (data[key]['date'] === '2017-09-20') || (data[key]['date'] === '2017-09-21') || (data[key]['date'] === '2017-09-22') || (data[key]['date'] === '2017-09-23') || (data[key]['date'] === '2017-09-24') || (data[key]['date'] === '2017-09-25') || (data[key]['date'] === '2017-09-26') || (data[key]['date'] === '2017-09-27') || (data[key]['date'] === '2017-09-28') || (data[key]['date'] === '2017-09-29') || (data[key]['date'] === '2017-09-30')) {
+          data[key]['miningItem'] = Math.floor((+data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']) * 100000) / 1000000
+          this.firebase.database().ref('customer_mining').child(key).child('miningItem').set(data[key]['miningItem'])
+        } else {
+          data[key]['miningItem'] = Math.floor((+data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']) * 10000) / 10000
+          this.firebase.database().ref('customer_mining').child(key).child('miningItem').set(data[key]['miningItem'])
+        }
+        this.firebase.database().ref('customer_mining').child(key).child('miningItem').set(data[key]['miningItem'])
         this.items.push(elem)
       }
     })
-    this.mining.date = moment().format()
+    this.mining.date = moment().format('YYYY-MM-DD')
   }
 }
 </script>

@@ -10,142 +10,147 @@
         </v-btn></div>
         <br>
         <br>
-        <h2>Отчет фонда</h2>
-        <!-- <v-data-table
-        hide-actions
-        class=""
-        > -->
-        <template>
-            <table cellspacing="0" cellpadding="0" border="1" width="100%">
-                <tr align="center">
-                    <td>Ячейка 1</td>
-                    <td>Значение</td>
-                </tr>
-                <tr align="center">
-                    <td>Ячейка 2</td>
-                    <td>Значение</td>
-                </tr>
+        <h1>Отчет фонда</h1>
+        <table class="report-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+            <tr>
+                <th>Клиентский BTC</th>
+                <td>{{ report.clientsBTC }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Сумма на бирже</th>
+                <td>{{ report.amountExchange }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Общая сумма</th>
+                <td>{{ report.amountTotal }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Разница</th>
+                <td>{{ report.difference }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Комиссия управления</th>
+                <td>{{ report.commissionManagement }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Комиссия дня</th>
+                <td>{{ report.commissionDay }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Округление</th>
+                <td>{{ report.rounding }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Общая комиссия</th>
+                <td>{{ report.commissionTotal }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>BTC фонда</th>
+                <td>{{ report.fundBTC }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Общая мощность фонда</th>
+                <td>{{ report.powerFund }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Количество клиентов</th>
+                <td>{{ report.quantityClients }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Общая сумма привлеченных средств в BTC</th>
+                <td>{{ report.amoundTotalFundBTC }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Общая сумма привлеченных средств в RUR</th>
+                <td>{{ report.amoundTotalFundRUR }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Общая сумма выплат</th>
+                <td>{{ report.amountPayout }}</td>
+                <td></td>
+            </tr>
         </table>
-            <!-- <td class="text-xs-right"><input :value="props.item.date" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'date')"></td>
-            <td class="text-xs-right"><input :value="props.item.miningItem" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'miningItem')"></td>
-            <td class="text-xs-right"><input :value="props.item.payOut" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'payOut')"></td>
-            <td class="text-xs-right"><input :value="props.item.maintence" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'maintence')"></td>
-            <td class="text-xs-right"><input :value="props.item.feeDayItem" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'feeDayItem')"></td>
-            <td class="text-xs-right"><input :value="props.item.feeDay" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'feeDay')"></td>
-            <td class="text-xs-right"><input :value="props.item.сoursesBTC" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'сoursesBTC')"></td>
-            <td class="text-xs-right"><input :value="props.item.сoursesUSD" @keyup.enter="editClient($event, 'customer_mining', props.item.superkey, 'сoursesUSD')"></td>
-            <td class="text-xs-right">
-              <v-btn fab dark small primary @click="removeClient(props.item.superkey)">
-                <v-icon dark>remove</v-icon>
-              </v-btn>
-            </td> -->
-        </template>
-        <!-- </v-data-table>            -->
     </section>
 </template>
-
 
 <script>
 // Imports
 import firebase from 'firebase'
+
 export default {
   data () {
     return {
+      report: {
+        clientsBTC: '',
+        amountExchange: '',
+        amountHashnest: '',
+        amountTotal: '',
+        difference: '',
+        commissionManagement: '',
+        commissionDay: '',
+        commissionTotal: '',
+        fundBTC: '',
+        rounding: '',
+        powerFund: '',
+        quantityClients: '',
+        amoundTotalFundBTC: '',
+        amoundTotalFundRUR: '',
+        amountPayout: ''
+      },
+      firebase: firebase,
       menuItems: [
         {icon: 'group', title: 'Клиенты', link: '/contracts'},
         {icon: 'query_builder', title: 'Транзакции', link: '/trans'},
         {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
         {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
-      ],
-      menu: false,
-    //   modal: false,
-      firebase: firebase,
-    //   isOpen: false,
-    //   showModal: false,
-      active: null,
-    //   mining: {
-    //     date: '',
-    //     payOut: '',
-    //     maintence: '',
-    //     feeDay: '',
-    //     сoursesBTC: '',
-    //     сoursesUSD: ''
-    //   },
-      headers: [
-        // { text: 'Дата', value: 'date' },
-        // { text: 'Майнинг', value: 'miningItem' },
-        // { text: 'Pay out', value: 'payOut' },
-        // { text: 'Maintence', value: 'maintence' },
-        // { text: 'Размер Fee day, %', value: 'feeDayItem' },
-        // { text: 'Fee day', value: 'feeDay' },
-        // { text: 'Курс BTC', value: 'сoursesBTC' },
-        // { text: 'Курс USD', value: 'сoursesUSD' },
-        // { text: 'Удалить', value: 'Remove' }
-      ],
-      items: [],
-      valid: false
+      ]
+    //   headers: [
+    //     { text: 'Клиентский BTC', value: 'clientsBTC' },
+    //     { text: 'Сумма на бирже', value: 'amountExchange' },
+    //     { text: 'Сумма на HasnNest', value: 'amountHashnest' },
+    //     { text: 'Общая сумма', value: 'amountTotal' },
+    //     { text: 'Разница', value: 'difference' },
+    //     { text: 'Комиссия управления', value: 'commissionManagement' },
+    //     { text: 'Комиссия дня', value: 'commissionDay' },
+    //     { text: 'Округление', value: 'rounding' },
+    //     { text: 'Общая комиссия', value: 'commissionTotal' },
+    //     { text: 'BTC фонда', value: 'fundBTC' },
+    //     { text: 'Общая мощность фонда', value: 'powerFund' },
+    //     { text: 'Количество клиентов', value: 'quantityClients' },
+    //     { text: 'Общая сумма привлеченных средств', value: 'amoundTotalFund' },
+    //     { text: 'Общая сумма выплат', value: 'amountPayout' }
+
+    //   ],
     }
   },
-  methods: {
-    logout: function () {
-      firebase.auth().signOut().then(() => {
-        this.$router.replace('login')
-      })
-    }
-    // removeClient: function (key) {
-    //   let db = this.firebase.database()
-    //   db.ref('customer_mining').child(key).remove()
-    //   console.log(this.items)
-    //   this.items = []
-    //   this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
-    //     return data.json()
-    //   }).then(function (data) {
-    //     for (let key in data) {
-    //       let elem = data[key]
-    //       elem['superkey'] = key
-    //       this.items.push(elem)
-    //     }
-    //   })
-    // },
-    // editClient: function (event, base, index, param) {
-    //   let db = this.firebase.database()
-    //   db.ref(base).child(index).child(param).set(event.target.value)
-    //   this.items = []
-    //   this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
-    //     return data.json()
-    //   }).then(function (data) {
-    //     for (let key in data) {
-    //       let elem = data[key]
-    //       elem['superkey'] = key
-    //       this.items.push(elem)
-    //     }
-    //   })
-    // },
-    // postMining: function () {
-    //   this.$http.post('https://vueti-5ed25.firebaseio.com/customer_report.json', this.mining).then(function (data) {
-    //     console.log(data)
-    //     this.showModal = false
-    //   })
-    // },
-//     submit () {
-//       if (this.$refs.formachka.validate()) {
-//         this.$refs.formachka.$el.submit()
-//       }
+//   methods: {
+//     logout: function () {
+//       firebase.auth().signOut().then(() => {
+//         this.$router.replace('login')
+//       })
 //     },
-//     clear () {
-//       this.$refs.formachka.reset()
-//     }
-//   },
-//   created () {
-//     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
-//       return data.json()
-//     }).then(function (data) {
-//       for (let key in data) {
-//         let elem = data[key]
-//         elem['superkey'] = key
-//         this.items.push(elem)
-//       }
-//     })
+  created () {
+    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
+      return data.json()
+    }).then(function (data) {
+      this.report.powerFund = data.powerFund
+      this.report.amoundTotalFundBTC = data.amoundTotalFundBTC
+      this.report.amountExchange = data.amountExchange
+      this.report.quantityClients = data.quantityClients
+    })
   }
 }
 </script>
@@ -183,8 +188,8 @@ button.new-client {
     background-color: #3299BB!important;
     border-color: #3299BB!important;
 }
-table.clients-table {
-    width: 100%;
+table.report-table {
+    width: 70%;
     border-collapse: collapse;
 }
 .clients-table th, .clients-table td {
@@ -300,6 +305,7 @@ button {
 }
 .input-group {
   padding: 15px 0 0 0;
+
 }
 .input-group--text-field input {
   height: 30px;
@@ -318,5 +324,16 @@ input {
 }
 .application--light .picker .picker__title {
     background: #37474f;
+}
+td {
+    padding: 0 20px;
+    text-align: left;
+    font-size: 20px;
+}
+th {
+    padding: 0 40px;
+    font-size: 20px;
+    text-align: left;
+    width: 70%;
 }
 </style>

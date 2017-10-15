@@ -122,7 +122,6 @@
     </section>
 </template>
 
-
 <script>
 // Imports
 import firebase from 'firebase'
@@ -163,12 +162,15 @@ export default {
         { text: 'Сумма BTC', value: 'summaBTC' },
         { text: 'Сумма RUR', value: 'summaRUR' },
         { text: 'Общее кол-во мощности', value: 'power' },
-        { text: 'Доля', value: 'proportion' },
+        { text: 'Доля, %', value: 'proportion' },
         { text: 'Удалить', value: 'Remove' }
       ],
       transactions: [],
       power: [],
       powerSum: 0,
+      summaBTCSum: 0,
+      quantityClients: 0,
+      proportionSum: 100,
       summaBTC: [],
       summaRUR: [],
       proportion: [],
@@ -247,21 +249,44 @@ export default {
         let elem = data[key]
         elem['superkey'] = key
         if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {  // проверка на существование номмера клиента в массиве
-          this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
+          if (data[key].typeOfTransaction === 'Покупка мощности') {
+            this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].quantity
+            this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].summa
+          }
+          if (data[key].typeOfTransaction === 'Продажа мощности') {
+            this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] - +data[key].quantity
+            this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] - +data[key].summa
+          }
+          // this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].summa
+          // this.proportion[this.accountNnumbers.indexOf(data[key].accountNnumber)] = this.power[this.accountNnumbers.indexOf(data[key].accountNnumber)] / this.powerSum
         } else { // если нет добавляем этот номер в массив
           this.accountNnumbers.push(data[key].accountNnumber)
           this.power.push(+data[key].quantity)
+          this.summaBTC.push(+data[key].summa)
         }
+        // if (this.accountNnumbers.indexOf(data[key].accountNnumber) > -1) {  // проверка на существование номмера клиента в массиве
+        //   this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] = +this.summaBTC[this.accountNnumbers.indexOf(data[key].accountNnumber)] + +data[key].summa
+        // } else { // если нет добавляем этот номер в массив
+        //   this.accountNnumbers.push(data[key].accountNnumber)
+        //   this.summaBTC.push(+data[key].summa)
+        // }
         this.transactions.push(elem)
       }
       for (var i = 0; i < this.power.length; i++) {
         this.powerSum = this.powerSum + parseInt(this.power[i])
+        this.summaBTCSum += this.summaBTC[i]
+        // this.summaBTCSum = this.summaBTCSum.substr(0, 4)
       }
-      console.log(this.powerSum)
+      this.quantityClients = this.accountNnumbers.length
+      this.firebase.database().ref('customer_report').child('powerFund').set(this.powerSum)
+      this.firebase.database().ref('customer_report').child('amoundTotalFundBTC').set(this.summaBTCSum)
+      this.firebase.database().ref('customer_report').child('quantityClients').set(this.quantityClients)
+      for (var e = 0; e < this.summaBTC.length; e++) {
+        this.proportion.push(100 * Math.floor(this.power[e] / this.powerSum * 10000) / 10000)
+      }
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
         return data.json()
       }).then(function (data) {
-        console.log(this.accountNnumbers)
         for (let key in data) {
           let elem = data[key]
           elem['superkey'] = key
@@ -269,9 +294,13 @@ export default {
           if (this.accountNnumbers.indexOf(data[key].accountNnumber.toString()) > -1) {
             let index = this.accountNnumbers.indexOf(data[key].accountNnumber)
             this.firebase.database().ref('customer_registry').child(key).child('power').set(this.power[index])
+            this.firebase.database().ref('customer_registry').child(key).child('summaBTC').set(this.summaBTC[index])
+            this.firebase.database().ref('customer_registry').child(key).child('proportion').set(this.proportion[index])
           }
           if (data[key]['accountNnumber'] === '9999-000') {
             this.firebase.database().ref('customer_registry').child(key).child('power').set(this.powerSum)
+            this.firebase.database().ref('customer_registry').child(key).child('summaBTC').set(this.summaBTCSum)
+            this.firebase.database().ref('customer_registry').child(key).child('proportion').set(this.proportionSum)
           }
           this.superClients.push(elem)
         }

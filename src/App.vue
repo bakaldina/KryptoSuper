@@ -92,7 +92,6 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-
       </v-toolbar>
     </v-navigation-drawer>
      <v-toolbar dark class="primary">
