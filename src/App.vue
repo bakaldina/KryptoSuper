@@ -12,7 +12,7 @@
             </v-list-tile-content>
             <v-list-tile-action>
               <v-btn icon @click.native.stop="mini = !mini">
-                <v-icon>left</v-icon>
+                <v-icon>chevron_left</v-icon>
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -26,7 +26,7 @@
             </v-list-tile-content>
             <v-list-tile-action>
               <v-btn icon @click.native.stop="mini = !mini">
-                <v-icon>left</v-icon>
+                <v-icon>chevron_left</v-icon>
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -40,7 +40,7 @@
             </v-list-tile-content>
             <v-list-tile-action>
               <v-btn icon @click.native.stop="mini = !mini">
-                <v-icon>left</v-icon>
+                <v-icon>chevron_left</v-icon>
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -54,7 +54,7 @@
             </v-list-tile-content>
             <v-list-tile-action>
               <v-btn icon @click.native.stop="mini = !mini">
-                <v-icon>left</v-icon>
+                <v-icon>chevron_left</v-icon>
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>

@@ -329,11 +329,12 @@ td {
     padding: 0 20px;
     text-align: left;
     font-size: 20px;
+    width: 10%;
 }
 th {
     padding: 0 40px;
     font-size: 20px;
     text-align: left;
-    width: 70%;
+    width: 30%;
 }
 </style>

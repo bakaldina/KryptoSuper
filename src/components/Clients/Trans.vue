@@ -20,7 +20,6 @@
             v-bind:search="search"
             v-bind:pagination.sync="pagination"
             :total-items="totalItems"
-            :loading="loading"
             class="elevation-1 clients-table"
           >
             <template slot="items" scope="props">
@@ -230,8 +229,7 @@ export default {
       checkbox: false,
       search: '',
       totalItems: 0,
-      loading: true,
-      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 10, descending: false, totalItems: 0 },
+      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 20, descending: true, totalItems: 0 },
       transactions: {
         date2: '',
         typeOfTransaction: '',
@@ -371,10 +369,10 @@ export default {
         }, 1000)
       })
     },
-    getDesserts () {
-      console.log(this.items)
-      return [this.items]
-    },
+    // getDesserts () {
+    //   console.log(this.items)
+    //   return [this.items]
+    // },
     postTransactions: function () {
       this.transactions['accountNnumber'] = this.transactions['accountNnumber'].split(' ')[0]
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_transaction.json', this.transactions).then(function (data) {
