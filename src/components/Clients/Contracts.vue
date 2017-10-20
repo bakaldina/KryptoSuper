@@ -253,7 +253,7 @@ export default {
       return new Promise((resolve, reject) => {
         const { sortBy, descending, page, rowsPerPage } = this.pagination
 
-        let items = this.getDesserts()
+        let items = this.items
         const total = items.length
 
         if (this.pagination.sortBy) {

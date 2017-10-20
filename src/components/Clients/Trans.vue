@@ -231,7 +231,7 @@ export default {
       checkbox: false,
       search: '',
       totalItems: 0,
-      pagination: { sortBy: 'date', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
+      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
       massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       transactions: {
         date2: '',
@@ -340,7 +340,7 @@ export default {
       return new Promise((resolve, reject) => {
         const { sortBy, descending, page, rowsPerPage } = this.pagination
 
-        let items = this.getDesserts()
+        let items = this.transactions
         const total = items.length
 
         if (this.pagination.sortBy) {
@@ -468,14 +468,6 @@ table.clients-table {
 .clients-table td:last-child {
     width: 50px;
 }
-/* 
-button {
-    font-size: 26px;
-    font-weight: 700; 
-    vertical-align: sub;
-    margin-top: 30px;
-    margin-bottom: 30px;
-} */
 .card__text {
     overflow: scroll;
 }

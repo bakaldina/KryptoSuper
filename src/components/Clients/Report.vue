@@ -117,31 +117,8 @@ export default {
         {icon: 'desktop_windows', title: 'Майнинг', link: '/mining'},
         {icon: 'insert_drive_file', title: 'Отчет фонда', link: '/report'}
       ]
-    //   headers: [
-    //     { text: 'Клиентский BTC', value: 'clientsBTC' },
-    //     { text: 'Сумма на бирже', value: 'amountExchange' },
-    //     { text: 'Сумма на HasnNest', value: 'amountHashnest' },
-    //     { text: 'Общая сумма', value: 'amountTotal' },
-    //     { text: 'Разница', value: 'difference' },
-    //     { text: 'Комиссия управления', value: 'commissionManagement' },
-    //     { text: 'Комиссия дня', value: 'commissionDay' },
-    //     { text: 'Округление', value: 'rounding' },
-    //     { text: 'Общая комиссия', value: 'commissionTotal' },
-    //     { text: 'BTC фонда', value: 'fundBTC' },
-    //     { text: 'Общая мощность фонда', value: 'powerFund' },
-    //     { text: 'Количество клиентов', value: 'quantityClients' },
-    //     { text: 'Общая сумма привлеченных средств', value: 'amoundTotalFund' },
-    //     { text: 'Общая сумма выплат', value: 'amountPayout' }
-
-    //   ],
     }
   },
-//   methods: {
-//     logout: function () {
-//       firebase.auth().signOut().then(() => {
-//         this.$router.replace('login')
-//       })
-//     },
   created () {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_report.json').then(function (data) {
       return data.json()
