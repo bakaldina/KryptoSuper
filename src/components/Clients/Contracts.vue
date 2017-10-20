@@ -170,6 +170,7 @@ export default {
       powerSum: 0,
       summaBTCSum: 0,
       quantityClients: 0,
+      TotalFundBTC: 0,
       proportionSum: 100,
       summaBTC: [],
       summaRUR: [],
@@ -277,9 +278,11 @@ export default {
         this.summaBTCSum += this.summaBTC[i]
         // this.summaBTCSum = this.summaBTCSum.substr(0, 4)
       }
+      this.TotalFundBTC = Math.round(this.summaBTCSum * 10000) / 10000
+      console.log(this.TotalFundBTC)
       this.quantityClients = this.accountNnumbers.length
       this.firebase.database().ref('customer_report').child('powerFund').set(this.powerSum)
-      this.firebase.database().ref('customer_report').child('amoundTotalFundBTC').set(this.summaBTCSum)
+      this.firebase.database().ref('customer_report').child('amoundTotalFundBTC').set(this.TotalFundBTC)
       this.firebase.database().ref('customer_report').child('quantityClients').set(this.quantityClients)
       for (var e = 0; e < this.summaBTC.length; e++) {
         this.proportion.push(100 * Math.floor(this.power[e] / this.powerSum * 10000) / 10000)
