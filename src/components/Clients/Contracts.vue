@@ -15,10 +15,14 @@
         </v-btn>
 
         <v-data-table
-        v-bind:headers="headers"
-        :items="superClients"
-        hide-actions
-        class="elevation-1 clients-table"
+          v-bind:headers="headers"
+          v-bind:items="superClients"
+          v-bind:search="search"
+          v-bind:pagination.sync="pagination"
+          v-bind:rows-per-page-items="massiv"
+          :total-items="totalItems"
+          rows-per-page-text="Количество строк:"
+          class="elevation-1 clients-table"
         >
         <template slot="items" scope="props" >
             <td class="text-xs-right"><input :value="props.item.accountNnumber" @keyup.enter="editClient($event, 'customer_registry', props.item.superkey, 'accountNnumber')"></td>
@@ -140,6 +144,11 @@ export default {
       isOpen: false,
       showModal: false,
       active: null,
+      checkbox: false,
+      search: '',
+      totalItems: 0,
+      pagination: { sortBy: 'accountNnumber', page: 1, rowsPerPage: 25, descending: false, totalItems: 0 },
+      massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       customer: {
         accountNnumber: '',
         firstName: '',
@@ -165,6 +174,9 @@ export default {
         { text: 'Доля, %', value: 'proportion' },
         { text: 'Удалить', value: 'Remove' }
       ],
+      items: [],
+      valid: false,
+      select: null,
       transactions: [],
       power: [],
       powerSum: 0,
@@ -177,9 +189,27 @@ export default {
       proportion: [],
       fullName: [],
       superClients: [],
-      accountNnumbers: [],
-      valid: false
+      accountNnumbers: []
     }
+  },
+  watch: {
+    pagination: {
+      handler () {
+        this.getDataFromApi()
+          .then(data => {
+            this.items = data.items
+            this.totalItems = data.total
+          })
+      },
+      deep: true
+    }
+  },
+  mounted () {
+    this.getDataFromApi()
+      .then(data => {
+        this.items = data.items
+        this.totalItems = data.total
+      })
   },
   methods: {
     addNew: function () {
@@ -216,6 +246,43 @@ export default {
           elem['superkey'] = key
           this.items.push(elem)
         }
+      })
+    },
+    getDataFromApi () {
+      this.loading = true
+      return new Promise((resolve, reject) => {
+        const { sortBy, descending, page, rowsPerPage } = this.pagination
+
+        let items = this.getDesserts()
+        const total = items.length
+
+        if (this.pagination.sortBy) {
+          items = items.sort((a, b) => {
+            const sortA = a[sortBy]
+            const sortB = b[sortBy]
+
+            if (descending) {
+              if (sortA < sortB) return 1
+              if (sortA > sortB) return -1
+              return 0
+            } else {
+              if (sortA < sortB) return -1
+              if (sortA > sortB) return 1
+              return 0
+            }
+          })
+        }
+        if (rowsPerPage > 0) {
+          items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+        }
+
+        setTimeout(() => {
+          this.loading = false
+          resolve({
+            items,
+            total
+          })
+        }, 1000)
       })
     },
     post: function () {

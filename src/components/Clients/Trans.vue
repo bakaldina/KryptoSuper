@@ -19,7 +19,9 @@
             v-bind:items="items"
             v-bind:search="search"
             v-bind:pagination.sync="pagination"
+            v-bind:rows-per-page-items="massiv"
             :total-items="totalItems"
+            rows-per-page-text="Количество строк:"
             class="elevation-1 clients-table"
           >
             <template slot="items" scope="props">
@@ -229,7 +231,8 @@ export default {
       checkbox: false,
       search: '',
       totalItems: 0,
-      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 20, descending: true, totalItems: 0 },
+      pagination: { sortBy: 'date', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
+      massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       transactions: {
         date2: '',
         typeOfTransaction: '',
