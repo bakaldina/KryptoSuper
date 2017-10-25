@@ -130,6 +130,7 @@
 // Imports
 import firebase from 'firebase'
 export default {
+  name: 'contracts',
   data () {
     return {
       menuItems: [

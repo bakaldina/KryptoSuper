@@ -165,25 +165,25 @@ export default {
       valid: false
     }
   },
-  watch: {
-    pagination: {
-      handler () {
-        this.getDataFromApi()
-          .then(data => {
-            this.items = data.items
-            this.totalItems = data.total
-          })
-      },
-      deep: true
-    }
-  },
-  mounted () {
-    this.getDataFromApi()
-      .then(data => {
-        this.items = data.items
-        this.totalItems = data.total
-      })
-  },
+  // watch: {
+  //   pagination: {
+  //     handler () {
+  //       this.getDataFromApi()
+  //         .then(data => {
+  //           this.items = data.items
+  //           this.totalItems = data.total
+  //         })
+  //     },
+  //     deep: true
+  //   }
+  // },
+  // mounted () {
+  //   this.getDataFromApi()
+  //     .then(data => {
+  //       this.items = data.items
+  //       this.totalItems = data.total
+  //     })
+  // },
   methods: {
     logout: function () {
       firebase.auth().signOut().then(() => {
@@ -218,42 +218,42 @@ export default {
         }
       })
     },
-    getDataFromApi () {
-      this.loading = true
-      return new Promise((resolve, reject) => {
-        const { sortBy, descending, page, rowsPerPage } = this.pagination
+    // getDataFromApi () {
+    //   this.loading = true
+    //   return new Promise((resolve, reject) => {
+    //     const { sortBy, descending, page, rowsPerPage } = this.pagination
 
-        let items = this.getDesserts()
-        const total = items.length
+    //     let items = this.getDesserts()
+    //     const total = items.length
 
-        if (this.pagination.sortBy) {
-          items = items.sort((a, b) => {
-            const sortA = a[sortBy]
-            const sortB = b[sortBy]
+    //     if (this.pagination.sortBy) {
+    //       items = items.sort((a, b) => {
+    //         const sortA = a[sortBy]
+    //         const sortB = b[sortBy]
 
-            if (descending) {
-              if (sortA < sortB) return 1
-              if (sortA > sortB) return -1
-              return 0
-            } else {
-              if (sortA < sortB) return -1
-              if (sortA > sortB) return 1
-              return 0
-            }
-          })
-        }
-        if (rowsPerPage > 0) {
-          items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-        }
-        setTimeout(() => {
-          this.loading = false
-          resolve({
-            items,
-            total
-          })
-        }, 1000)
-      })
-    },
+    //         if (descending) {
+    //           if (sortA < sortB) return 1
+    //           if (sortA > sortB) return -1
+    //           return 0
+    //         } else {
+    //           if (sortA < sortB) return -1
+    //           if (sortA > sortB) return 1
+    //           return 0
+    //         }
+    //       })
+    //     }
+    //     if (rowsPerPage > 0) {
+    //       items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+    //     }
+    //     setTimeout(() => {
+    //       this.loading = false
+    //       resolve({
+    //         items,
+    //         total
+    //       })
+    //     }, 1000)
+    //   })
+    // },
     postMining: function () {
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_mining.json', this.mining).then(function (data) {
         this.showModal = false
@@ -272,6 +272,7 @@ export default {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
       return data.json()
     }).then(function (data) {
+      console.log(data)
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
@@ -286,10 +287,10 @@ export default {
         }
         if ((data[key]['date'] === '2017-07-14') || (data[key]['date'] === '2017-07-15') || (data[key]['date'] === '2017-07-16') || (data[key]['date'] === '2017-07-17') || (data[key]['date'] === '2017-07-18') || (data[key]['date'] === '2017-07-19') || (data[key]['date'] === '2017-07-20') || (data[key]['date'] === '2017-07-21') || (data[key]['date'] === '2017-07-22') || (data[key]['date'] === '2017-07-23') || (data[key]['date'] === '2017-07-24') || (data[key]['date'] === '2017-07-25') || (data[key]['date'] === '2017-07-26') || (data[key]['date'] === '2017-07-27') || (data[key]['date'] === '2017-07-28') || (data[key]['date'] === '2017-07-29') || (data[key]['date'] === '2017-07-30') || (data[key]['date'] === '2017-07-31') || (data[key]['date'] === '2017-08-01') || (data[key]['date'] === '2017-08-02') || (data[key]['date'] === '2017-08-03') || (data[key]['date'] === '2017-08-04') || (data[key]['date'] === '2017-08-05') || (data[key]['date'] === '2017-08-06') || (data[key]['date'] === '2017-08-07') || (data[key]['date'] === '2017-08-08') || (data[key]['date'] === '2017-08-09') || (data[key]['date'] === '2017-08-10') || (data[key]['date'] === '2017-08-11') || (data[key]['date'] === '2017-08-12') || (data[key]['date'] === '2017-08-13') || (data[key]['date'] === '2017-08-14') || (data[key]['date'] === '2017-08-15') || (data[key]['date'] === '2017-08-16') || (data[key]['date'] === '2017-08-17') || (data[key]['date'] === '2017-08-18') || (data[key]['date'] === '2017-08-19') || (data[key]['date'] === '2017-08-20') || (data[key]['date'] === '2017-08-21') || (data[key]['date'] === '2017-08-22') || (data[key]['date'] === '2017-08-23') || (data[key]['date'] === '2017-08-24') || (data[key]['date'] === '2017-08-25') || (data[key]['date'] === '2017-08-26') || (data[key]['date'] === '2017-08-27') || (data[key]['date'] === '2017-08-28') || (data[key]['date'] === '2017-08-29') || (data[key]['date'] === '2017-08-30') || (data[key]['date'] === '2017-08-31') || (data[key]['date'] === '2017-09-01') || (data[key]['date'] === '2017-09-02') || (data[key]['date'] === '2017-09-03') || (data[key]['date'] === '2017-09-04') || (data[key]['date'] === '2017-09-05') || (data[key]['date'] === '2017-09-06') || (data[key]['date'] === '2017-09-07') || (data[key]['date'] === '2017-09-08') || (data[key]['date'] === '2017-09-09') || (data[key]['date'] === '2017-09-10') || (data[key]['date'] === '2017-09-11') || (data[key]['date'] === '2017-09-12') || (data[key]['date'] === '2017-09-13') || (data[key]['date'] === '2017-09-14') || (data[key]['date'] === '2017-09-15') || (data[key]['date'] === '2017-09-16') || (data[key]['date'] === '2017-09-17') || (data[key]['date'] === '2017-09-18') || (data[key]['date'] === '2017-09-19') || (data[key]['date'] === '2017-09-20') || (data[key]['date'] === '2017-09-21') || (data[key]['date'] === '2017-09-22') || (data[key]['date'] === '2017-09-23') || (data[key]['date'] === '2017-09-24') || (data[key]['date'] === '2017-09-25') || (data[key]['date'] === '2017-09-26') || (data[key]['date'] === '2017-09-27') || (data[key]['date'] === '2017-09-28') || (data[key]['date'] === '2017-09-29') || (data[key]['date'] === '2017-09-30')) {
           data[key]['miningItem'] = Math.floor((+data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']) * 100000) / 1000000
-          this.firebase.database().ref('customer_mining').child(key).child('miningItem').set(data[key]['miningItem'])
+          console.log(data[key]['miningItem'])
         } else {
           data[key]['miningItem'] = Math.floor((+data[key]['payOut'] - +data[key]['maintence'] - +data[key]['feeDay']) * 10000) / 10000
-          this.firebase.database().ref('customer_mining').child(key).child('miningItem').set(data[key]['miningItem'])
+          console.log(data[key]['miningItem'])
         }
         this.firebase.database().ref('customer_mining').child(key).child('miningItem').set(data[key]['miningItem'])
         this.items.push(elem)

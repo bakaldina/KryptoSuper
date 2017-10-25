@@ -28,10 +28,6 @@
       }
     },
     created () {
-      var user = firebase.auth().currentUser
-      // this.userName = user.email
-      console.log(user.email)
-    //  вобщем передаешь почту в this.user.email и v-if'ом выбираешь что нужно
     }
   }
 </script>
