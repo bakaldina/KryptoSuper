@@ -76,12 +76,12 @@ export default {
     }).then(function (data) {
       for (let key in data) {
         if (data[key].email === user.email) {
-          var dataOpen = moment(data[key].dateOfAccountOpening)
+          var dataOpen = moment(data[key].dateOfAccountOpening).add(1, 'days')
           var dataOpenPlusOne = dataOpen.add(1, 'days')
           var datatoday = moment()
           this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
           console.log(this.balance)
-          for (var i = 0; i < this.dataDif; i++) {
+          for (var i = 1; i < this.dataDif; i++) {
             this.balance.push({
               'day': i,
               'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY')
