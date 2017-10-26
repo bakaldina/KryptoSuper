@@ -43,14 +43,6 @@ export default {
   data () {
     return {
       balance: [],
-      // [{
-      //   day: '',
-      //   date: '',
-      //   mining: '',
-      //   balanceItem: '',
-      //   courseBTC: '',
-      //   incomeUSD: ''
-      // }],
       dataOpen: '',
       headers: [
         { text: 'День', value: 'day' },
@@ -76,60 +68,6 @@ export default {
       ]
     }
   },
-  // watch: {
-  //   pagination: {
-  //     handler () {
-  //       this.getDataFromApi()
-  //         .then(data => {
-  //           this.items = data.items
-  //           this.totalItems = data.total
-  //         })
-  //     },
-  //     deep: true
-  //   }
-  // },
-  // mounted () {
-  //   this.getDataFromApi()
-  //     .then(data => {
-  //       this.items = data.items
-  //       this.totalItems = data.total
-  //     })
-  // },
-  // getDataFromApi () {
-  //   this.loading = true
-  //   return new Promise((resolve, reject) => {
-  //     const { sortBy, descending, page, rowsPerPage } = this.pagination
-
-  //     let items = this.getDesserts()
-  //     const total = items.length
-
-  //     if (this.pagination.sortBy) {
-  //       items = items.sort((a, b) => {
-  //         const sortA = a[sortBy]
-  //         const sortB = b[sortBy]
-  //         if (descending) {
-  //           if (sortA < sortB) return 1
-  //           if (sortA > sortB) return -1
-  //           return 0
-  //         } else {
-  //           if (sortA < sortB) return -1
-  //           if (sortA > sortB) return 1
-  //           return 0
-  //         }
-  //       })
-  //     }
-  //     if (rowsPerPage > 0) {
-  //       items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-  //     }
-  //     setTimeout(() => {
-  //       this.loading = false
-  //       resolve({
-  //         items,
-  //         total
-  //       })
-  //     }, 1000)
-  //   })
-  // },
   created () {
     var user = firebase.auth().currentUser
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
@@ -137,9 +75,10 @@ export default {
     }).then(function (data) {
       for (let key in data) {
         if (data[key].email === user.email) {
-          this.dataOpen = moment(data[key].dateOfAccountOpening).valueOf()
-          var datatoday = moment().valueOf()
-          this.dataDif = moment(datatoday - this.dataOpen).asDays()
+          var dataOpen = moment(data[key].dateOfAccountOpening)
+          var dataOpenPlusOne = dataOpen.add(1, 'days')
+          var datatoday = moment()
+          this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
         }
       }
     })
