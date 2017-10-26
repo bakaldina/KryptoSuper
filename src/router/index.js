@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Exchange from '@/components/Other/Exchange'
-import Hash from '@/components/Other/Hash'
+import Hash from '@/components/Hashrate/Hash'
+import Statistics from '@/components/Hashrate/Statistics'
 import Pouch from '@/components/Other/Pouch'
 import Mining from '@/components/Clients/Mining'
 import Trans from '@/components/Clients/Trans'
@@ -48,6 +49,14 @@ let router = new Router({
       path: '/hash',
       name: 'Hash',
       component: Hash,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/statistics',
+      name: 'Statistics',
+      component: Statistics,
       meta: {
         requiresAuth: true
       }

@@ -19,7 +19,9 @@
             v-bind:items="items"
             v-bind:search="search"
             v-bind:pagination.sync="pagination"
+            v-bind:rows-per-page-items="massiv"
             :total-items="totalItems"
+            rows-per-page-text="Количество строк:"
             class="elevation-1 clients-table"
           >
             <template slot="items" scope="props">
@@ -229,7 +231,8 @@ export default {
       checkbox: false,
       search: '',
       totalItems: 0,
-      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 20, descending: true, totalItems: 0 },
+      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
+      massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       transactions: {
         date2: '',
         typeOfTransaction: '',
@@ -279,25 +282,25 @@ export default {
       ]
     }
   },
-  watch: {
-    pagination: {
-      handler () {
-        this.getDataFromApi()
-          .then(data => {
-            this.items = data.items
-            this.totalItems = data.total
-          })
-      },
-      deep: true
-    }
-  },
-  mounted () {
-    this.getDataFromApi()
-      .then(data => {
-        this.items = data.items
-        this.totalItems = data.total
-      })
-  },
+  // watch: {
+  //   pagination: {
+  //     handler () {
+  //       this.getDataFromApi()
+  //         .then(data => {
+  //           this.items = data.items
+  //           this.totalItems = data.total
+  //         })
+  //     },
+  //     deep: true
+  //   }
+  // },
+  // mounted () {
+  //   this.getDataFromApi()
+  //     .then(data => {
+  //       this.items = data.items
+  //       this.totalItems = data.total
+  //     })
+  // },
   methods: {
     logout: function () {
       firebase.auth().signOut().then(() => {
@@ -332,43 +335,43 @@ export default {
         }
       })
     },
-    getDataFromApi () {
-      this.loading = true
-      return new Promise((resolve, reject) => {
-        const { sortBy, descending, page, rowsPerPage } = this.pagination
+    // getDataFromApi () {
+    //   this.loading = true
+    //   return new Promise((resolve, reject) => {
+    //     const { sortBy, descending, page, rowsPerPage } = this.pagination
 
-        let items = this.getDesserts()
-        const total = items.length
+    //     let items = this.transactions
+    //     const total = items.length
 
-        if (this.pagination.sortBy) {
-          items = items.sort((a, b) => {
-            const sortA = a[sortBy]
-            const sortB = b[sortBy]
+    //     if (this.pagination.sortBy) {
+    //       items = items.sort((a, b) => {
+    //         const sortA = a[sortBy]
+    //         const sortB = b[sortBy]
 
-            if (descending) {
-              if (sortA < sortB) return 1
-              if (sortA > sortB) return -1
-              return 0
-            } else {
-              if (sortA < sortB) return -1
-              if (sortA > sortB) return 1
-              return 0
-            }
-          })
-        }
-        if (rowsPerPage > 0) {
-          items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-        }
+    //         if (descending) {
+    //           if (sortA < sortB) return 1
+    //           if (sortA > sortB) return -1
+    //           return 0
+    //         } else {
+    //           if (sortA < sortB) return -1
+    //           if (sortA > sortB) return 1
+    //           return 0
+    //         }
+    //       })
+    //     }
+    //     if (rowsPerPage > 0) {
+    //       items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+    //     }
 
-        setTimeout(() => {
-          this.loading = false
-          resolve({
-            items,
-            total
-          })
-        }, 1000)
-      })
-    },
+    //     setTimeout(() => {
+    //       this.loading = false
+    //       resolve({
+    //         items,
+    //         total
+    //       })
+    //     }, 1000)
+    //   })
+    // },
     // getDesserts () {
     //   console.log(this.items)
     //   return [this.items]
@@ -465,14 +468,6 @@ table.clients-table {
 .clients-table td:last-child {
     width: 50px;
 }
-/* 
-button {
-    font-size: 26px;
-    font-weight: 700; 
-    vertical-align: sub;
-    margin-top: 30px;
-    margin-bottom: 30px;
-} */
 .card__text {
     overflow: scroll;
 }
