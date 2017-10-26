@@ -23,12 +23,13 @@
           class="elevation-1 clients-table"
         >
       <template slot="items" scope="props" >
-            <td class="text-xs-right">{{ props.item[0].day }}</td>
-            <td class="text-xs-right">{{ props.item[0].date }}</td>
-            <td class="text-xs-right">{{ props.item[0].mining }}</td>
-            <td class="text-xs-right">{{ props.item[0].balanceItem }}</td>
-            <td class="text-xs-right">{{ props.item[0].courseBTC }}</td>
-            <td class="text-xs-right">{{ props.item[0].incomeUSD }}</td>
+            <td class="text-xs-right">{{ props.item.day }}</td>
+            <td class="text-xs-right">{{ props.item.day }}</td>
+           <!-- <td class="text-xs-right">{{ props.item.date }}</td>
+            <td class="text-xs-right">{{ props.item.mining }}</td>
+            <td class="text-xs-right">{{ props.item.balanceItem }}</td>
+            <td class="text-xs-right">{{ props.item.courseBTC }}</td>
+            <td class="text-xs-right">{{ props.item.incomeUSD }}</td>-->
         </template>
         </v-data-table>
     </section>
@@ -79,6 +80,13 @@ export default {
           var dataOpenPlusOne = dataOpen.add(1, 'days')
           var datatoday = moment()
           this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
+          console.log(this.balance)
+          for (var i = 0; i < this.dataDif; i++) {
+            this.balance.push({
+              'day': i
+            })
+          }
+          console.log(this.balance)
         }
       }
     })
