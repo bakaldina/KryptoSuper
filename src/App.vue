@@ -3,9 +3,7 @@
     <v-navigation-drawer absolute persistent light :mini-variant.sync="mini" v-model="drawer" overflow>
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
-          <v-list-tile avatar>
-            <v-list-tile-avatar>
-            </v-list-tile-avatar>
+          <v-list-tile>
             <v-list-tile-content>
               <v-list-tile-title>{{ fio }}</v-list-tile-title>
             </v-list-tile-content>
@@ -97,7 +95,7 @@
           elem['superkey'] = key
           this.customer.push(data)
           if (data[key].email === user.email) {
-            this.fio = data[key].firstName + ' ' + data[key].middleName
+            this.fio = data[key].firstName + ' ' + data[key].middleName + ' ' + data[key].surname
           }
         }
       })
