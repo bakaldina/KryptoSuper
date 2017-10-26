@@ -24,7 +24,7 @@
         >
       <template slot="items" scope="props" >
             <td class="text-xs-right">{{ props.item.day }}</td>
-            <td class="text-xs-right">{{ props.item.day }}</td>
+            <td class="text-xs-right">{{ props.item.date }}</td>
            <!-- <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
             <td class="text-xs-right">{{ props.item.balanceItem }}</td>
@@ -83,7 +83,8 @@ export default {
           console.log(this.balance)
           for (var i = 0; i < this.dataDif; i++) {
             this.balance.push({
-              'day': i
+              'day': i,
+              'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY')
             })
           }
           console.log(this.balance)
