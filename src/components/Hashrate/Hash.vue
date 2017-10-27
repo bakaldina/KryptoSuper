@@ -23,9 +23,6 @@
       <template slot="items" scope="props" >
             <td class="text-xs-right">{{ props.item.day }}</td>
             <td class="text-xs-right">{{ props.item.date }}</td>
-            <td class="text-xs-right">{{ props.item.mining }}</td>
-            <td></td>
-            <td class="text-xs-right">{{ props.item.coursesBTC }}</td>
            <!-- <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
             <td class="text-xs-right">{{ props.item.balanceItem }}</td>
@@ -51,12 +48,11 @@ export default {
         { text: 'Дата', value: 'date' },
         { text: 'Майнинг', value: 'mining' },
         { text: 'Баланс', value: 'balanceItem' },
-        { text: 'Курс BTC', value: 'coursesBTC' },
+        { text: 'Курс BTC', value: 'courseBTC' },
         { text: 'Заработано USD', value: 'incomeUSD' }
       ],
+      mining: [],
       items: [],
-      DataCurs: [],
-      Transactions: [],
       dataDif: 0,
       active: null,
       checkbox: false,
@@ -73,34 +69,31 @@ export default {
   },
   created () {
     var user = firebase.auth().currentUser
+    // this.dataDif = moment().format('YYYY-MM-DD').diff(moment(this.dataOpen))
+    // this.dataDif = moment(this.dataOpen).format('DD').diff(moment().format('YYYY-MM-DD'))
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
       return data.json()
     }).then(function (data) {
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
-        console.log(data[key].miningItem)
         this.DataCurs.push({
           'date': data[key].date,
-          'coursesBTC': data[key].сoursesBTC,
-          'miningItem': data[key].miningItem
+          'courseBTC': data[key].courseBTC
         })
+        this.mining.push(data)
       }
-      console.log(this.DataCurs)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
       for (let key in data) {
-        let elem = data[key]
-        elem['superkey'] = key
-        this.Transactions.push({
-          'dolya': 0,
-          'data': data[key].data2,
-          'quantity': data[key].quantity
-        })
+        if (data[key].accountNnumber === '9999-002') {
+          let elem = data[key]
+          elem['superkey'] = key
+          this.transaction.push(elem)
+        }
       }
-      console.log(this.Transactions)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
@@ -111,22 +104,13 @@ export default {
           var dataOpenPlusOne = dataOpen.add(1, 'days')
           var datatoday = moment()
           this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
-          var dataKursMass = this.DataCurs
-          // var quantity = this.Transactions
-          // var summQuantity =
           for (var i = 1; i < this.dataDif + 2; i++) {
-            let j = i - 1
-            console.log(this.DataCurs.length)
-            console.log(this.Transactions.length)
-            var miningItem = this.DataCurs[j].miningItem
-            var quantity = this.Transactions[j].quantity
             this.balance.push({
               'day': i,
-              'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY'),
-              'coursesBTC': dataKursMass[j].coursesBTC,
-              'mining': miningItem * quantity * 100 // summQuantity
+              'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY')
             })
           }
+          console.log(this.balance)
         }
       }
     })
