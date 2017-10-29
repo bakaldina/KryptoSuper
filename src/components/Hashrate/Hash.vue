@@ -57,6 +57,7 @@ export default {
       active: null,
       checkbox: false,
       search: '',
+      DataCurs: [],
       totalItems: 0,
       transaction: [],
       pagination: { sortBy: 'day', page: 1, rowsPerPage: 25, descending: false, totalItems: 0 },
@@ -110,7 +111,6 @@ export default {
               'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY')
             })
           }
-          console.log(this.balance)
         }
       }
     })
