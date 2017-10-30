@@ -377,34 +377,33 @@ export default {
           }
           this.superClients.push(elem)
         }
-        // this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
-        console.log(this.superClients)
-        let Accounts = []
-        this.superClients.forEach(function (clients, index) {
-          Accounts.push(clients.accountNnumber)
-        })
-        var calendar = {}
-        var createCrypto = moment('2017-07-14')
-        var dataToday = moment()
-        var diffDate = dataToday.diff(createCrypto, 'd')
-        for (let i = 0; i < diffDate; i++) {
-          var date = createCrypto.add(i, 'd').format('YYYY-MM-DD')
-          var masssiv = []
-          for (let j = 0; j < Accounts.length; j++) {
-            masssiv.push({
-              accountNumber: Accounts[j]
-            })
-          }
-          console.log(masssiv)
-          calendar[date] = {masssiv}
-        }
+        // // this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
+        // let Accounts = []
+        // this.superClients.forEach(function (clients, index) {
+        //   Accounts.push(clients.accountNnumber)
+        // })
+        // var calendar = {}
+        // var createCrypto = moment('2017-07-14')
+        // var dataToday = moment()
+        // var diffDate = dataToday.diff(createCrypto, 'd')
+        // for (let i = 0; i < diffDate; i++) {
+        //   var date = createCrypto.add(i, 'd').format('YYYY-MM-DD')
+        //   var masssiv = []
+        //   for (let j = 0; j < Accounts.length; j++) {
+        //     masssiv.push({
+        //       accountNumber: Accounts[j]
+        //     })
+        //   }
+        //   console.log(masssiv)
+        //   calendar[date] = {masssiv}
+        // }
         // console.log(calendar)
         // for (let j=0; i<this.superClients.length; i++) {
         // }
         // console.log(diffDate)
         // console.log(calendar['2017-05-05'][])
       })
-      console.log(this.superClients)
+      // console.log(this.superClients)
     })
   }
 }

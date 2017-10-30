@@ -23,10 +23,12 @@
       <template slot="items" scope="props" >
             <td class="text-xs-right">{{ props.item.day }}</td>
             <td class="text-xs-right">{{ props.item.date }}</td>
+            <td class="text-xs-right">{{ props.item.mining }}</td>
+            <td></td>
+            <td class="text-xs-right">{{ props.item.coursesBTC }}</td>            
            <!-- <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
             <td class="text-xs-right">{{ props.item.balanceItem }}</td>
-            <td class="text-xs-right">{{ props.item.courseBTC }}</td>
             <td class="text-xs-right">{{ props.item.incomeUSD }}</td>-->
         </template>
         </v-data-table>
@@ -48,9 +50,10 @@ export default {
         { text: 'Дата', value: 'date' },
         { text: 'Майнинг', value: 'mining' },
         { text: 'Баланс', value: 'balanceItem' },
-        { text: 'Курс BTC', value: 'courseBTC' },
+        { text: 'Курс BTC', value: 'coursesBTC' },
         { text: 'Заработано USD', value: 'incomeUSD' }
       ],
+      details: [],
       mining: [],
       items: [],
       dataDif: 0,
@@ -80,10 +83,11 @@ export default {
         elem['superkey'] = key
         this.DataCurs.push({
           'date': data[key].date,
-          'courseBTC': data[key].courseBTC
+          'coursesBTC': data[key].сoursesBTC,
+          'miningItem': data[key].miningItem
         })
-        this.mining.push(data)
       }
+      console.log(1)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
@@ -95,24 +99,44 @@ export default {
           this.transaction.push(elem)
         }
       }
+      console.log(2)
+    })
+    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
+      return data.json()
+    }).then(function (data) {
+      for (let key in data) {
+        if (data[key].accountNnumber === '9999-002') {
+          let elem = data[key]
+          elem['superkey'] = key
+          this.details.push(elem)
+        }
+      }
+      console.log(3)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
     }).then(function (data) {
       for (let key in data) {
         if (data[key].email === user.email) {
+          // формирование таблички с первого дня создания крипто
           var dataOpen = moment(data[key].dateOfAccountOpening)
           var dataOpenPlusOne = dataOpen.add(1, 'days')
           var datatoday = moment()
           this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
+          var DataCurs = this.DataCurs
           for (var i = 1; i < this.dataDif + 2; i++) {
+            let j = i - 1
+            // console.log(this.firebase.database().ref('customer_details').child(moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD')))
             this.balance.push({
               'day': i,
-              'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY')
+              'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY'),
+              'coursesBTC': DataCurs[j].coursesBTC,
+              'mining': 6000 + DataCurs[j].miningItem
             })
           }
         }
       }
+      console.log(4)
     })
   }
 }
