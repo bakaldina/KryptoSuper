@@ -129,7 +129,6 @@
 <script>
 // Imports
 import firebase from 'firebase'
-import moment from 'moment'
 
 export default {
   name: 'contracts',
