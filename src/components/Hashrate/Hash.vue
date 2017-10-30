@@ -86,6 +86,7 @@ export default {
           'miningItem': data[key].miningItem
         })
       }
+<<<<<<< HEAD
       console.log(this.DataCurs)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
@@ -129,6 +130,68 @@ export default {
           }
         }
       }
+=======
+      console.log(1)
+      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
+        return data.json()
+      }).then(function (data) {
+        for (let key in data) {
+          if (data[key].accountNnumber === '9999-002') {
+            let elem = data[key]
+            elem['superkey'] = key
+            this.transaction.push(elem)
+          }
+        }
+        console.log(2)
+        this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
+          return data.json()
+        }).then(function (data) {
+          for (let key in data) {
+            if (data[key].accountNnumber === '9999-002') {
+              let elem = data[key]
+              elem['superkey'] = key
+              this.details.push(elem)
+            }
+          }
+          console.log(3)
+          this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
+            return data.json()
+          }).then(function (data) {
+            for (let key in data) {
+              if (data[key].email === user.email) {
+                // формирование таблички с первого дня создания крипто
+                var dataOpen = moment(data[key].dateOfAccountOpening)
+                var dataOpenPlusOne = dataOpen.add(1, 'days')
+                var datatoday = moment()
+                this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
+                var DataCurs = this.DataCurs
+                console.log(DataCurs.length)
+                for (var i = 1; i < this.dataDif + 2; i++) {
+                  let j
+                  if (i < DataCurs.length) {
+                    j = i - 1
+                  } else {
+                    j = DataCurs.length
+                  }
+                  console.log(moment(data[key].dateOfAccountOpening).add(i, 'days'))
+                  // console.log(this.firebase.database().ref('customer_details').child(moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD')))
+                  if (DataCurs[j].coursesBTC) {
+                    console.log(DataCurs[j].coursesBTC)
+                    this.balance.push({
+                      'day': i,
+                      'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY'),
+                      'coursesBTC': DataCurs[j].coursesBTC,
+                      'mining': DataCurs[j].miningItem
+                    })
+                  }
+                }
+              }
+            }
+            console.log(4)
+          })
+        })
+      })
+>>>>>>> 66e1554e3f5d9db9b46f52b1a60eab0773fff0af
     })
   }
 }
