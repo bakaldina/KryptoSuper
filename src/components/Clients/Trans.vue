@@ -22,6 +22,7 @@
             v-bind:rows-per-page-items="massiv"
             :total-items="totalItems"
             rows-per-page-text="Количество строк:"
+            no-data-text="Нет данных для отображения"
             class="elevation-1 clients-table"
           >
             <template slot="items" scope="props">

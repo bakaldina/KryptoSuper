@@ -1,5 +1,5 @@
 <template>
-    <section id="hashrate">
+    <section id="miningBTC">
         <h1>Хэшрейт</h1>
         <div class="main_menu"><v-btn
         flat
@@ -18,6 +18,7 @@
           v-bind:rows-per-page-items="massiv"
           :total-items="totalItems"
           rows-per-page-text="Количество строк:"
+          no-data-text="Нет данных для отображения"
           class="elevation-1 clients-table"
         >
       <template slot="items" scope="props" >
@@ -66,7 +67,9 @@ export default {
       pagination: { sortBy: 'day', page: 1, rowsPerPage: 25, descending: false, totalItems: 0 },
       massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       menuItems: [
-        {icon: 'attach_money', title: 'Баланс счета', link: '/hash'},
+        {icon: 'gavel', title: 'Майнинг BTC', link: '/miningBTC'},
+        {icon: 'gavel', title: 'Майнинг LTC', link: '/miningLTC'},
+        {icon: 'attach_money', title: 'Баланс счета', link: '/balance'},
         {icon: 'trending_up', title: 'Статистика счета', link: '/statistics'}
       ]
     }
@@ -86,51 +89,6 @@ export default {
           'miningItem': data[key].miningItem
         })
       }
-<<<<<<< HEAD
-      console.log(this.DataCurs)
-    })
-    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
-      return data.json()
-    }).then(function (data) {
-      for (let key in data) {
-        let elem = data[key]
-        elem['superkey'] = key
-        this.Transactions.push({
-          'dolya': 0,
-          'data': data[key].data2,
-          'quantity': data[key].quantity
-        })
-      }
-      console.log(this.Transactions)
-    })
-    this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
-      return data.json()
-    }).then(function (data) {
-      for (let key in data) {
-        if (data[key].email === user.email) {
-          var dataOpen = moment(data[key].dateOfAccountOpening)
-          var dataOpenPlusOne = dataOpen.add(1, 'days')
-          var datatoday = moment()
-          this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
-          var dataKursMass = this.DataCurs
-          // var quantity = this.Transactions
-          // var summQuantity =
-          for (var i = 1; i < this.dataDif + 2; i++) {
-            let j = i - 1
-            console.log(this.DataCurs.length)
-            console.log(this.Transactions.length)
-            var miningItem = this.DataCurs[j].miningItem
-            var quantity = this.Transactions[j].quantity
-            this.balance.push({
-              'day': i,
-              'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY'),
-              'coursesBTC': dataKursMass[j].coursesBTC,
-              'mining': miningItem * quantity * 100 // summQuantity
-            })
-          }
-        }
-      }
-=======
       console.log(1)
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
         return data.json()
@@ -191,7 +149,6 @@ export default {
           })
         })
       })
->>>>>>> 66e1554e3f5d9db9b46f52b1a60eab0773fff0af
     })
   }
 }
