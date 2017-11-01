@@ -371,6 +371,31 @@ export default {
           accoountCreated[data[key].accountNnumber] = data[key].quantity
         }
       }
+      var MinusDay
+      for (var date in calendar) {
+        var allpower = 0
+        calendar[date].forEach(function (item, index, arr) {
+        // thatDayPower= +calendar[date][arr.length-1].all.power
+          for (var numb in item) {
+            allpower += +item[numb].power
+          }
+        })
+        if (MinusDay) {
+          allpower += +calendar[MinusDay][calendar[MinusDay].length - 1].all.power
+        }
+        calendar[date].push({ all: {power: allpower} })
+        MinusDay = date
+      }
+      // добавление доли каждому
+      for (var date2 in calendar) {
+        calendar[date2].forEach(function (item, index, arr) {
+          for (var numb in item) {
+            let thatPower = +item[numb].power
+            let thatDayPower = +calendar[date2][arr.length - 1].all.power
+            item[numb].proportion = thatPower / thatDayPower
+          }
+        })
+      }
       // console.log(calendar['2017-09-07']['9999-020'])
       this.firebase.database().ref('customer_details').set(calendar)
     })
