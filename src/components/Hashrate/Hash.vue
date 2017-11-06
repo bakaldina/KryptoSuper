@@ -117,25 +117,27 @@ export default {
                 DataCurs[j] = DataCurs[j] || ''
                 if (DataCurs[j] !== undefined) {
                   let thatDate = moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD')
-                  // console.log(thatDate)
                   let inf = ''
                   //  получить долю
                   firebase.database().ref('customer_details').child(thatDate).on('value', function (snapshot) {
                     let temp = snapshot.val() || []
                     if (temp.length > 0) {
-                      inf = temp.indexOf('9999-015')
-                      console.log(temp)
-                    }
-                    if ('9999-002' in temp) {
-                      console.log('baby')
+                      // ищем ключ равный нашему массиву
+                      temp.map(function (account, index, array) {
+                        for (let name in account) {
+                          console.log(name)
+                          if (name === '9999-002') {
+                            inf = account[name].proportion
+                          }
+                        }
+                      })
                     }
                   })
                   this.balance.push({
                     'day': i,
                     'date': thatDate,
                     'coursesBTC': DataCurs[j].coursesBTC || '',
-                    'mining': DataCurs[j].miningItem,
-                    'balanceItem': inf
+                    'mining': +DataCurs[j].miningItem * +inf
                   })
                 }
               }
