@@ -24,7 +24,7 @@
             <td class="text-xs-right">{{ props.item.day }}</td>
             <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
-            <td></td>
+            <td class="text-xs-right">{{ props.item.balanceItem }}</td>
             <td class="text-xs-right">{{ props.item.coursesBTC }}</td>            
            <!-- <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
@@ -73,8 +73,6 @@ export default {
   },
   created () {
     var user = firebase.auth().currentUser
-    // this.dataDif = moment().format('YYYY-MM-DD').diff(moment(this.dataOpen))
-    // this.dataDif = moment(this.dataOpen).format('DD').diff(moment().format('YYYY-MM-DD'))
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_mining.json').then(function (data) {
       return data.json()
     }).then(function (data) {
@@ -87,64 +85,62 @@ export default {
           'miningItem': data[key].miningItem
         })
       }
-      console.log(1)
-      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
+      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
         return data.json()
       }).then(function (data) {
         for (let key in data) {
           if (data[key].accountNnumber === '9999-002') {
             let elem = data[key]
             elem['superkey'] = key
-            this.transaction.push(elem)
+            this.details.push(elem)
           }
         }
-        console.log(2)
-        this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
+        // console.log(3)
+        this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
           return data.json()
         }).then(function (data) {
           for (let key in data) {
-            if (data[key].accountNnumber === '9999-002') {
-              let elem = data[key]
-              elem['superkey'] = key
-              this.details.push(elem)
-            }
-          }
-          console.log(3)
-          this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
-            return data.json()
-          }).then(function (data) {
-            for (let key in data) {
-              if (data[key].email === user.email) {
-                // формирование таблички с первого дня создания крипто
-                var dataOpen = moment(data[key].dateOfAccountOpening)
-                var dataOpenPlusOne = dataOpen.add(1, 'days')
-                var datatoday = moment()
-                this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
-                var DataCurs = this.DataCurs
-                console.log(DataCurs.length)
-                for (var i = 1; i < this.dataDif + 2; i++) {
-                  let j
-                  if (i < DataCurs.length) {
-                    j = i - 1
-                  } else {
-                    j = DataCurs.length
-                  }
-                  console.log(moment(data[key].dateOfAccountOpening).add(i, 'days'))
-                  // console.log(this.firebase.database().ref('customer_details').child(moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD')))
-                  if (DataCurs[j].coursesBTC) {
-                    console.log(DataCurs[j].coursesBTC)
-                    this.balance.push({
-                      'day': i,
-                      'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY'),
-                      'coursesBTC': DataCurs[j].coursesBTC,
-                      'mining': DataCurs[j].miningItem
-                    })
-                  }
+            if (data[key].email === user.email) {
+              // формирование таблички с первого дня создания крипто
+              var dataOpen = moment(data[key].dateOfAccountOpening)
+              var dataOpenPlusOne = dataOpen.add(1, 'days')
+              var datatoday = moment()
+              this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
+              var DataCurs = this.DataCurs
+              for (var i = 1; i < this.dataDif + 2; i++) {
+                let j
+                if (i < DataCurs.length) {
+                  j = i - 1
+                } else {
+                  j = DataCurs.length
+                }
+                DataCurs[j] = DataCurs[j] || ''
+                if (DataCurs[j] !== undefined) {
+                  let thatDate = moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD')
+                  // console.log(thatDate)
+                  let inf = ''
+                  //  получить долю
+                  firebase.database().ref('customer_details').child(thatDate).on('value', function (snapshot) {
+                    let temp = snapshot.val() || []
+                    if (temp.length > 0) {
+                      inf = temp.indexOf('9999-015')
+                      console.log(temp)
+                    }
+                    if ('9999-002' in temp) {
+                      console.log('baby')
+                    }
+                  })
+                  this.balance.push({
+                    'day': i,
+                    'date': thatDate,
+                    'coursesBTC': DataCurs[j].coursesBTC || '',
+                    'mining': DataCurs[j].miningItem,
+                    'balanceItem': inf
+                  })
                 }
               }
             }
-            console.log(4)
-          })
+          }
         })
       })
     })

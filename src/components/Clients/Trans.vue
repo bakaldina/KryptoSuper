@@ -212,6 +212,7 @@
 // Imports
 import firebase from 'firebase'
 import moment from 'moment'
+import _ from 'underscore'
 
 export default {
   data () {
@@ -332,44 +333,56 @@ export default {
     }
   },
   created () {
+    // orderByChild
+    // console.log(firebase.database().ref('customer_transaction').orderByChild('summa'))
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
       var calendar = {}
-      var accoountCreated = {}
-      for (var key in data) {
+      for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
-        if (data[key]['typeOfTнапransaction'] === 'Покупка мощности' || 'Продажа мощности') {
+        if (data[key]['typeOfTransaction'] === 'Покупка мощности' || 'Продажа мощности') {
           data[key]['currency'] = 'BTC'
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
           this.firebase.database().ref('customer_transaction').child(key).child('summa').set(data[key]['summa'])
         }
         this.items.push(elem)
-        if (data[key].accountNnumber in accoountCreated) {
-          accoountCreated[data[key].accountNnumber] = +accoountCreated[data[key].accountNnumber] + +data[key].quantity
-          if (calendar[data[key].date2]) {
-            calendar[data[key].date2].push({
-              [data[key].accountNnumber]: {
-                power: accoountCreated[data[key].accountNnumber]
-              }
-            })
+      }
+      var accoountCreated = {}
+      let afterGroup = _.groupBy(this.items, 'date2')
+      // формирование календаря
+      for (var keyDate in afterGroup) {
+        // afterGroup[keyDate] транзакции на эту дату
+        // keyDate отдаст саму дату
+        afterGroup[keyDate].map(function (account, index, array) {
+          // добавлен ли номер аккаунта в accoountCreated?
+          if (array[index].accountNnumber in accoountCreated) {
+            accoountCreated[array[index].accountNnumber] = +accoountCreated[array[index].accountNnumber] + +array[index].quantity
+            if (calendar[array[index].date2]) {
+              accoountCreated[array[index].accountNnumber]
+              calendar[array[index].date2].push({
+                [array[index].accountNnumber]: {
+                  power: accoountCreated[array[index].accountNnumber]
+                }
+              })
+            } else {
+              calendar[array[index].date2] = []
+            }
           } else {
-            calendar[data[key].date2] = []
+            if (calendar[array[index].date2]) {
+              calendar[array[index].date2].push({
+                [array[index].accountNnumber]: {
+                  power: array[index].quantity
+                }
+              })
+            } else {
+              calendar[array[index].date2] = []
+            }
+            accoountCreated[array[index].accountNnumber] = array[index].quantity
           }
-        } else {
-          if (calendar[data[key].date2]) {
-            calendar[data[key].date2].push({
-              [data[key].accountNnumber]: {
-                power: data[key].quantity
-              }
-            })
-          } else {
-            calendar[data[key].date2] = []
-          }
-          accoountCreated[data[key].accountNnumber] = data[key].quantity
-        }
+        })
       }
       var MinusDay
       for (var date in calendar) {
@@ -396,7 +409,6 @@ export default {
           }
         })
       }
-      // console.log(calendar['2017-09-07']['9999-020'])
       this.firebase.database().ref('customer_details').set(calendar)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
@@ -407,7 +419,7 @@ export default {
         this.number_clientsText.push(data[key]['accountNnumber'] + ' ' + data[key]['firstName'] + ' ' + data[key]['surname'])
       }
     })
-    this.transactions.date2 = moment().format('YYYY-MM-DD')
+    this.transactions.date2 = moment().format('DD.MM.YYYY')
     // var calendar = {}
     // var createCrypto = moment('2017-07-14')
     // var dataToday = moment()
