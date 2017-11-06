@@ -100,6 +100,7 @@ export default {
           return data.json()
         }).then(function (data) {
           for (let key in data) {
+            let lastDolya = []
             if (data[key].email === user.email) {
               // формирование таблички с первого дня создания крипто
               var dataOpen = moment(data[key].dateOfAccountOpening)
@@ -116,8 +117,9 @@ export default {
                 }
                 DataCurs[j] = DataCurs[j] || ''
                 if (DataCurs[j] !== undefined) {
-                  let thatDate = moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD')
-                  let inf = ''
+                  let thatDate = moment(data[key].dateOfAccountOpening).add(i - 1, 'days').format('YYYY-MM-DD')
+                  let inf
+                  console.log(thatDate)
                   //  получить долю
                   firebase.database().ref('customer_details').child(thatDate).on('value', function (snapshot) {
                     let temp = snapshot.val() || []
@@ -125,14 +127,15 @@ export default {
                       // ищем ключ равный нашему массиву
                       temp.map(function (account, index, array) {
                         for (let name in account) {
-                          console.log(name)
+                          // справа заменяем на акаунт номер пользователя
                           if (name === '9999-002') {
-                            inf = account[name].proportion
+                            lastDolya.push(account[name].proportion)
                           }
                         }
                       })
                     }
                   })
+                  inf = inf || lastDolya[lastDolya.length - 1]
                   this.balance.push({
                     'day': i,
                     'date': thatDate,
