@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Exchange from '@/components/Other/Exchange'
-import Hash from '@/components/Hashrate/Hash'
+import MiningBTC from '@/components/Hashrate/MiningBTC'
+import MiningLTC from '@/components/Hashrate/MiningLTC'
+import Balance from '@/components/Hashrate/Balance'
 import Statistics from '@/components/Hashrate/Statistics'
 import Pouch from '@/components/Other/Pouch'
 import Mining from '@/components/Clients/Mining'
@@ -46,9 +48,25 @@ let router = new Router({
       }
     },
     {
-      path: '/hash',
-      name: 'Hash',
-      component: Hash,
+      path: '/miningBTC',
+      name: 'MiningBTC',
+      component: MiningBTC,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/miningLTC',
+      name: 'MiningLTC',
+      component: MiningLTC,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/balance',
+      name: 'Balance',
+      component: Balance,
       meta: {
         requiresAuth: true
       }
