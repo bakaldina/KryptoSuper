@@ -333,7 +333,7 @@ export default {
     }
   },
   created () {
-    // orderByChild
+    // orderByChild не работает
     // console.log(firebase.database().ref('customer_transaction').orderByChild('summa'))
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
@@ -384,31 +384,46 @@ export default {
           }
         })
       }
-      var MinusDay
-      for (var date in calendar) {
-        var allpower = 0
-        calendar[date].forEach(function (item, index, arr) {
-        // thatDayPower= +calendar[date][arr.length-1].all.power
-          for (var numb in item) {
-            allpower += +item[numb].power
+      var lastDay = []
+      // добавление общего намайненого
+      console.log(calendar)
+      for (let day in calendar) {
+        let power = 0 // мощность за день
+        let allForPast // мощность за предыдущий день
+        calendar[day].map(function (day, index, array) { // проход по каждому дню
+          power = 0
+          for (let acc in day) { // проход по каждому аккаунт
+            power += +day[acc].power
           }
+          // console.log(array)
+          // power += acc.power
         })
-        if (MinusDay) {
-          allpower += +calendar[MinusDay][calendar[MinusDay].length - 1].all.power
+        if (lastDay.length !== 0) {
+          // calendar.data.numbAccaunta.lastElementArray.All
+          let predData = lastDay[lastDay.length - 1]
+          let massiv = calendar[lastDay[lastDay.length - 1]]
+          allForPast = calendar[predData][massiv.length - 1].all
+          power += allForPast
+          lastDay.push(day)
+          calendar[day].push({all: power})
+        } else {
+          allForPast = 37490
+          calendar[day].push({all: allForPast})
         }
-        calendar[date].push({ all: {power: allpower} })
-        MinusDay = date
+        lastDay.push(day)
       }
+      console.log(calendar)
       // добавление доли каждому
-      for (var date2 in calendar) {
-        calendar[date2].forEach(function (item, index, arr) {
-          for (var numb in item) {
-            let thatPower = +item[numb].power
-            let thatDayPower = +calendar[date2][arr.length - 1].all.power
-            item[numb].proportion = thatPower / thatDayPower
-          }
-        })
-      }
+      // for (var date2 in calendar) {
+      //   calendar[date2].forEach(function (item, index, arr) {
+      //     for (var numb in item) {
+      //       let thatPower = +item[numb].power
+      //       let thatDayPower = +calendar[date2][arr.length - 1].all.power
+      //       console.log(thatDayPower)
+      //       item[numb].proportion = thatPower / thatDayPower
+      //     }
+      //   })
+      // }
       this.firebase.database().ref('customer_details').set(calendar)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
