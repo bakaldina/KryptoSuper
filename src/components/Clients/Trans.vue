@@ -338,7 +338,6 @@ export default {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      console.log(data)
       var calendar = {}
       for (let key in data) {
         let elem = data[key]
@@ -353,7 +352,6 @@ export default {
       }
       var accoountCreated = {}
       let afterGroup = _.groupBy(this.items, 'date2')
-      // console.log(afterGroup)
       // формирование календаря
       for (var keyDate in afterGroup) {
         // afterGroup[keyDate] транзакции на эту дату
@@ -438,7 +436,7 @@ export default {
           }
         })
       }
-      this.firebase.database().ref('customer_details').set(calendar)
+      // this.firebase.database().ref('customer_details').set(calendar)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()

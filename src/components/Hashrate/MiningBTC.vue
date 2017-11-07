@@ -25,9 +25,9 @@
             <td class="text-xs-right">{{ props.item.day }}</td>
             <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
-            <td></td>
-            <td class="text-xs-right">{{ props.item.coursesBTC }}</td>
-           <!-- <td class="text-xs-right">{{ props.item.date }}</td>
+            <td class="text-xs-right">{{ props.item.balanceItem }}</td>
+            <td class="text-xs-right">{{ props.item.coursesBTC }}</td>     
+            <!-- <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
             <td class="text-xs-right">{{ props.item.balanceItem }}</td>
             <td class="text-xs-right">{{ props.item.courseBTC }}</td>
@@ -40,6 +40,7 @@
 <script>
 import firebase from 'firebase'
 import moment from 'moment'
+import _ from 'underscore'
 
 export default {
   name: 'hash',
@@ -55,13 +56,14 @@ export default {
         { text: 'Курс BTC', value: 'coursesBTC' },
         { text: 'Заработано USD', value: 'incomeUSD' }
       ],
+      details: [],
+      mining: [],
       items: [],
-      DataCurs: [],
-      Transactions: [],
       dataDif: 0,
       active: null,
       checkbox: false,
       search: '',
+      DataCurs: [],
       totalItems: 0,
       transaction: [],
       pagination: { sortBy: 'day', page: 1, rowsPerPage: 25, descending: false, totalItems: 0 },
@@ -82,71 +84,79 @@ export default {
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
-        console.log(data[key].miningItem)
         this.DataCurs.push({
           'date': data[key].date,
+          'timestamp': moment(data[key].date).valueOf(),
           'coursesBTC': data[key].сoursesBTC,
           'miningItem': data[key].miningItem
         })
       }
-      console.log(1)
-      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
+      this.DataCurs = _.sortBy(this.DataCurs, 'timestamp')
+      console.log(this.DataCurs)
+      this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
         return data.json()
       }).then(function (data) {
         for (let key in data) {
           if (data[key].accountNnumber === '9999-002') {
             let elem = data[key]
             elem['superkey'] = key
-            this.transaction.push(elem)
+            this.details.push(elem)
           }
         }
-        console.log(2)
-        this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
+        // console.log(3)
+        this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
           return data.json()
         }).then(function (data) {
           for (let key in data) {
-            if (data[key].accountNnumber === '9999-002') {
-              let elem = data[key]
-              elem['superkey'] = key
-              this.details.push(elem)
-            }
-          }
-          console.log(3)
-          this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
-            return data.json()
-          }).then(function (data) {
-            for (let key in data) {
-              if (data[key].email === user.email) {
-                // формирование таблички с первого дня создания крипто
-                var dataOpen = moment(data[key].dateOfAccountOpening)
-                var dataOpenPlusOne = dataOpen.add(1, 'days')
-                var datatoday = moment()
-                this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
-                var DataCurs = this.DataCurs
-                console.log(DataCurs.length)
-                for (var i = 1; i < this.dataDif + 2; i++) {
-                  let j
-                  if (i < DataCurs.length) {
-                    j = i - 1
-                  } else {
-                    j = DataCurs.length
-                  }
-                  console.log(moment(data[key].dateOfAccountOpening).add(i, 'days'))
-                  // console.log(this.firebase.database().ref('customer_details').child(moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD')))
-                  if (DataCurs[j].coursesBTC) {
-                    console.log(DataCurs[j].coursesBTC)
-                    this.balance.push({
-                      'day': i,
-                      'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('DD.MM.YYYY'),
-                      'coursesBTC': DataCurs[j].coursesBTC,
-                      'mining': DataCurs[j].miningItem
-                    })
-                  }
+            let lastDolya = []
+            if (data[key].email === user.email) {
+              // формирование таблички с первого дня создания крипто
+              var dataOpen = moment(data[key].dateOfAccountOpening)
+              var dataOpenPlusOne = dataOpen.add(1, 'days')
+              var datatoday = moment()
+              this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
+              var DataCurs = this.DataCurs
+              for (var i = 1; i < this.dataDif + 2; i++) {
+                let j
+                if (i < DataCurs.length) {
+                  j = i - 1
+                } else {
+                  j = DataCurs.length
+                }
+                DataCurs[j] = DataCurs[j] || ''
+                if (DataCurs[j] !== undefined) {
+                  let thatDate = moment(data[key].dateOfAccountOpening).add(i - 1, 'days').format('YYYY-MM-DD')
+                  let inf
+                  //  получить долю
+                  firebase.database().ref('customer_details').child(thatDate).on('value', function (snapshot) {
+                    let temp = snapshot.val() || []
+                    if (temp.length > 0) {
+                      // ищем ключ равный нашему массиву
+                      temp.map(function (account, index, array) {
+                        for (let name in account) {
+                          // справа заменяем на акаунт номер пользователя
+                          if (name === '9999-002') {
+                            // тут добавляем дол этого чувака на дату
+                            // надо подумать кароч(())
+                            lastDolya.push(account[name].proportion)
+                          }
+                        }
+                      })
+                    }
+                    console.log(1)
+                  })
+                  inf = lastDolya[lastDolya.length - 1]
+                  console.log(2)
+                  this.balance.push({
+                    'day': i,
+                    'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
+                    'coursesBTC': DataCurs[j].coursesBTC || '',
+                    'mining': +DataCurs[j].miningItem * +inf || ''
+                  })
                 }
               }
             }
-            console.log(4)
-          })
+          }
         })
       })
     })
