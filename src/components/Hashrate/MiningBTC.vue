@@ -86,7 +86,7 @@ export default {
         this.DataCurs.push({
           'date': data[key].date,
           'coursesBTC': data[key].сoursesBTC,
-          'miningItem': data[key].miningItem
+          'payOut': data[key].payOut
         })
       }
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
@@ -138,13 +138,12 @@ export default {
                       })
                     }
                   })
-                  console.log(DataCurs[j].miningItem)
                   inf = lastDolya[lastDolya.length - 1]
                   this.balance.push({
                     'day': i,
                     'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
                     'coursesBTC': DataCurs[j].coursesBTC || '',
-                    'mining': +DataCurs[j].miningItem * +inf * 10
+                    'mining': +DataCurs[j].payOut * +inf * 10
                   })
                 }
               }
