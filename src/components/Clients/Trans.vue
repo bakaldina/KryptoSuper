@@ -369,6 +369,12 @@ export default {
               })
             } else {
               calendar[array[index].date2] = []
+              accoountCreated[array[index].accountNnumber]
+              calendar[array[index].date2].push({
+                [array[index].accountNnumber]: {
+                  power: accoountCreated[array[index].accountNnumber]
+                }
+              })
             }
           } else {
             if (calendar[array[index].date2]) {
@@ -379,15 +385,22 @@ export default {
               })
             } else {
               calendar[array[index].date2] = []
+              accoountCreated[array[index].accountNnumber]
+              // console.log(accoountCreated)
+              calendar[array[index].date2].push({
+                [array[index].accountNnumber]: {
+                  power: +array[index].quantity
+                }
+              })
             }
             accoountCreated[array[index].accountNnumber] = array[index].quantity
           }
         })
       }
-      var lastDay = []
       // добавление общего намайненого
       console.log(calendar)
       for (let day in calendar) {
+        let lastDay = lastDay || []
         let power = 0 // мощность за день
         let allForPast // мощность за предыдущий день
         calendar[day].map(function (day, index, array) { // проход по каждому дню
@@ -398,24 +411,21 @@ export default {
           // console.log(array)
           // power += acc.power
         })
-        if (lastDay[lastDay.length - 1] < 1) {
+        if (lastDay.length > 0) {
           // calendar.data.numbAccaunta.lastElementArray.All
           let predData = lastDay[lastDay.length - 1]
           let massiv = calendar[lastDay[lastDay.length - 1]]
-          allForPast = calendar[predData][massiv.length - 1].all
-          console.log(power)
-          console.log(allForPast)
+          allForPast = calendar[predData][massiv.length - 1].all.power
           power += allForPast
           lastDay.push(day)
-          calendar[day].push({all: power})
+          calendar[day].push({all: {'power': power}})
         } else {
-          allForPast = 37490
-          calendar[day].push({all: allForPast})
+          allForPast = 33410
+          calendar[day].push({all: {'power': allForPast}})
         }
         lastDay.push(day)
-        console.log(lastDay)
       }
-      // console.log(calendar)
+      console.log(calendar)
       // добавление доли каждому
       for (var date2 in calendar) {
         calendar[date2].forEach(function (item, index, arr) {
