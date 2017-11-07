@@ -40,6 +40,7 @@
 <script>
 import firebase from 'firebase'
 import moment from 'moment'
+import _ from 'underscore'
 
 export default {
   name: 'hash',
@@ -85,10 +86,13 @@ export default {
         elem['superkey'] = key
         this.DataCurs.push({
           'date': data[key].date,
+          'timestamp': moment(data[key].date).valueOf(),
           'coursesBTC': data[key].сoursesBTC,
-          'payOut': data[key].payOut
+          'miningItem': data[key].miningItem
         })
       }
+      this.DataCurs = _.sortBy(this.DataCurs, 'timestamp')
+      console.log(this.DataCurs)
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
         return data.json()
       }).then(function (data) {
@@ -132,18 +136,22 @@ export default {
                         for (let name in account) {
                           // справа заменяем на акаунт номер пользователя
                           if (name === '9999-002') {
+                            // тут добавляем дол этого чувака на дату
+                            // надо подумать кароч(())
                             lastDolya.push(account[name].proportion)
                           }
                         }
                       })
                     }
+                    console.log(1)
                   })
                   inf = lastDolya[lastDolya.length - 1]
+                  console.log(2)
                   this.balance.push({
                     'day': i,
                     'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
                     'coursesBTC': DataCurs[j].coursesBTC || '',
-                    'mining': +DataCurs[j].payOut * +inf * 10
+                    'mining': +DataCurs[j].miningItem * +inf || ''
                   })
                 }
               }
