@@ -338,6 +338,7 @@ export default {
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
+      console.log(data)
       var calendar = {}
       for (let key in data) {
         let elem = data[key]
@@ -352,6 +353,7 @@ export default {
       }
       var accoountCreated = {}
       let afterGroup = _.groupBy(this.items, 'date2')
+      // console.log(afterGroup)
       // формирование календаря
       for (var keyDate in afterGroup) {
         // afterGroup[keyDate] транзакции на эту дату
@@ -369,6 +371,12 @@ export default {
               })
             } else {
               calendar[array[index].date2] = []
+              accoountCreated[array[index].accountNnumber]
+              calendar[array[index].date2].push({
+                [array[index].accountNnumber]: {
+                  power: accoountCreated[array[index].accountNnumber]
+                }
+              })
             }
           } else {
             if (calendar[array[index].date2]) {
@@ -379,15 +387,22 @@ export default {
               })
             } else {
               calendar[array[index].date2] = []
+              accoountCreated[array[index].accountNnumber]
+              // console.log(accoountCreated)
+              calendar[array[index].date2].push({
+                [array[index].accountNnumber]: {
+                  power: +array[index].quantity
+                }
+              })
             }
             accoountCreated[array[index].accountNnumber] = array[index].quantity
           }
         })
       }
-      var lastDay = []
       // добавление общего намайненого
       console.log(calendar)
       for (let day in calendar) {
+        let lastDay = lastDay || []
         let power = 0 // мощность за день
         let allForPast // мощность за предыдущий день
         calendar[day].map(function (day, index, array) { // проход по каждому дню
@@ -398,24 +413,21 @@ export default {
           // console.log(array)
           // power += acc.power
         })
-        if (lastDay[lastDay.length - 1] < 1) {
+        if (lastDay.length > 0) {
           // calendar.data.numbAccaunta.lastElementArray.All
           let predData = lastDay[lastDay.length - 1]
           let massiv = calendar[lastDay[lastDay.length - 1]]
-          allForPast = calendar[predData][massiv.length - 1].all
-          console.log(power)
-          console.log(allForPast)
+          allForPast = calendar[predData][massiv.length - 1].all.power
           power += allForPast
           lastDay.push(day)
-          calendar[day].push({all: power})
+          calendar[day].push({all: {'power': power}})
         } else {
           allForPast = 37490
-          calendar[day].push({all: allForPast})
+          calendar[day].push({all: {'power': allForPast}})
         }
         lastDay.push(day)
-        console.log(lastDay)
       }
-      // console.log(calendar)
+      console.log(calendar)
       // добавление доли каждому
       for (var date2 in calendar) {
         calendar[date2].forEach(function (item, index, arr) {
@@ -426,7 +438,7 @@ export default {
           }
         })
       }
-      // this.firebase.database().ref('customer_details').set(calendar)
+      this.firebase.database().ref('customer_details').set(calendar)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
