@@ -1,5 +1,5 @@
 <template>
-    <section id="hashrate">
+    <section id="statistics">
         <h1>Хэшрейт</h1>
         <div class="main_menu"><v-btn
         flat
@@ -21,38 +21,20 @@ import firebase from 'firebase'
 export default {
   data () {
     return {
-      balance: {
-        day: '',
-        date: '',
-        mining: '',
-        balanceItem: '',
-        courseBTC: '',
-        incomeUSD: ''
-      },
-      headers: [
-        { text: 'День', value: 'day' },
-        { text: 'Дата', value: 'date' },
-        { text: 'Майнинг', value: 'mining' },
-        { text: 'Баланс', value: 'balanceItem' },
-        { text: 'Курс BTC', value: 'courseBTC' },
-        { text: 'Заработано USD', value: 'incomeUSD' }
-      ],
       items: [],
       firebase: firebase,
       menuItems: [
-        {icon: 'attach_money', title: 'Баланс счета', link: '/hash'},
+        {icon: 'gavel', title: 'Майнинг BTC', link: '/miningBTC'},
+        {icon: 'gavel', title: 'Майнинг LTC', link: '/miningLTC'},
+        {icon: 'attach_money', title: 'Баланс счета', link: '/balance'},
         {icon: 'trending_up', title: 'Статистика счета', link: '/statistics'}
       ]
-    //   items: ['Баланс счета', 'Статистика счета'],
-    //   text: ['Раздел в разработке!', 'Раздел в разработке!']
     }
   },
   created () {
     this.$http.get('https://vueti-5ed25.firebaseio.com/hashrate_balance.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      this.balance.day = data.day
-      this.balance.date = data.date
     })
   }
 }
