@@ -58,14 +58,14 @@
         customer: [],
         drawer: true,
         menuItems1: [
-          {icon: 'business', title: 'Хэшрейт', link: '/hash'},
+          {icon: 'business', title: 'Хэшрейт', link: '/miningBTC'},
           {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'call_to_action', title: 'Кошелек', link: '/pouch'},
           {icon: 'lock_outline', title: 'Выйти', link: '/login'}
         ],
         menuItems: [
           {icon: 'supervisor_account', title: 'Контракты', link: '/contracts'},
-          {icon: 'business', title: 'Хэшрейт', link: '/hash'},
+          {icon: 'business', title: 'Хэшрейт', link: '/miningBTC'},
           {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'call_to_action', title: 'Кошелек', link: '/pouch'},
           {icon: 'lock_outline', title: 'Выйти', link: '/login'}
