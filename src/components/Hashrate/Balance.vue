@@ -1,5 +1,5 @@
 <template>
-    <section id="statistics">
+    <section id="balance">
         <h1>Хэшрейт</h1>
         <div class="main_menu"><v-btn
         flat

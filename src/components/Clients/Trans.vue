@@ -22,6 +22,7 @@
             v-bind:rows-per-page-items="massiv"
             :total-items="totalItems"
             rows-per-page-text="Количество строк:"
+            no-data-text="Нет данных для отображения"
             class="elevation-1 clients-table"
           >
             <template slot="items" scope="props">
@@ -212,7 +213,6 @@
 // Imports
 import firebase from 'firebase'
 import moment from 'moment'
-import _ from 'underscore'
 
 export default {
   data () {
@@ -283,6 +283,25 @@ export default {
       ]
     }
   },
+  // watch: {
+  //   pagination: {
+  //     handler () {
+  //       this.getDataFromApi()
+  //         .then(data => {
+  //           this.items = data.items
+  //           this.totalItems = data.total
+  //         })
+  //     },
+  //     deep: true
+  //   }
+  // },
+  // mounted () {
+  //   this.getDataFromApi()
+  //     .then(data => {
+  //       this.items = data.items
+  //       this.totalItems = data.total
+  //     })
+  // },
   methods: {
     logout: function () {
       firebase.auth().signOut().then(() => {
@@ -317,6 +336,47 @@ export default {
         }
       })
     },
+    // getDataFromApi () {
+    //   this.loading = true
+    //   return new Promise((resolve, reject) => {
+    //     const { sortBy, descending, page, rowsPerPage } = this.pagination
+
+    //     let items = this.transactions
+    //     const total = items.length
+
+    //     if (this.pagination.sortBy) {
+    //       items = items.sort((a, b) => {
+    //         const sortA = a[sortBy]
+    //         const sortB = b[sortBy]
+
+    //         if (descending) {
+    //           if (sortA < sortB) return 1
+    //           if (sortA > sortB) return -1
+    //           return 0
+    //         } else {
+    //           if (sortA < sortB) return -1
+    //           if (sortA > sortB) return 1
+    //           return 0
+    //         }
+    //       })
+    //     }
+    //     if (rowsPerPage > 0) {
+    //       items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+    //     }
+
+    //     setTimeout(() => {
+    //       this.loading = false
+    //       resolve({
+    //         items,
+    //         total
+    //       })
+    //     }, 1000)
+    //   })
+    // },
+    // getDesserts () {
+    //   console.log(this.items)
+    //   return [this.items]
+    // },
     postTransactions: function () {
       this.transactions['accountNnumber'] = this.transactions['accountNnumber'].split(' ')[0]
       this.$http.post('https://vueti-5ed25.firebaseio.com/customer_transaction.json', this.transactions).then(function (data) {
@@ -333,16 +393,13 @@ export default {
     }
   },
   created () {
-    // orderByChild
-    // console.log(firebase.database().ref('customer_transaction').orderByChild('summa'))
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
-      var calendar = {}
-      for (let key in data) {
+      for (var key in data) {
         let elem = data[key]
         elem['superkey'] = key
-        if (data[key]['typeOfTransaction'] === 'Покупка мощности' || 'Продажа мощности') {
+        if (data[key]['typeOfTнапransaction'] === 'Покупка мощности' || 'Продажа мощности') {
           data[key]['currency'] = 'BTC'
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
           data[key]['summa'] = Math.ceil(data[key]['summa'] * 100000000) / 100000000
@@ -350,66 +407,6 @@ export default {
         }
         this.items.push(elem)
       }
-      var accoountCreated = {}
-      let afterGroup = _.groupBy(this.items, 'date2')
-      // формирование календаря
-      for (var keyDate in afterGroup) {
-        // afterGroup[keyDate] транзакции на эту дату
-        // keyDate отдаст саму дату
-        afterGroup[keyDate].map(function (account, index, array) {
-          // добавлен ли номер аккаунта в accoountCreated?
-          if (array[index].accountNnumber in accoountCreated) {
-            accoountCreated[array[index].accountNnumber] = +accoountCreated[array[index].accountNnumber] + +array[index].quantity
-            if (calendar[array[index].date2]) {
-              accoountCreated[array[index].accountNnumber]
-              calendar[array[index].date2].push({
-                [array[index].accountNnumber]: {
-                  power: accoountCreated[array[index].accountNnumber]
-                }
-              })
-            } else {
-              calendar[array[index].date2] = []
-            }
-          } else {
-            if (calendar[array[index].date2]) {
-              calendar[array[index].date2].push({
-                [array[index].accountNnumber]: {
-                  power: array[index].quantity
-                }
-              })
-            } else {
-              calendar[array[index].date2] = []
-            }
-            accoountCreated[array[index].accountNnumber] = array[index].quantity
-          }
-        })
-      }
-      var MinusDay
-      for (var date in calendar) {
-        var allpower = 0
-        calendar[date].forEach(function (item, index, arr) {
-        // thatDayPower= +calendar[date][arr.length-1].all.power
-          for (var numb in item) {
-            allpower += +item[numb].power
-          }
-        })
-        if (MinusDay) {
-          allpower += +calendar[MinusDay][calendar[MinusDay].length - 1].all.power
-        }
-        calendar[date].push({ all: {power: allpower} })
-        MinusDay = date
-      }
-      // добавление доли каждому
-      for (var date2 in calendar) {
-        calendar[date2].forEach(function (item, index, arr) {
-          for (var numb in item) {
-            let thatPower = +item[numb].power
-            let thatDayPower = +calendar[date2][arr.length - 1].all.power
-            item[numb].proportion = thatPower / thatDayPower
-          }
-        })
-      }
-      this.firebase.database().ref('customer_details').set(calendar)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
@@ -419,19 +416,7 @@ export default {
         this.number_clientsText.push(data[key]['accountNnumber'] + ' ' + data[key]['firstName'] + ' ' + data[key]['surname'])
       }
     })
-    this.transactions.date2 = moment().format('DD.MM.YYYY')
-    // var calendar = {}
-    // var createCrypto = moment('2017-07-14')
-    // var dataToday = moment()
-    // var diffDate = dataToday.diff(createCrypto, 'd')
-    // for (let i = 0; i < diffDate; i++) {
-    //   var date = createCrypto.add(i, 'd')
-    //   calendar[date] = [
-    //     // [accountNumber]: {
-    //     //   [power]:''
-    //     // }
-    //   ]
-    // }
+    this.transactions.date2 = moment().format('YYYY-MM-DD')
   }
 }
 </script>

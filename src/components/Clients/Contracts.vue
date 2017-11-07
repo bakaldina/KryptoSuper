@@ -22,6 +22,7 @@
           v-bind:rows-per-page-items="massiv"
           :total-items="totalItems"
           rows-per-page-text="Количество строк:"
+          no-data-text="Нет данных для отображения"
           class="elevation-1 clients-table"
         >
         <template slot="items" scope="props" >
@@ -129,7 +130,6 @@
 <script>
 // Imports
 import firebase from 'firebase'
-
 export default {
   name: 'contracts',
   data () {
@@ -348,7 +348,7 @@ export default {
         // this.summaBTCSum = this.summaBTCSum.substr(0, 4)
       }
       this.TotalFundBTC = Math.round(this.summaBTCSum * 10000) / 10000
-      // console.log(this.TotalFundBTC)
+      console.log(this.TotalFundBTC)
       this.quantityClients = this.accountNnumbers.length
       this.firebase.database().ref('customer_report').child('powerFund').set(this.powerSum)
       this.firebase.database().ref('customer_report').child('amoundTotalFundBTC').set(this.TotalFundBTC)
@@ -376,33 +376,8 @@ export default {
           }
           this.superClients.push(elem)
         }
-        // // this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
-        // let Accounts = []
-        // this.superClients.forEach(function (clients, index) {
-        //   Accounts.push(clients.accountNnumber)
-        // })
-        // var calendar = {}
-        // var createCrypto = moment('2017-07-14')
-        // var dataToday = moment()
-        // var diffDate = dataToday.diff(createCrypto, 'd')
-        // for (let i = 0; i < diffDate; i++) {
-        //   var date = createCrypto.add(i, 'd').format('YYYY-MM-DD')
-        //   var masssiv = []
-        //   for (let j = 0; j < Accounts.length; j++) {
-        //     masssiv.push({
-        //       accountNumber: Accounts[j]
-        //     })
-        //   }
-        //   console.log(masssiv)
-        //   calendar[date] = {masssiv}
-        // }
-        // console.log(calendar)
-        // for (let j=0; i<this.superClients.length; i++) {
-        // }
-        // console.log(diffDate)
-        // console.log(calendar['2017-05-05'][])
+      // this.customer.accountNnumber = '9999-0' + (this.items.length + 1)
       })
-      // console.log(this.superClients)
     })
   }
 }
