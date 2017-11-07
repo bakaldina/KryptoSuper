@@ -137,7 +137,7 @@ export default {
                   inf = lastDolya[lastDolya.length - 1]
                   this.balance.push({
                     'day': i,
-                    'date': thatDate,
+                    'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
                     'coursesBTC': DataCurs[j].coursesBTC || '',
                     'mining': +DataCurs[j].miningItem * +inf
                   })

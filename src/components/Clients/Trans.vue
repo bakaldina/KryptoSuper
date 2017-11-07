@@ -422,7 +422,7 @@ export default {
           lastDay.push(day)
           calendar[day].push({all: {'power': power}})
         } else {
-          allForPast = 37490
+          allForPast = 33410
           calendar[day].push({all: {'power': allForPast}})
         }
         lastDay.push(day)
