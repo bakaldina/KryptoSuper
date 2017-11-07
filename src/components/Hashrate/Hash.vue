@@ -119,7 +119,6 @@ export default {
                 if (DataCurs[j] !== undefined) {
                   let thatDate = moment(data[key].dateOfAccountOpening).add(i - 1, 'days').format('YYYY-MM-DD')
                   let inf
-                  console.log(thatDate)
                   //  получить долю
                   firebase.database().ref('customer_details').child(thatDate).on('value', function (snapshot) {
                     let temp = snapshot.val() || []
@@ -135,7 +134,7 @@ export default {
                       })
                     }
                   })
-                  inf = inf || lastDolya[lastDolya.length - 1]
+                  inf = lastDolya[lastDolya.length - 1]
                   this.balance.push({
                     'day': i,
                     'date': thatDate,
