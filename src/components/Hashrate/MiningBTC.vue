@@ -139,12 +139,12 @@ export default {
                     }
                   })
                   console.log(DataCurs[j].miningItem)
-                  inf = 1 || lastDolya[lastDolya.length - 1]
+                  inf = lastDolya[lastDolya.length - 1]
                   this.balance.push({
                     'day': i,
-                    'date': thatDate,
+                    'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
                     'coursesBTC': DataCurs[j].coursesBTC || '',
-                    'mining': +DataCurs[j].miningItem * +inf
+                    'mining': +DataCurs[j].miningItem * +inf * 10
                   })
                 }
               }
