@@ -127,6 +127,7 @@ export default {
                 if (DataCurs[j] !== undefined) {
                   let thatDate = moment(data[key].dateOfAccountOpening).add(i - 1, 'days').format('YYYY-MM-DD')
                   let inf
+                  let min
                   var self = this
                   //  получить долю
                   firebase.database().ref('customer_details').child(thatDate).on('value', function (snapshot) {
@@ -145,11 +146,19 @@ export default {
                       })
                     }
                     inf = lastDolya[lastDolya.length - 1]
+                    if (i === 1) {
+                      min = 0
+                    } else if (i === 2) {
+                      min = +DataCurs[j - 1].miningItem * +inf * 10
+                    } else {
+                      min = +DataCurs[j].miningItem * +inf * 10 + +DataCurs[j - 1].miningItem * +inf * 10
+                    }
                     self.balance.push({
                       'day': i,
                       'date': moment(thatDate).add(1, 'd').format('YYYY-MM-DD'),
                       'coursesBTC': DataCurs[j].coursesBTC || '',
-                      'mining': +DataCurs[j].miningItem * +inf || ''
+                      'mining': +DataCurs[j].miningItem * +inf * 10 || '',
+                      'balanceItem': min
                     })
                   })
                 }
