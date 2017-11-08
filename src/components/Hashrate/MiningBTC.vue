@@ -92,7 +92,6 @@ export default {
         })
       }
       this.DataCurs = _.sortBy(this.DataCurs, 'timestamp')
-      console.log(this.DataCurs)
       this.$http.get('https://vueti-5ed25.firebaseio.com/customer_details.json').then(function (data) {
         return data.json()
       }).then(function (data) {
@@ -110,6 +109,7 @@ export default {
           for (let key in data) {
             let lastDolya = []
             if (data[key].email === user.email) {
+              var acca = data[key].accountNnumber
               // формирование таблички с первого дня создания крипто
               var dataOpen = moment(data[key].dateOfAccountOpening)
               var dataOpenPlusOne = dataOpen.add(1, 'days')
@@ -136,7 +136,7 @@ export default {
                       temp.map(function (account, index, array) {
                         for (let name in account) {
                           // справа заменяем на акаунт номер пользователя
-                          if (name === '9999-002') {
+                          if (name === acca) {
                             // тут добавляем дол этого чувака на дату
                             // надо подумать кароч(())
                             lastDolya.push(account[name].proportion)
@@ -147,7 +147,7 @@ export default {
                     inf = lastDolya[lastDolya.length - 1]
                     self.balance.push({
                       'day': i,
-                      'date': thatDate,
+                      'date': moment(thatDate).add(1, 'd').format('YYYY-MM-DD'),
                       'coursesBTC': DataCurs[j].coursesBTC || '',
                       'mining': +DataCurs[j].miningItem * +inf || ''
                     })
