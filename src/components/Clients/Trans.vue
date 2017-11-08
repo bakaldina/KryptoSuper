@@ -333,8 +333,6 @@ export default {
     }
   },
   created () {
-    // orderByChild не работает
-    // console.log(firebase.database().ref('customer_transaction').orderByChild('summa'))
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_transaction.json').then(function (data) {
       return data.json()
     }).then(function (data) {
@@ -364,7 +362,8 @@ export default {
               accoountCreated[array[index].accountNnumber]
               calendar[array[index].date2].push({
                 [array[index].accountNnumber]: {
-                  power: accoountCreated[array[index].accountNnumber]
+                  power: accoountCreated[array[index].accountNnumber],
+                  powerDay: +array[index].quantity
                 }
               })
             } else {
@@ -372,7 +371,8 @@ export default {
               accoountCreated[array[index].accountNnumber]
               calendar[array[index].date2].push({
                 [array[index].accountNnumber]: {
-                  power: accoountCreated[array[index].accountNnumber]
+                  power: accoountCreated[array[index].accountNnumber],
+                  powerDay: +array[index].quantity
                 }
               })
             }
@@ -380,16 +380,17 @@ export default {
             if (calendar[array[index].date2]) {
               calendar[array[index].date2].push({
                 [array[index].accountNnumber]: {
-                  power: array[index].quantity
+                  power: array[index].quantity,
+                  powerDay: +array[index].quantity
                 }
               })
             } else {
               calendar[array[index].date2] = []
               accoountCreated[array[index].accountNnumber]
-              // console.log(accoountCreated)
               calendar[array[index].date2].push({
                 [array[index].accountNnumber]: {
-                  power: +array[index].quantity
+                  power: +array[index].quantity,
+                  powerDay: +array[index].quantity
                 }
               })
             }
@@ -398,18 +399,15 @@ export default {
         })
       }
       // добавление общего намайненого
-      console.log(calendar)
       for (let day in calendar) {
         let lastDay = lastDay || []
         let power = 0 // мощность за день
         let allForPast // мощность за предыдущий день
         calendar[day].map(function (day, index, array) { // проход по каждому дню
-          power = 0
           for (let acc in day) { // проход по каждому аккаунт
-            power += +day[acc].power
+            console.log(+day[acc].powerDay)
+            power += +day[acc].powerDay
           }
-          // console.log(array)
-          // power += acc.power
         })
         if (lastDay.length > 0) {
           // calendar.data.numbAccaunta.lastElementArray.All
@@ -418,14 +416,17 @@ export default {
           allForPast = calendar[predData][massiv.length - 1].all.power
           power += allForPast
           lastDay.push(day)
-          calendar[day].push({all: {'power': power}})
+          calendar[day].push({
+            all: {
+              'power': power
+            }
+          })
         } else {
           allForPast = 33410
           calendar[day].push({all: {'power': allForPast}})
         }
         lastDay.push(day)
       }
-      console.log(calendar)
       // добавление доли каждому
       for (var date2 in calendar) {
         calendar[date2].forEach(function (item, index, arr) {
@@ -436,7 +437,7 @@ export default {
           }
         })
       }
-      // this.firebase.database().ref('customer_details').set(calendar)
+      this.firebase.database().ref('customer_details').set(calendar)
     })
     this.$http.get('https://vueti-5ed25.firebaseio.com/customer_registry.json').then(function (data) {
       return data.json()
