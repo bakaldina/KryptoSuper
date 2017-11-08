@@ -127,6 +127,7 @@ export default {
                 if (DataCurs[j] !== undefined) {
                   let thatDate = moment(data[key].dateOfAccountOpening).add(i - 1, 'days').format('YYYY-MM-DD')
                   let inf
+                  var self = this
                   //  получить долю
                   firebase.database().ref('customer_details').child(thatDate).on('value', function (snapshot) {
                     let temp = snapshot.val() || []
@@ -143,15 +144,13 @@ export default {
                         }
                       })
                     }
-                    console.log(1)
-                  })
-                  inf = lastDolya[lastDolya.length - 1]
-                  console.log(2)
-                  this.balance.push({
-                    'day': i,
-                    'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
-                    'coursesBTC': DataCurs[j].coursesBTC || '',
-                    'mining': +DataCurs[j].miningItem * +inf || ''
+                    inf = lastDolya[lastDolya.length - 1]
+                    self.balance.push({
+                      'day': i,
+                      'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
+                      'coursesBTC': DataCurs[j].coursesBTC || '',
+                      'mining': +DataCurs[j].miningItem * +inf || ''
+                    })
                   })
                 }
               }
