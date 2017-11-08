@@ -116,7 +116,7 @@ export default {
               var datatoday = moment()
               this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
               var DataCurs = this.DataCurs
-              for (var i = 1; i < this.dataDif + 2; i++) {
+              for (let i = 1; i < this.dataDif + 2; i++) {
                 let j
                 if (i < DataCurs.length) {
                   j = i - 1
@@ -147,7 +147,7 @@ export default {
                     inf = lastDolya[lastDolya.length - 1]
                     self.balance.push({
                       'day': i,
-                      'date': moment(data[key].dateOfAccountOpening).add(i, 'days').format('YYYY-MM-DD'),
+                      'date': thatDate,
                       'coursesBTC': DataCurs[j].coursesBTC || '',
                       'mining': +DataCurs[j].miningItem * +inf || ''
                     })
