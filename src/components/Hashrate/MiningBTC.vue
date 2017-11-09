@@ -105,7 +105,7 @@ export default {
           for (let key in data) {
             let lastDolya = []
             let lastPower = []
-            let allPower = []
+            // let allPower = []
             if (data[key].email === user.email) {
               var acca = data[key].accountNnumber
               // формирование таблички с первого дня создания крипто
@@ -132,38 +132,38 @@ export default {
                     let temp = snapshot.val() || []
                     if (temp.length > 0) {
                       // ищем ключ равный нашему массиву
-                      // let allPower
+                      let allPower
                       temp.map(function (account, index, array) {
-                        // allPower = 0
+                        allPower = 0
                         for (let name in account) {
                           // справа заменяем на акаунт номер пользователя
                           if (name === acca) {
                             // тут добавляем дол этого чувака на дату
                             lastPower.push(account[name].power)
+                            console.log(thatDate)
+                            console.log(lastPower)
                           }
                           if (name === 'all') {
-                            allPower.push(account[name].power)
+                            allPower = account[name].power
                           }
                         }
                       })
-                      let proportion = lastPower[lastPower.length - 1] / allPower[allPower.length - 1]
-                      console.log(thatDate)
-                      console.log(proportion)
+                      let proportion = lastPower[lastPower.length - 1] / allPower
                       lastDolya.push(proportion)
                     }
                     inf = lastDolya[lastDolya.length - 1]
                     let balancis
-                    if (i !== 2) {
+                    if (i !== 1) {
                       balancis = +DataCurs[j - 2].miningItem * +inf * 10 + min[min.length - 1]
                       min.push(balancis)
                     }
                     self.balance.push({
-                      'day': i - 1,
-                      'date': moment(thatDate).format('YYYY-MM-DD'),
-                      'coursesBTC': DataCurs[j - 1].coursesBTC || '',
-                      'mining': +DataCurs[j - 1].miningItem * +inf * 10 || '',
+                      'day': i - 2,
+                      'date': moment(thatDate).add(-1, 'days').format('YYYY-MM-DD'),
+                      'coursesBTC': DataCurs[j - 2].coursesBTC || '',
+                      'mining': +DataCurs[j - 2].miningItem * +inf * 10 || '',
                       'balanceItem': min[min.length - 1],
-                      'incomeUSD': (+DataCurs[j].miningItem * +inf * 10 * min[min.length - 1] * 1000000).toFixed(4)
+                      'incomeUSD': (+DataCurs[j - 2].coursesBTC * min[min.length - 1]).toFixed(4)
                     })
                   })
                 }
