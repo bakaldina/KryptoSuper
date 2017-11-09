@@ -26,12 +26,8 @@
             <td class="text-xs-right">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.mining }}</td>
             <td class="text-xs-right">{{ props.item.balanceItem }}</td>
-            <td class="text-xs-right">{{ props.item.coursesBTC }}</td>     
-            <!-- <td class="text-xs-right">{{ props.item.date }}</td>
-            <td class="text-xs-right">{{ props.item.mining }}</td>
-            <td class="text-xs-right">{{ props.item.balanceItem }}</td>
-            <td class="text-xs-right">{{ props.item.courseBTC }}</td>
-            <td class="text-xs-right">{{ props.item.incomeUSD }}</td>-->
+            <td class="text-xs-right">{{ props.item.coursesBTC }}</td>
+            <td class="text-xs-right">{{ props.item.incomeUSD }}</td>
         </template>
         </v-data-table>
     </section>
@@ -108,6 +104,7 @@ export default {
         }).then(function (data) {
           for (let key in data) {
             let lastDolya = []
+            let lastPower = []
             if (data[key].email === user.email) {
               var acca = data[key].accountNnumber
               // формирование таблички с первого дня создания крипто
@@ -116,6 +113,7 @@ export default {
               var datatoday = moment()
               this.dataDif = datatoday.diff(dataOpenPlusOne, 'days')
               var DataCurs = this.DataCurs
+              let min = [0]
               for (let i = 1; i < this.dataDif + 2; i++) {
                 let j
                 if (i < DataCurs.length) {
@@ -133,23 +131,39 @@ export default {
                     let temp = snapshot.val() || []
                     if (temp.length > 0) {
                       // ищем ключ равный нашему массиву
+                      let allPower = 0
                       temp.map(function (account, index, array) {
+                        allPower = 0
                         for (let name in account) {
                           // справа заменяем на акаунт номер пользователя
                           if (name === acca) {
                             // тут добавляем дол этого чувака на дату
                             // надо подумать кароч(())
-                            lastDolya.push(account[name].proportion)
+                            lastPower.push(account[name].power)
+                          }
+                          if (name === 'all') {
+                            allPower = account[name].power
                           }
                         }
                       })
+                      let proportion = lastPower[lastPower.length - 1] / allPower
+                      lastDolya.push(proportion)
                     }
                     inf = lastDolya[lastDolya.length - 1]
+                    // console.log(thatDate)
+                    // console.log(+DataCurs[j].miningItem * +inf * 10)
+                    let balancis
+                    if (i !== 1) {
+                      balancis = +DataCurs[j - 1].miningItem * +inf * 10 + min[min.length - 1]
+                      min.push(balancis)
+                    }
                     self.balance.push({
                       'day': i,
                       'date': moment(thatDate).add(1, 'd').format('YYYY-MM-DD'),
                       'coursesBTC': DataCurs[j].coursesBTC || '',
-                      'mining': +DataCurs[j].miningItem * +inf || ''
+                      'mining': +DataCurs[j].miningItem * +inf * 10 || '',
+                      'balanceItem': min[min.length - 1],
+                      'incomeUSD': (+DataCurs[j].miningItem * +inf * 10 * min[min.length - 1] * 1000000).toFixed(4)
                     })
                   })
                 }
