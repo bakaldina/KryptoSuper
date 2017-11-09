@@ -405,7 +405,6 @@ export default {
         let allForPast // мощность за предыдущий день
         calendar[day].map(function (day, index, array) { // проход по каждому дню
           for (let acc in day) { // проход по каждому аккаунт
-            console.log(+day[acc].powerDay)
             power += +day[acc].powerDay
           }
         })
@@ -448,18 +447,6 @@ export default {
       }
     })
     this.transactions.date2 = moment().format('DD.MM.YYYY')
-    // var calendar = {}
-    // var createCrypto = moment('2017-07-14')
-    // var dataToday = moment()
-    // var diffDate = dataToday.diff(createCrypto, 'd')
-    // for (let i = 0; i < diffDate; i++) {
-    //   var date = createCrypto.add(i, 'd')
-    //   calendar[date] = [
-    //     // [accountNumber]: {
-    //     //   [power]:''
-    //     // }
-    //   ]
-    // }
   }
 }
 </script>
