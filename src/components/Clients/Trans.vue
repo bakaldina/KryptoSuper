@@ -232,7 +232,7 @@ export default {
       checkbox: false,
       search: '',
       totalItems: 0,
-      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
+      // pagination: { sortBy: 'date2', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
       massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       transactions: {
         date2: '',
@@ -275,6 +275,7 @@ export default {
       number_clients: [],
       number_clientsText: [],
       power: [],
+      powerTest: [],
       accountNnumbers: [],
       items_currency: [
         'USD',
@@ -411,9 +412,11 @@ export default {
         if (lastDay.length > 0) {
           // calendar.data.numbAccaunta.lastElementArray.All
           let predData = lastDay[lastDay.length - 1]
-          let massiv = calendar[lastDay[lastDay.length - 1]]
-          allForPast = calendar[predData][massiv.length - 1].all.power
+          let massiv1 = calendar[lastDay[lastDay.length - 1]]
+          allForPast = calendar[predData][massiv1.length - 1].all.power
           power += allForPast
+          // console.log(day)
+          // console.log(allForPast)
           lastDay.push(day)
           calendar[day].push({
             all: {
@@ -428,6 +431,7 @@ export default {
       }
       // добавление доли каждому
       for (var date2 in calendar) {
+        console.log(date2)
         calendar[date2].forEach(function (item, index, arr) {
           for (var numb in item) {
             let thatPower = +item[numb].power
