@@ -62,7 +62,7 @@ export default {
       DataCurs: [],
       totalItems: 0,
       transaction: [],
-      // pagination: { sortBy: 'day', page: 1, rowsPerPage: 25, descending: false, totalItems: 0 },
+      pagination: { sortBy: 'day', page: 1, rowsPerPage: 25, descending: false, totalItems: 0 },
       massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       menuItems: [
         {icon: 'gavel', title: 'Майнинг BTC', link: '/miningBTC'},

@@ -341,6 +341,7 @@ export default {
       for (let key in data) {
         let elem = data[key]
         elem['superkey'] = key
+        elem['timestamp'] = moment(data[key]['date2']).valueOf()
         if (data[key]['typeOfTransaction'] === 'Покупка мощности' || 'Продажа мощности') {
           data[key]['currency'] = 'BTC'
           data[key]['summa'] = +data[key]['quantity'] * +data[key]['price']
@@ -350,7 +351,7 @@ export default {
         this.items.push(elem)
       }
       var accoountCreated = {}
-      let afterGroup = _.groupBy(this.items, 'date2')
+      let afterGroup = _.groupBy(_.sortBy(this.items, 'timestamp'), 'date2')
       // формирование календаря
       for (var keyDate in afterGroup) {
         // afterGroup[keyDate] транзакции на эту дату
@@ -400,13 +401,14 @@ export default {
         })
       }
       // добавление общего намайненого
+      console.log(calendar)
       for (let day in calendar) {
         let lastDay = lastDay || []
         let power = 0 // мощность за день
         let allForPast // мощность за предыдущий день
-        calendar[day].map(function (day, index, array) { // проход по каждому дню
-          for (let acc in day) { // проход по каждому аккаунт
-            power += +day[acc].powerDay
+        calendar[day].map(function (day2, index, array) { // проход по каждому дню
+          for (let acc in day2) { // проход по каждому аккаунт
+            power += +day2[acc].powerDay
           }
         })
         if (lastDay.length > 0) {
