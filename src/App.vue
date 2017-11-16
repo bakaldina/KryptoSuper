@@ -66,7 +66,7 @@
         customer: [],
         drawer: true,
         menuItems1: [
-          {icon: 'business', title: 'Хэшрейт', link: '/miningBTC'},
+          {icon: 'business', title: 'Хэшрейт,', link: '/miningBTC'},
           {icon: 'local_atm', title: 'Обмен', link: '/exchange'},
           {icon: 'call_to_action', title: 'Кошелек', link: '/pouch'},
           {icon: 'lock_outline', title: 'Выйти', link: '/login'}
