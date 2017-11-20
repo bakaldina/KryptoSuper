@@ -106,10 +106,6 @@ export default {
             let lastDolya = []
             let lastPower = []
             data[key].email = data[key].email || ''
-<<<<<<< HEAD
-=======
-            // let allPower = []
->>>>>>> origin/master
             if (data[key].email === user.email) {
               var acca = data[key].accountNnumber
               // формирование таблички с первого дня создания крипто
