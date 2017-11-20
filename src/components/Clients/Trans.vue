@@ -232,7 +232,7 @@ export default {
       checkbox: false,
       search: '',
       totalItems: 0,
-      // pagination: { sortBy: 'date2', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
+      pagination: { sortBy: 'date2', page: 1, rowsPerPage: 25, descending: true, totalItems: 0 },
       massiv: [10, 25, 50, { text: 'Все', value: -1 }],
       transactions: {
         date2: '',

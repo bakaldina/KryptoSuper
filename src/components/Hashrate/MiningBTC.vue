@@ -119,7 +119,7 @@ export default {
               for (let i = 1; i < this.dataDif + 2; i++) {
                 let j
                 if (i < DataCurs.length) {
-                  j = i - 1
+                  j = i
                 } else {
                   j = DataCurs.length
                 }
@@ -141,8 +141,6 @@ export default {
                           if (name === acca) {
                             // тут добавляем дол этого чувака на дату
                             lastPower.push(account[name].power)
-                            console.log(thatDate)
-                            console.log(lastPower)
                           }
                           if (name === 'all') {
                             allPower = account[name].power
@@ -150,6 +148,8 @@ export default {
                         }
                       })
                       let proportion = lastPower[lastPower.length - 1] / allPower
+                      console.log(i)
+                      console.log(proportion)
                       lastDolya.push(proportion)
                     }
                     inf = lastDolya[lastDolya.length - 1]
@@ -159,10 +159,10 @@ export default {
                       min.push(balancis)
                     }
                     self.balance.push({
-                      'day': i - 2,
-                      'date': moment(thatDate).add(-1, 'days').format('YYYY-MM-DD'),
-                      'coursesBTC': DataCurs[j - 2].coursesBTC || '',
-                      'mining': +DataCurs[j - 2].miningItem * +inf * 10 || '',
+                      'day': i - 1,
+                      'date': moment(thatDate).format('YYYY-MM-DD'),
+                      'coursesBTC': +DataCurs[j - 2].coursesBTC,
+                      'mining': +DataCurs[j - 2].miningItem * +inf * 10,
                       'balanceItem': min[min.length - 1],
                       'incomeUSD': (+DataCurs[j - 2].coursesBTC * min[min.length - 1]).toFixed(4)
                     })

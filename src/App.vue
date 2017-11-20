@@ -36,6 +36,7 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title><img src="./assets/logo_mini.png" height='50' alt="логотип" style="vertical-align: middle; margin-right: 10px;">
         <router-link to="/" tag="span" style="cursor: pointer">CRYPTO MANAGEMENT</router-link></v-toolbar-title>
+        <v-btn large v-on:click="logout" class="cyan button">выйти</v-btn>
     </v-toolbar>
       <main style="display:flex;
     width:100%; height:100%;
